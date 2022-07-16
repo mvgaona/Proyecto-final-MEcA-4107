@@ -1,0 +1,142 @@
+\documentclass[10pt,letterpaper]{article}
+% pre\'ambulo
+
+\usepackage[latin1]{inputenc}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,activeacute]{babel}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{yhmath}
+\usepackage{titling}
+\usepackage{natbib}
+\bibliographystyle{apalike}
+%\bibliographystyle{unsrtnat}
+\bibpunct{(}{)}{,}{a}{,}{,}
+
+
+\setlength{\textwidth}{160mm}
+\setlength{\textheight}{195mm}
+\setlength{\oddsidemargin}{6mm}
+\setlength{\evensidemargin}{28mm}
+\setlength{\topmargin}{-5mm}
+
+
+\title{\textbf{Propuesta-Proyecto Final\\MECA 4107: Big Data and Machine Learning for Applied Economics}}
+\author{Andrea Margarita Beleño Hernández- María Valeria Gaona Guevara}
+
+\begin{document}
+% cuerpo del documento
+\maketitle
+
+\begin{abstract}
+Este es el abstract del trabajo final!!%100-word Abstract
+\noindent %
+
+\end{abstract}
+
+
+\section{Introducción} \label{sec:intro}
+
+\textbf{Su empresa ha determinado que su función de producción está definida por la siguiente ecuación $Q=10K^{0,5}L^{0,5}$, donde $Q$ son las unidades producidas, $L$ representa el número de empleados y $K$ es el valor de las maquinarias y capital invertido en la compañía. Si el costo de cada unidad de trabajo es el salario $w$ y el costo del capital es $r$, responda:}
+
+\begin{enumerate}[label=\alph*.]
+\item \textbf{Calcule la primera y segunda derivada de la función de producción con respecto a cada factor productivo, interprete los resultados en términos del rendimiento a escala de los factores de producción.}
+\\\\
+Se calcularán las derivadas de la función $Q$ con respecto al trabajo y capital como se muestra a continuación:\\
+\begin{align*}
+%\begin{equation}
+	\frac{\partial Q}{\partial L}&=5\frac{K^{0,5}}{L^{0,5}} & \frac{\partial Q}{\partial K}&=5\frac{L^{0,5}}{K^{0,5}}\\
+	\frac{\partial^2 Q}{\partial L^2}&=-2,5\frac{K^{0,5}}{L^{1,5}} & \frac{\partial^2 Q}{\partial K^2}&=-2,5\frac{L^{0,5}}{K^{1,5}}
+%\end{equation}
+\end{align*}
+
+La segunda derivada de la función de producción, nos muestra el rendimiento marginal de los factores $K$ y $L$, que para este caso particular, se trata de rendimientos marginales decrecientes, por el signo negativo obtenido para la función al ser derivada respecto a los diferentes factores.
+\\ \\Ahora bien, para determinar si esta función tiene rendimientos crecientes, decrecientes o constantes a escala, realizaremos la demostración utilizando la función general de producción $Y=AK^{\alpha}L^{\beta}$ y se multiplicará por una constante $z$ para saber qué pasa con la función:
+\begin{align*}
+	Y_{z}&=f(zK,zL)& Y_{z}&=A\left(zK\right)^{\alpha}\left(zL\right)^{\beta}\\
+	 Y_{z}&=AK^{\alpha}L^{\beta}z^{\alpha+\beta}\\
+%\end{equation}
+\end{align*}
+Para que $Y_{z}$ sea igual a $zY$, es decir, que tenga rendimiento a escala constante, los coeficientes $\alpha$ y $\beta$ deben sumar 1. En este caso, los exponentes son $\alpha=0,5$ y $\beta=0,5$, por lo cual, la función de producción dada tiene rendimiento a escala constante.
+
+\item \textbf{Su empresa invirtió 100 dólares en capital y no se prevé ninguna nueva inversión en el corto plazo. Plantee la función de costos en términos de $Q$ si el salario por trabajador $w=15$ y $r=0,1$.}
+\\\\ 
+Para $K=100$, $w=15$ y $r=0,1$ se tiene lo siguiente:
+%\begin{equation}
+\begin{align*}
+	C_{t}&=wL + rK\\
+	C_{t}&=15L + (0,1)(100)=15L + 10
+%\end{equation}
+\end{align*} 
+Despejamos $L$ de la función $Q$ para reemplazar el término en $C_{t}$ y que así se encuentre en términos de $Q$\\
+\begin{align*}
+	Q&=10K^{0,5}L^{0,5} & \frac{Q}{100}&=L^{0,5}\\
+	Q&=10(100)^{0,5}L^{0,5} & \frac{Q^2}{100^2}&=L  \\
+	Q&=100L^{0,5}
+%\end{equation}
+\end{align*}
+Finalmente,\\
+\begin{align*}
+	&\boxed{C_{t}=15\frac{Q^2}{100^2}+10}\\
+	%\end{equation}
+\end{align*}
+
+\item \textbf{Encuentre cuáles son los costos fijos, costos variables, costos medios, costos variables medios y costos fijos medios.}
+
+\begin{align*}
+	C_{F}&=10 & C_{V}&=15\frac{Q^2}{100^2} & C_{TMe}&=15\frac{Q}{100^2}+\frac{10}{Q}\\
+	C_{FMe}&=\frac{10}{Q} & C_{VMe}&=15\frac{Q}{100^2}	
+	%\end{equation}
+\end{align*}
+
+\item \textbf{Tome $P$ como los precios, calcule la función de oferta.}\\
+Con la función de beneficios, se maximizará dicha función en términos de $Q$ y se hallará la función solicitada:\\
+\begin{align*}
+	\pi&=PQ-15\frac{Q^2}{100^2}-10 & máx(\pi)=\frac{d\pi}{dQ}&=P-30\frac{Q}{100^{2}}=0
+			%\end{equation}
+\end{align*}
+
+\begin{align*}
+	&P=30\frac{Q}{100^{2}}\\ %100^{2}P&=30Q
+	&\boxed{Q=\frac{100^{2}}{30}P}
+	%\end{equation}
+\end{align*}
+
+\item \textbf{Si $P=0,1$ ¿Cuánto es el beneficio total? Calcule a partir de qué nivel de precios la empresa debería no producir.}
+\\\\Para calcular el beneficio total, se utilizará la expresión para el beneficio y se reemplazará $Q$ con la expresión hallada en el punto anterior.
+\begin{align*}
+	\pi&=PQ-C_{t}\\
+	\pi&=PQ-15\frac{Q^2}{100^2}-10\\
+	\pi&=P\left(\frac{100^{2}}{30}P\right)-\frac{15}{100^2}\left(\frac{100^{2}}{30}P\right)^2-10\\
+	&=(0,1)\left(\frac{100^{2}}{30}\right)(0,1)-\frac{15}{100^2}\left(\frac{100^{2}}{30}(0,1)\right)^2-10\\
+	&=-8,\wideparen{3}
+			%\end{equation}
+\end{align*}
+
+El precio por debajo del cual la empresa debería no producir, es cuando $P<C_{VMe}$:
+
+\begin{align*}
+	P&<15\frac{Q}{100^{2}}\\ 
+	P&<\frac{15}{100^{2}}\frac{100^{2}}{30}P\\
+	P&<\frac{15}{30}P\\
+	&\boxed{P<0}
+	%\end{equation}
+\end{align*}
+
+Es decir, cuando el precio es menor a $0$, sin embargo, en la realidad, esta condición no es posible que se dé, por lo cual, para esta función de oferta, siempre será mejor seguir produciendo.
+
+\end{enumerate}
+
+\section{Problema a tratar}
+
+\section{Datos}
+
+\section{Métodos a implementar}
+
+\nocite{*}
+
+\bibliography{References}
+
+\end{document}
