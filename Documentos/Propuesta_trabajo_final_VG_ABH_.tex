@@ -17,33 +17,38 @@
 \bibpunct{(}{)}{,}{a}{,}{,}
 
 
-\setlength{\textwidth}{160mm}
-\setlength{\textheight}{210mm}
+\setlength{\textwidth}{170mm}
+\setlength{\textheight}{200mm}
 \setlength{\oddsidemargin}{6mm}
-\setlength{\evensidemargin}{10mm}
+\setlength{\evensidemargin}{6mm}
 \setlength{\topmargin}{-5mm}
 
 
-\title{\textbf{Propuesta-Proyecto Final\\MECA 4107: Big Data and Machine Learning for Applied Economics}}
+\title{\textbf{Propuesta-Proyecto Final}}
 \author{Andrea Margarita Beleño Hernández- María Valeria Gaona Guevara}
 
 \begin{document}
 % cuerpo del documento
 \maketitle
 
-\begin{abstract}
-Este es el abstract del trabajo final!!%100-word Abstract
-\noindent %
+%\begin{abstract}
+%Este es el abstract del trabajo final!!%100-word Abstract
+%\noindent %
 
-\end{abstract}
+%\end{abstract}
 
 
 \section{Introducción} \label{sec:intro}
 
+El mercado eléctrico Colombiano es un mercado competitivo en donde participan generadores, transmisores, distribuidores, consumidores y comercializadores de energía. Este mercado se divide en dos segmentos: Corto y  largo plazo, sin embargo, en el siguiente documento se presentará el análisis del mercado en corto plazo por medio de la bolsa de energía de Colombia, la cual es  administrada por XM,  en donde genera la participación de generadores y comercializadores de energía para su compra y venta a precio de bolsa, con el objetivo de establecer la demanda adecuada de energía en el país. \\
+De acuerdo con Poveda (2012),  el precio de bolsa está dado por la recolección de información de la generación de energía real que consta de los datos medidos, adquiridos hora a hora, de cada uno de los generadores que se encuentren activos en el mercado.  A su vez, los comercializadores deben reportar los consumos de sus clientes no regulados para que, al día siguiente se cuente con las lecturas de los contadores de energía para que dicha información sea enviada de forma electrónica al ASIC (Administrador del Sistema de Intercambios Comerciales). \\
+Poveda (2012) afirma que el despacho ideal es programa de generación que está dado por el uso de los recursos más económicos hasta cubrir la demanda doméstica real, más las Transacciones Internacionales de Electricidad de Corto Plazo - TIE (exportaciones como demanda e importaciones como generación), más las pérdidas del STN (Sistema de Transmisión Nacional). Teniendo en cuenta lo anterior, El precio de bolsa está dado por el precio de oferta del recurso marginal no inflexible obtenido por medio del despacho ideal, el cual es utilizado para valorar los intercambios en bolsa. \\ 
+El correcto funcionamiento del mercado eléctrico es fundamental para el análisis de la demanda de energía en el país, si es necesario realizar estrategias en el manejo de los recursos  naturales con los que se genera energía, si la dinámica de compra y venta de energía está siendo óptima para la economía y sociedad Colombiana. Generar una proyección de estos precios permite poder hacer inferencia acerca de cómo el mercado puede estar funcionando y aunque este sea un sistema fluctuante, se puede generar predicciones acerca de su comportamiento.\\
+En el siguiente documento se encuentra el análisis preliminar acerca de los datos recaudados para la predicción de del precio de bolsa de energía eléctrica del mercado eléctrico mayorista Colombiano, en donde se implementará un modelo de Machine Learning automático en una aplicación web, que permitirá modelar futuros precios de bolsa y con ello, tomar decisiones comerciales basadas en los datos adquiridos.
 
 
 \section{Problema a tratar} \label{sec:prob}
-Realizar la predicción de bolsa de energía eléctrica del MEM a partir de datos disponibles del operador del mercado u otras fuentes. Se realizará la predicción del precio del mercado spot utilizando las herramientas de predicción vistas en clase, desplegando una aplicación web para la obtención de dicha predicción.
+Contar con un modelo el cual prediga el precio de bolsa de energía eléctrica del MEM a partir de datos disponibles del operador del mercado, permitirá que se puedan generar decisiones con mayor conocimiento, debido a que se implementarán variables en el modelo de predicción que ayude a regular un poco la fluctuación del mercado y así, contar con un patrón de decisión más seguro ante este precio futuro.
 
 \section{Datos} \label{sec:data}
 Los datos a utilizar para el desarrollo de la predicción, se encuentran en la página del operador del mercado eléctrico colombiano, llamado ``XM''. Esta empresa concentra todos los parámetros del sistema eléctrico colombiano que son importantes a la hora de realizar la predicción del precio de bolsa a nivel diario para el trabajo final. Dentro de los predictores que de manera preliminar se consideran importantes para realizar el ejercicio (pero no se limitarán o podrán cambiarse), se encuentran los siguientes:
@@ -65,7 +70,7 @@ Debido a que el modelo del precio de bolsa es muy volátil, no se modelará de man
 Se plantea para la visualización de datos de la predicción en la página web utilizar el paquete ``Shiny'' de R y que sea desplegado como un proyecto en Github. Se propone la visualización de la página que se muestra en la Figura ~\ref{fig1}. En donde los campos en blanco son de libre diligenciamiento por el usuario y concuerdan con los predictores mencionados anteriormente. Todos los campos deben ser diligenciados. Luego se presiona el botón ``Predecir'' y en la parte derecha en el cuadro azul se visualiza el precio que se obtiene con base en esos parámetros.
 
 \begin{figure}[h]
-\centerline{\includegraphics[width=0.4\textwidth]{../Images/Propuesta_webpage.PNG}}
+\centerline{\includegraphics[width=0.2\textwidth]{../Images/Propuesta_webpage.PNG}}
 \caption{Propuesta visualización página web, predicción de precio de bolsa}
 \label{fig1}
 \end{figure}
