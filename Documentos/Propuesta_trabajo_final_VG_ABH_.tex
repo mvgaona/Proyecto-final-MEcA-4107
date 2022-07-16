@@ -6,6 +6,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[spanish,activeacute]{babel}
 \usepackage{mathtools}
+\usepackage{graphicx}
 \usepackage{enumitem}
 \usepackage{amsmath}
 \usepackage{yhmath}
@@ -17,9 +18,9 @@
 
 
 \setlength{\textwidth}{160mm}
-\setlength{\textheight}{195mm}
+\setlength{\textheight}{210mm}
 \setlength{\oddsidemargin}{6mm}
-\setlength{\evensidemargin}{28mm}
+\setlength{\evensidemargin}{10mm}
 \setlength{\topmargin}{-5mm}
 
 
@@ -45,7 +46,7 @@ Este es el abstract del trabajo final!!%100-word Abstract
 Realizar la predicción de bolsa de energía eléctrica del MEM a partir de datos disponibles del operador del mercado u otras fuentes. Se realizará la predicción del precio del mercado spot utilizando las herramientas de predicción vistas en clase, desplegando una aplicación web para la obtención de dicha predicción.
 
 \section{Datos} \label{sec:data}
-Los datos a utilizar para el desarrollo de la predicción, se encuentran en la página del operador del mercado eléctrico colombiano, llamado ``X''. Esta empresa concentra todos los parámetros del sistema eléctrico colombiano que son importantes a la hora de realizar la predicción del precio de bolsa a nivel diario para el trabajo final. Dentro de los predictores que de manera preliminar se consideran importantes para realizar el ejercicio (pero no se limitarán o podrán cambiarse), se encuentran los siguientes:
+Los datos a utilizar para el desarrollo de la predicción, se encuentran en la página del operador del mercado eléctrico colombiano, llamado ``XM''. Esta empresa concentra todos los parámetros del sistema eléctrico colombiano que son importantes a la hora de realizar la predicción del precio de bolsa a nivel diario para el trabajo final. Dentro de los predictores que de manera preliminar se consideran importantes para realizar el ejercicio (pero no se limitarán o podrán cambiarse), se encuentran los siguientes:
 \begin{itemize}
 \item Demanda de energía nacional (Periodicidad: diaria)
 \item Precio de combustibles (utilizados para la generación de energía, como por ejemplo: carbón, gas natural, fuel oil; Periodicidad: diaria)
@@ -58,18 +59,16 @@ De acuerdo con la operación del mercado colombiano, se tendrá en cuenta como pre
 \section{Métodos a implementar} \label{sec:meth}
 En esta sección se realizará la descripción de la propuesta a realizar para el modelo de predicción y también para la construcción de la página web donde se visualizarán los resultados, así como de los parámetros que se ingresarán.
 \subsection{Modelo propuesto} \label{sec:prop}
-Debido a que el modelo del precio de bolsa es muy volátil, no se modelará de manera lineal sino que se dispondrá de la herramienta de bosques y árboles para realizar la predicción. Con base en los predictores mencionados en la sección \ref{sec:data}, se construirá el modelo con Random Foresto o XG Boost para obtener un valor predicho para el precio de bolsa de energía eléctrica en el MEM, verificando antes si existe correlación entre las variables mencionadas anteriormente. Así mismo, podría plantearse el uso de Superlearners, sin embargo, puede que por el corto tiempo, pueda no darse.
-
-\begin{figure}[htbp]
-\includegraphics[width=0.4\textwidth]{../Images/Propuesta_webpage.PNG}
-\caption{Propuesta visualización página web, predicción de precio de bolsa}
-\label{fig1}
-\end{figure}
+Debido a que el modelo del precio de bolsa es muy volátil, no se modelará de manera lineal sino que se dispondrá de la herramienta de bosques y árboles para realizar la predicción. Con base en los predictores mencionados en la sección \ref{sec:data}, se construirá el modelo con \textit{Random Forest} o \textit{XG Boost} para obtener un valor predicho para el precio de bolsa de energía eléctrica en el MEM, verificando antes si existe correlación entre las variables mencionadas anteriormente. Así mismo, podría plantearse el uso de Superlearners, sin embargo, puede que por el corto tiempo, pueda no darse.\
 
 \subsection{Página web, propuesta de visualización} \label{sec:web}
 Se plantea para la visualización de datos de la predicción en la página web utilizar el paquete ``Shiny'' de R y que sea desplegado como un proyecto en Github. Se propone la visualización de la página que se muestra en la Figura ~\ref{fig1}. En donde los campos en blanco son de libre diligenciamiento por el usuario y concuerdan con los predictores mencionados anteriormente. Todos los campos deben ser diligenciados. Luego se presiona el botón ``Predecir'' y en la parte derecha en el cuadro azul se visualiza el precio que se obtiene con base en esos parámetros.
 
-
+\begin{figure}[h]
+\centerline{\includegraphics[width=0.4\textwidth]{../Images/Propuesta_webpage.PNG}}
+\caption{Propuesta visualización página web, predicción de precio de bolsa}
+\label{fig1}
+\end{figure}
 
 
 \nocite{*}
