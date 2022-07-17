@@ -65,8 +65,7 @@ De acuerdo con la operación del mercado colombiano, se tendrá en cuenta como p
 \section{Métodos a implementar} \label{sec:meth}
 En esta sección se realizará la descripción de la propuesta a realizar para el modelo de predicción y también para la construcción de la página web donde se visualizarán los resultados.
 \subsection{Modelo propuesto} \label{sec:prop}
-Debido a que el modelo del precio de bolsa es muy volátil, no se modelará de manera lineal sino que se dispondrá de la herramienta de bosques y árboles para realizar la predicción. Con base en los predictores mencionados en la sección \ref{sec:data}, se construirá el modelo con \textit{Random Forest} o \textit{XG Boost} para obtener un valor predicho para el precio de bolsa de energía eléctrica en el MEM, verificando antes si existe correlación entre las variables mencionadas anteriormente. \
-
+Debido a que el modelo del precio de bolsa es muy volátil, no se modelará de manera lineal sino que se dispondrá de la herramienta de bosques y árboles para realizar la predicción. Con base en los predictores mencionados en la sección \ref{sec:data}, se construirá el modelo con \textit{Random Forest} o \textit{XG Boost} para obtener un valor predicho para el precio de bolsa de energía eléctrica en el MEM, verificando antes si existe correlación entre las variables mencionadas anteriormente. Para ambos métodos, es necesario trabajar con herramientas específicas para series de tiempo, por lo cual, se hará una búsqueda de cómo se implementan los algoritmos para este caso.\
 
 \subsection{Página web, propuesta de visualización} \label{sec:web}
 Se plantea para la visualización de datos de la predicción en la página web utilizar el paquete ``Shiny'' de R y que sea desplegado como un proyecto en Github. Se propone la visualización de la página que se muestra en la Figura ~\ref{fig1}.
@@ -87,6 +86,9 @@ En donde los campos en blanco son de libre diligenciamiento por el usuario y con
 \bibitem{b2} XM (2022). Sinergox de XM. Recuperado de: \url{ https://sinergox.xm.com.co/trpr/Paginas/Historicos/Historicos.aspx.} 
 
 \bibitem{b3}Climate Prediction Center.“Cold \& Warm episodes by season” Recuperado de: \url{https://origin.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php}
+
+\bibitem{b4}XGBoost time series forecast in R.“xgboost time series forecast in R” Recuperado de: \url{http://datasideoflife.com/?p=1009#:~:text=xgboost\%2C\%20or\%20Extreme\%20Gradient\%20Boosting,while\%20doing\%20time\%20series\%20predictions.}
+
 \end{thebibliography}
 
 
