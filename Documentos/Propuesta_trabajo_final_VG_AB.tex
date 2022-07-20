@@ -59,14 +59,16 @@ Los datos a utilizar para el desarrollo de la predicción, se encuentran en la p
 \item Precio de combustibles (utilizados para la generación de energía, como por ejemplo: carbón, gas natural, fuel oil)
 \item Aportes hídricos 
 \item Tipo de Generación (hidráulica, térmica, fuentes alternativas) 
-\item Restricciones
+
 \end{itemize}
 De acuerdo con la operación del mercado colombiano, se tendrá en cuenta como predictor adicional, el índice interoceánico de El Niño (ONI),considerando que es un parámetro relevante para el modelo de predicción del precio de bolsa de energía eléctrica. Este parámetro se obtiene de la página web en \cite{b3}. 
 
 \section{Métodos a implementar} \label{sec:meth}
 En esta sección se realizará la descripción de la propuesta a realizar para el modelo de predicción y también para la construcción de la página web donde se visualizarán los resultados.
 \subsection{Modelo propuesto} \label{sec:prop}
-Debido a que el modelo del precio de bolsa es muy volátil, se dispondrá de la herramienta de árboles de decisión (Boosting trees) para realizar la predicción. Con base en los predictores mencionados en la sección \ref{sec:data}, se construirá el modelo con \textit{XG Boost} para obtener un valor predicho para el precio de bolsa de energía eléctrica en el MEM, verificando antes si existe correlación entre las variables mencionadas anteriormente. Para este método, es necesario trabajar con herramientas específicas para series de tiempo, por lo cual, se hará una búsqueda de cómo se implementan los algoritmos para este caso. \
+
+Debido a que el modelo del precio de bolsa es muy volátil, se dispondrá de la herramienta de árboles de decisión (Boosting trees) para realizar la predicción, aprovechando la no linealidad de los datos y que a través de este método se aprovecha la simplicidad de los árboles pero se obtienen mejores predicciones al reducir el error de ajuste en cada iteración. Con base en los predictores mencionados en la sección \ref{sec:data}, se construirá el modelo con \textit{XG Boost}  para obtener un valor predicho para el precio de bolsa de energía eléctrica en el MEM. Debido a la naturaleza de los datos a utilizar, que corresponden a series de tiempo, es necesario implementar este modelo con un enfoque para dicho caso. \ 
+
 
 \subsection{Página web, propuesta de visualización} \label{sec:web}
 Se plantea para la visualización de datos de la predicción en la página web utilizar el paquete ``Shiny'' de R y que sea desplegado como un proyecto en Github. Inicialmente, la propuesta de visualización de la página web sería la que se muestra en la Figura ~\ref{fig1}.
