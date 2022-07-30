@@ -136,7 +136,7 @@ model4<- xgb.train(data = xgb_train, max.depth = 100, watchlist=watchlist, nroun
 predicciones_mod4 <-predict(model4, xgb_test)
 
 
-
+lista_agentes <- read.csv("../Datos/Listado_agentes.csv", header=TRUE, stringsAsFactors=FALSE)
 
 
 
