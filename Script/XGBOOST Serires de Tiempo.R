@@ -1,9 +1,7 @@
 # Valeria Gaona - 202214418
 # Andrea Beleño - 200620739
 
-#### PROBLEM SET 3 #####
-
-#####Código de predicción de los precios de las viviendas con las variables ya seleccionadas y guardadas en archivos rds exportados del código: Limpieza de datos
+#### TRABAJO FINAL #####
 
 install.packages("pacman") #Instalar librería si no cuenta con esta 
 library(pacman) #Llamar librería#Se cargan las librerías a usar en el presente Problem Set
@@ -39,8 +37,7 @@ p_load(Matrix,
        BiocManager,
        data.table,
        ranger, SuperLearner)
-packageurl <-"https://cran.r-project.org/src/contrib/Archive/caret/caret_6.0-80.tar.gz"
-install.packages(packageurl, repos=NULL, type="source")
+
 #Cargar datos
 datacomp <- economics
 data<- economics%>% dplyr::select(date, unemploy)
@@ -61,6 +58,7 @@ extended_data_mod <- extended_data %>%
 train <- extended_data_mod[1:nrow(data), ] # initial data
 
 pred <- extended_data_mod[(nrow(data) + 1):nrow(extended_data), ] # extended time index
+pred$unemploy[is.na(pred$unemploy)] = 0
 # Se transforman los datos en una forma matricial y se extrae la variable de destino. Además, se debe elimninar  las columnas de fechas y solo usar las recién creadas:
 
 x_train <- xgboost::xgb.DMatrix(as.matrix(train %>%
@@ -69,8 +67,7 @@ x_pred <- xgboost::xgb.DMatrix(as.matrix(pred %>%
                                            dplyr::select(months, years)))
 
 y_train <- train$unemploy
-y_train<- xgboost::xgb.DMatrix(as.matrix(train %>%
-                                           dplyr::select(unemploy)))
+
 #PREDICCIÓN XG BOOST 
 #Con los datos preparados como en un apartado anterior se puede realizar el modelo de la misma forma que si no tratáramos con los datos de series temporales.
 #Se necesita proporcionar el espacio de parámetros para ajustar el modelo., expecificando el método de validación cruzada con el número de pliegues y también se habilitan cálculos paralelos.
@@ -92,54 +89,57 @@ xgb_grid <- base::expand.grid(
     min_child_weight = 1,  # minimum sum of instance weight (hessian) needed ina child
     subsample = 1 # subsample ratio of the training instances
   ))
+
+
+
 #Ahora se puede construir el modelo, usando árboles
 xgb_model <- caret::train(
-  x_train, y_train,
+  unemploy ~months+years,
+  data=train,
   trControl = xgb_trcontrol,
   tuneGrid = xgb_grid,
-  method = "xgbtree",
+  method = "xgbTree",
   nthread = 1)
+#verbose=TRUE)
+
+
 #Se observanlos mejores valores que se eligieron como hiperparámetros:
 xgb_model$bestTune
 #Se realiza la predicción
-xgb_pred <- xgb_model %>% stats::predict(x_pred)
-## prediction en el train set
-fitted <- xgb_model %>%
-  stats::predict(x_train) %>%
-  stats::ts(start = zoo::as.yearmon(min(train$date)), 
-            end = zoo::as.yearmon(max(train$date)),
-            frequency = 12)
 
-# prediction in a form of ts object
-xgb_forecast <- xgb_pred %>%
-  stats::ts(start = zoo::as.yearmon(min(pred$date)),
-            end = zoo::as.yearmon(max(pred$date)),
-            frequency = 12)
 
-# prediction in a form of ts object
-xgb_forecast <- xgb_pred %>%
-  stats::ts(start = zoo::as.yearmon(min(pred$date)),
-            end = zoo::as.yearmon(max(pred$date)),
-            frequency = 12)
 
-# forecast object
-forecast_list <- list(
-  model = xgb_model$modelInfo,
-  method = xgb_model$method,
-  mean = xgb_forecast,
-  x = ts, 
-  fitted = fitted,
-  residuals = as.numeric(ts) - as.numeric(fitted)
-)
-class(forecast_list) <- "forecast"
-forecast::autoplot(forecast_list)
-#Predicción con regresores
-p_load(forecast)
-x_train <- xgboost::xgb.DMatrix(cbind(
-  as.matrix(extended_data_mod %>% dplyr::select(months, years)),
-  reg_train))
-x_pred <- xgboost::xgb.DMatrix(as.matrix(pred %>% 
-                                           dplyr::select(months, years)),
-                               reg_pred)
+xgb_pred <- xgb_model %>% stats::predict(pred)
+xgb_pred<-data.frame(xgb_pred)
 
-y_train <- data$value
+Resultados<-cbind(pred$date,xgb_pred)
+
+
+##########################################################################################################################
+############################################################################################################################
+#Prueba con código realizado para el PS3
+
+x_train <- model.matrix(unemploy ~months+years, data =train)[, -1]
+y_train <- train$unemploy
+
+x_test <- model.matrix(~months+years, data =pred)[, -1]
+y_test <- pred$unemploy
+
+
+xgb_train <- xgb.DMatrix(data = x_train, label = y_train)
+xgb_test <- xgb.DMatrix(data = x_train, label = y_train) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
+
+watchlist <-list(train=xgb_train, test=xgb_test)
+
+model4<- xgb.train(data = xgb_train, max.depth = 100, watchlist=watchlist, nrounds = 1000)
+
+predicciones_mod4 <-predict(model4, xgb_test)
+
+MSE_mod4 <- sqrt(mean((predicciones_mod4-train$unemploy)^2))
+Diferencia_mod4 <- (predicciones_mod4 - train$unemploy)
+Diferencia_mod4<-data.frame(Diferencia_mod4)
+
+
+
+
+
