@@ -138,6 +138,12 @@ predicciones_mod4 <-predict(model4, xgb_test)
 
 lista_agentes <- read.csv("../Datos/Listado_agentes.csv", header=TRUE, stringsAsFactors=FALSE)
 
+ONI <- read_html("https://origin.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php")%>%
+  html_table()
+
+ONI_nuevo<-ONI[[9]]
+
+ONI_day<-
 
 
 
