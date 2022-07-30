@@ -135,9 +135,7 @@ model4<- xgb.train(data = xgb_train, max.depth = 100, watchlist=watchlist, nroun
 
 predicciones_mod4 <-predict(model4, xgb_test)
 
-MSE_mod4 <- sqrt(mean((predicciones_mod4-train$unemploy)^2))
-Diferencia_mod4 <- (predicciones_mod4 - train$unemploy)
-Diferencia_mod4<-data.frame(Diferencia_mod4)
+
 
 
 
