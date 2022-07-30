@@ -34,6 +34,9 @@ p_load(Matrix,
        randomForest,
        xgboost,
        nnls,
+       forecast,
+       zoo,
+       BiocManager,
        data.table,
        ranger, SuperLearner)
 packageurl <-"https://cran.r-project.org/src/contrib/Archive/caret/caret_6.0-80.tar.gz"
