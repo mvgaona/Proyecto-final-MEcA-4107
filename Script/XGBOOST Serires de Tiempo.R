@@ -137,7 +137,7 @@ model4<- xgb.train(data = xgb_train, max.depth = 100, watchlist=watchlist, nroun
 predicciones_mod4 <-predict(model4, xgb_test)
 
 
-lista_agentes <- read.csv("../Datos/Listado_agentes.csv", header=TRUE, stringsAsFactors=FALSE)
+
 
 ONI <- read_html("https://origin.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php")%>%
   html_table()
@@ -283,7 +283,7 @@ saveRDS(Aporte_dia_30_06_2022, "../Datos/Bases oficiales/Aportes_energia_dia_30_
 
 
 Generacion <- data.frame(readRDS("../Datos/Bases oficiales/Generacion.rds")) 
-
+lista_agentes <- read.csv("../Datos/Listado_agentes.csv", header=TRUE, stringsAsFactors=FALSE)
 Generacion_2001<- Generacion_2001[c(-1,-2),]
 
 colnames(lista_agentes) <- c('Id','Values_Code', '...2', 'Values_Type', 'Values_Disp', 'Values_Rectype', 'Values_Companycode', 'Values_enersource', 'Values_Operacionstartdate', 'Values_state', 'Data')
@@ -295,4 +295,13 @@ filtro<-is.na(Generacion_tipo_1$Values_Type)
 table(is.na(Generacion_tipo_1$Values_Type))
 Generacion_NA<- Generacion_tipo_1[is.na(Generacion_tipo_1$Values_Type),]
 summary(Generacion_NA)
+
+Generadores<-data.frame(Generacion_NA$...2)
+colnames(Generadores) <- c('Nombre')
+#<- Generadores[c(-1),]
+Generadores<-Generadores %>% 
+  group_by(Nombre) %>% 
+  summarize(Count = n())
+
+
 write.csv (Generacion_NA, "../Datos/Generacion_NA.csv") #Submission file
