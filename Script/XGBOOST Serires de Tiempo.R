@@ -284,57 +284,140 @@ saveRDS(Aporte_dia_30_06_2022, "../Datos/Bases oficiales/Aportes_energia_dia_30_
 
 Generacion <- data.frame(readRDS("../Datos/Bases oficiales/Generacion.rds")) 
 lista_agentes <- read.csv("../Datos/Listado_agentes.csv", header=TRUE, stringsAsFactors=FALSE)
-Generacion_2001<- Generacion_2001[c(-1,-2),]
-
 colnames(lista_agentes) <- c('Id','Values_Code', '...2', 'Values_Type', 'Values_Disp', 'Values_Rectype', 'Values_Companycode', 'Values_enersource', 'Values_Operacionstartdate', 'Values_state', 'Data')
 lista_agentes<- subset(lista_agentes, select = c("Id", "...2", "Values_Type", "Values_Rectype", "Values_enersource"))
 
-Generacion_tipo_1<-left_join(Generacion,lista_agentes, by="...2")
+Generacion["...2"][Generacion["...2"] == "PCH DE LA LIBERTAD"] <- "PCH LA LIBERTAD" #Cambio punto a punto de datos
+Generacion["...2"][Generacion["...2"] == "PROENCA 2"] <- "PROENCA II"
+Generacion["...2"][Generacion["...2"] == "SOGAMOSO_P"] <- "SOGAMOSO"
+Generacion["...2"][Generacion["...2"] == "COGENERADOR PROENCA 1"] <- "COGENERADOR PROENCA"
 
 
-filtro<-is.na(Generacion_tipo_1$Values_Type)
-table(is.na(Generacion_tipo_1$Values_Type))
+
+
+
+#Generacion_tipo_1<-left_join(Generacion_tipo_1,Generacion_final, by="...2")
+
+
+
+
+
+filtro<-is.na(Generacion_tipo_1$...4)
+table(is.na(Generacion_tipo_1$...4))
 
 Generacion_tipo_1<-left_join(Generacion_tipo_1, Generacion_final,  by = c("...2") )
 
-left_join(Generacion_tipo_1, Generacion_final, by = c("...2")) %>% 
-  mutate(Values_Type = ifelse(is.na(Values_Type.x), Values_Type.y, Values_Type.x)) 
+Generacion_tipo_1<-left_join(Generacion,Capacidad_final, by="...2")
+Generacion_tipo_1<-left_join(Generacion_tipo_1, lista_agentes, by = c("...2")) %>% 
+  mutate(Values_Type_f = ifelse(is.na(...4), Values_Type, ...4)) 
 
+filtro<-is.na(Generacion_tipo_1$Values_Type_f)
+table(is.na(Generacion_tipo_1$Values_Type_f))
 
-Generacion_tipo_1[filtro]<-Generacion_final$Values_Type
-
-
-Generacion_tipo_1<-left_join(Generacion_tipo_1,Generacion_final, by="...2")
-
-Generacion_NA<- Generacion_tipo_1[is.na(Generacion_tipo_1$...4),]
-summary(Generacion_NA)
-
-Generadores<-data.frame(Generacion_NA$...2)
-colnames(Generadores) <- c('...2')
-#<- Generadores[c(-1),]
-Generadores<-Generadores %>% 
-  group_by(...2) %>% 
-  summarize(Count = n())
-
-write.csv (Generacion_NA, "../Datos/Generacion_NA.csv") #Submission file
-
+#Se importan los datos de los generadores año a año
 Capacidad_neta_1<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2005.xlsx")
 colnames(Capacidad_neta_1)[1] <- "Capacidad"
 Capacidad_neta_2<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2000.xlsx")
 colnames(Capacidad_neta_2)[1] <- "Capacidad"
 Capacidad_neta_3<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2013.xlsx")
 colnames(Capacidad_neta_3)[1] <- "Capacidad"
-Capacidad_neta_4<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2020.xlsx")
-colnames(Capacidad_neta_4)[1] <- "Capacidad"
-Capacidad_neta_4<-Capacidad_neta_4%>% mutate(...8 = NULL)
-Capacidad_neta_4<-Capacidad_neta_4%>% mutate(...9 = NULL)
-Capacidad_neta_4<-Capacidad_neta_4%>% mutate(...10 = NULL)
+Capacidad_neta_6<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2001.xlsx")
+colnames(Capacidad_neta_6)[1] <- "Capacidad"
+Capacidad_neta_7<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2002.xlsx")
+colnames(Capacidad_neta_7)[1] <- "Capacidad"
+Capacidad_neta_8<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2003.xlsx")
+colnames(Capacidad_neta_8)[1] <- "Capacidad"
+Capacidad_neta_9<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2004.xlsx")
+colnames(Capacidad_neta_9)[1] <- "Capacidad"
+Capacidad_neta_10<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2006.xlsx")
+colnames(Capacidad_neta_10)[1] <- "Capacidad"
+Capacidad_neta_11<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2007.xlsx")
+colnames(Capacidad_neta_11)[1] <- "Capacidad"
+Capacidad_neta_12<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2008.xlsx")
+colnames(Capacidad_neta_12)[1] <- "Capacidad"
+Capacidad_neta_13<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2009.xlsx")
+colnames(Capacidad_neta_13)[1] <- "Capacidad"
+Capacidad_neta_14<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2010.xlsx")
+colnames(Capacidad_neta_14)[1] <- "Capacidad"
+Capacidad_neta_15<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2011.xlsx")
+colnames(Capacidad_neta_15)[1] <- "Capacidad"
+Capacidad_neta_16<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2012.xlsx")
+colnames(Capacidad_neta_16)[1] <- "Capacidad"
+Capacidad_neta_17<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2014.xlsx")
+colnames(Capacidad_neta_17)[1] <- "Capacidad"
+Capacidad_neta_18<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2015.xlsx")
+colnames(Capacidad_neta_18)[1] <- "Capacidad"
+Capacidad_neta_19<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2016SEM1.xlsx")
+colnames(Capacidad_neta_19)[1] <- "Capacidad"
+Capacidad_neta_20<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2016SEM2.xlsx")
+colnames(Capacidad_neta_20)[1] <- "Capacidad"
+Capacidad_neta_21<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2017SEM1.xlsx")
+colnames(Capacidad_neta_21)[1] <- "Capacidad"
+Capacidad_neta_22<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2017SEM2.xlsx")
+colnames(Capacidad_neta_22)[1] <- "Capacidad"
+Capacidad_neta_23<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2018.xlsx")
+colnames(Capacidad_neta_23)[1] <- "Capacidad"
+Capacidad_neta_24<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2019.xlsx")
+colnames(Capacidad_neta_24)[1] <- "Capacidad"
+Capacidad_neta_25<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2021.xlsx")
+colnames(Capacidad_neta_25)[1] <- "Capacidad"
+Capacidad_neta_26<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2022.xlsx")
+colnames(Capacidad_neta_26)[1] <- "Capacidad"
 
-Capacidad_neta1<-rbind(Capacidad_neta_1, Capacidad_neta_2, Capacidad_neta_3, Capacidad_neta_4)
-Capacidad_neta1<-Capacidad_neta1%>% mutate(Capacidad= NULL)
-Capacidad_neta1<-Capacidad_neta1%>% mutate(...3= NULL)
-Capacidad_neta1<-Capacidad_neta1%>% mutate(...6= NULL)
-Capacidad_neta1<-Capacidad_neta1%>% mutate(...7= NULL)
+#Se eliminan columnas que no son útiles para la base
+Capacidad_neta_13<-Capacidad_neta_13%>% mutate(...8 = NULL)
+Capacidad_neta_13<-Capacidad_neta_13%>% mutate(...9 = NULL)
+Capacidad_neta_13<-Capacidad_neta_13%>% mutate(...10 = NULL)
+
+Capacidad_neta_14<-Capacidad_neta_14%>% mutate(...8 = NULL)
+Capacidad_neta_14<-Capacidad_neta_14%>% mutate(...9 = NULL)
+Capacidad_neta_14<-Capacidad_neta_14%>% mutate(...10 = NULL)
+
+Capacidad_neta_15<-Capacidad_neta_15%>% mutate(...8 = NULL)
+Capacidad_neta_15<-Capacidad_neta_15%>% mutate(...9 = NULL)
+Capacidad_neta_15<-Capacidad_neta_15%>% mutate(...10 = NULL)
+
+Capacidad_neta_19<-Capacidad_neta_19%>% mutate(...8 = NULL)
+Capacidad_neta_19<-Capacidad_neta_19%>% mutate(...9 = NULL)
+Capacidad_neta_19<-Capacidad_neta_19%>% mutate(...10 = NULL)
+
+Capacidad_neta_20<-Capacidad_neta_20%>% mutate(...8 = NULL)
+Capacidad_neta_20<-Capacidad_neta_20%>% mutate(...9 = NULL)
+Capacidad_neta_20<-Capacidad_neta_20%>% mutate(...10 = NULL)
+
+Capacidad_neta_21<-Capacidad_neta_21%>% mutate(...8 = NULL)
+Capacidad_neta_21<-Capacidad_neta_21%>% mutate(...9 = NULL)
+Capacidad_neta_21<-Capacidad_neta_21%>% mutate(...10 = NULL)
+
+Capacidad_neta_22<-Capacidad_neta_22%>% mutate(...8 = NULL)
+Capacidad_neta_22<-Capacidad_neta_22%>% mutate(...9 = NULL)
+Capacidad_neta_22<-Capacidad_neta_22%>% mutate(...10 = NULL)
+
+Capacidad_neta_23<-Capacidad_neta_23%>% mutate(...8 = NULL)
+Capacidad_neta_23<-Capacidad_neta_23%>% mutate(...9 = NULL)
+Capacidad_neta_23<-Capacidad_neta_23%>% mutate(...10 = NULL)
+
+Capacidad_neta_24<-Capacidad_neta_24%>% mutate(...8 = NULL)
+Capacidad_neta_24<-Capacidad_neta_24%>% mutate(...9 = NULL)
+Capacidad_neta_24<-Capacidad_neta_24%>% mutate(...10 = NULL)
+
+Capacidad_neta_25<-Capacidad_neta_25%>% mutate(...8 = NULL)
+Capacidad_neta_25<-Capacidad_neta_25%>% mutate(...9 = NULL)
+Capacidad_neta_25<-Capacidad_neta_25%>% mutate(...10 = NULL)
+
+Capacidad_neta_26<-Capacidad_neta_26%>% mutate(...8 = NULL)
+Capacidad_neta_26<-Capacidad_neta_26%>% mutate(...9 = NULL)
+Capacidad_neta_26<-Capacidad_neta_26%>% mutate(...10 = NULL)
+
+
+#Se unen los datos en 1 sola base
+Capacidad_neta_t<-rbind(Capacidad_neta_2, Capacidad_neta_6, Capacidad_neta_7, Capacidad_neta_8, Capacidad_neta_9,Capacidad_neta_1,Capacidad_neta_10,Capacidad_neta_11,Capacidad_neta_12,Capacidad_neta_13,Capacidad_neta_14,Capacidad_neta_15,Capacidad_neta_16,Capacidad_neta_3,Capacidad_neta_17,Capacidad_neta_18,Capacidad_neta_19,Capacidad_neta_20,Capacidad_neta_21,Capacidad_neta_22,Capacidad_neta_23,Capacidad_neta_24,Capacidad_neta_25,Capacidad_neta_26)
+Capacidad_final<- Capacidad_neta_t%>% group_by(...2) %>% filter (! duplicated(...2))
+
+Capacidad_neta_t<-Capacidad_neta_t%>% mutate(Capacidad= NULL)
+Capacidad_neta_t<-Capacidad_neta_t%>% mutate(...3= NULL)
+Capacidad_neta_t<-Capacidad_neta_t%>% mutate(...6= NULL)
+Capacidad_neta_t<-Capacidad_neta_t%>% mutate(...7= NULL)
 
 rm()
 
