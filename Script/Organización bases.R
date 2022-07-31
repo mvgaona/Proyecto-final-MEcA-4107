@@ -390,3 +390,48 @@ colnames(Generacion_2015) <- c('...1', '...2', '...3','Generacion Ideal', '...5'
 View(Generacion_2015)
 Generacion_2015<- Generacion_2015[c(-1),]
 View(Generacion_2015)
+
+Generacion_2016 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2016.xlsx")
+View(Generacion_2016)
+Generacion_2016<-Generacion_2016%>% mutate(...28 = NULL) #Eliminación de primera columna
+View(Generacion_2016)
+colnames(Generacion_2016) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2016)
+Generacion_2016<- Generacion_2016[c(-1),]
+View(Generacion_2016)
+
+Generacion_2017 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2017.xlsx")
+View(Generacion_2017)
+Generacion_2017<-Generacion_2017%>% mutate(...28 = NULL) #Eliminación de primera columna
+View(Generacion_2017)
+colnames(Generacion_2017) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2017)
+Generacion_2017<- Generacion_2017[c(-1),]
+View(Generacion_2017)
+
+Generacion_2018 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2018.xlsx")
+View(Generacion_2018)
+Generacion_2018<-Generacion_2018%>% mutate(...28 = NULL) #Eliminación de primera columna
+View(Generacion_2018)
+colnames(Generacion_2018) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2018)
+Generacion_2018<- Generacion_2018[c(-1),]
+View(Generacion_2018)
+
+Generacion_2018 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2018.xlsx")
+View(Generacion_2018)
+Generacion_2018<-Generacion_2018%>% mutate(...28 = NULL) #Eliminación de primera columna
+View(Generacion_2018)
+colnames(Generacion_2018) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2018)
+Generacion_2018<- Generacion_2018[c(-1),]
+View(Generacion_2018)
+
+Generacion_2019 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2019.xlsx")
+View(Generacion_2019)
+Generacion_2019<-Generacion_2019%>% mutate(...28 = NULL) #Eliminación de primera columna
+View(Generacion_2019)
+colnames(Generacion_2019) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2019)
+Generacion_2019<- Generacion_2019[c(-1),]
+View(Generacion_2019)
