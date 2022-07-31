@@ -373,11 +373,20 @@ View(Generacion_2013)
 Generacion_2013<- Generacion_2013[c(-1),]
 View(Generacion_2013)
 
-Generacion_2014 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2013.xlsx")
+Generacion_2014 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2014.xlsx")
 View(Generacion_2014)
-Generacion_2014<-Generacion_2013%>% mutate(...28 = NULL) #Eliminación de primera columna
+Generacion_2014<-Generacion_2014%>% mutate(...28 = NULL) #Eliminación de primera columna
 View(Generacion_2014)
 colnames(Generacion_2014) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
-View(Generacion_2013)
-Generacion_2013<- Generacion_2013[c(-1),]
-View(Generacion_2013)
+View(Generacion_2014)
+Generacion_2014<- Generacion_2014[c(-1),]
+View(Generacion_2014)
+
+Generacion_2015 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2015.xlsx")
+View(Generacion_2015)
+Generacion_2015<-Generacion_2015%>% mutate(...28 = NULL) #Eliminación de primera columna
+View(Generacion_2015)
+colnames(Generacion_2015) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2015)
+Generacion_2015<- Generacion_2015[c(-1),]
+View(Generacion_2015)
