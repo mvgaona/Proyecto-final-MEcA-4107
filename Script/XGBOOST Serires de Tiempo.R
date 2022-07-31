@@ -269,7 +269,27 @@ Aportes_energia$...5<-as.numeric(Aportes_energia$...5) #Se vuelven números los 
 Aportes_energia$Day<-as.Date(Aportes_energia$Histórico.Aportes) #Se convierte en formato de fecha la columna
 Aporte_dia<-aggregate(Aportes_energia$...5, by=list(Aportes_energia$Day), sum) #Se suman los aportes de energía de cada río
 
-Aportes_energia_dia<-cbind(Aporte_dia$Group.1, Aporte_dia$x )
-colnames(Aportes_energia_dia) <- c('Fecha','Aportes_total')
-saveRDS(Aportes_energia_dia, "../Datos/Bases oficiales/Aportes_energia_dia.rds" )
 
+colnames(Aporte_dia) <- c('Fecha','Aportes_total')
+
+
+saveRDS(Aporte_dia, "../Datos/Bases oficiales/Aportes_energia_dia.rds")
+
+Aporte_dia_30_06_2022<-Aporte_dia[1:8217,]
+saveRDS(Aporte_dia_30_06_2022, "../Datos/Bases oficiales/Aportes_energia_dia_30_06_2022.rds")
+
+#####################################################################################################
+#### Tipo de generación
+
+Generacion_2001 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2001.xlsx")
+View(Generacion_2001)
+
+Generacion_2001<- Generacion_2001[c(-1,-2),]
+
+colnames(lista_agentes) <- c('Id','Values_Code', '...2', 'Values_Type', 'Values_Disp', 'Values_Rectype', 'Values_Companycode', 'Values_enersource', 'Values_Operacionstartdate', 'Values_state', 'Data')
+lista_agentes<- subset(lista_agentes, select = c("Id", "...2", "Values_Type", "Values_Rectype", "Values_enersource"))
+
+Generacion_tipo<-left_join(Generacion_2001,lista_agentes, by="...2")
+
+filtro<-is.na(Generacion_tipo$Values_Type)
+table(is.na(Generacion_tipo$Values_Type))
