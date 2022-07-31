@@ -35,6 +35,7 @@ p_load(Matrix,
        forecast,
        zoo,
        BiocManager,
+       readxl,
        data.table,
        ranger, SuperLearner)
 
@@ -254,8 +255,21 @@ ONI_final<-ONI_final%>% mutate(fecha= NULL)
 ONI_final<-ONI_final%>% mutate(mes.y= NULL)
 ONI_final<-ONI_final%>% mutate(año.y= NULL)
 
+colnames(ONI_final) <- c('Fecha','ONI')
+saveRDS(ONI_final, "../Datos/Bases oficiales/ONI.rds" )
 
-saveRDS(ONI_final, "../Datos/ONI.rds" )
+############################################################################################
+### Aporte Diario_dia
 
+Aportes_energia<-data.frame(readRDS("../Datos/Bases oficiales/Aportes_Diarios.rds")) 
+Aportes_energia$...5[is.na(Aportes_energia$...5)] = 0 #Se imputa cero a los aportes de energía con NA
+Aportes_energia<- Aportes_energia[c(-1),] #Se eilimina primera fila con referencia a los nombres de los archivos excel
+Aportes_energia$...5<-as.numeric(Aportes_energia$...5) #Se vuelven números los valores del excel
 
+Aportes_energia$Day<-as.Date(Aportes_energia$Histórico.Aportes) #Se convierte en formato de fecha la columna
+Aporte_dia<-aggregate(Aportes_energia$...5, by=list(Aportes_energia$Day), sum) #Se suman los aportes de energía de cada río
+
+Aportes_energia_dia<-cbind(Aporte_dia$Group.1, Aporte_dia$x )
+colnames(Aportes_energia_dia) <- c('Fecha','Aportes_total')
+saveRDS(Aportes_energia_dia, "../Datos/Bases oficiales/Aportes_energia_dia.rds" )
 
