@@ -222,17 +222,40 @@ ONI24_t<-data.frame(t(ONI24))
 colnames(ONI24_t)<-c('ONI')
 
 ONI_month<-rbind(ONI0_t, ONI1_t, ONI2_t, ONI3_t, ONI4_t, ONI5_t, ONI6_t, ONI7_t, ONI8_t, ONI9_t, ONI10_t, ONI12_t, ONI13_t, ONI14_t, ONI15_t, ONI16_t, ONI17_t, ONI18_t, ONI19_t, ONI20_t, ONI21_t, ONI22_t, ONI23_t, ONI24_t)
+fecha <- seq(from = lubridate::as_date("2000-01-01"),
+           by = "month", length.out = 270)
+fecha<-data.frame(fecha)
+
+ONI_month_final<-ONI_month[12:288,]
+ONI_month_final<-ONI_month_final[1:270,]
+ONI_month_final<-data.frame(ONI_month_final)
+ONi_mes<-cbind(fecha,ONI_month_final )
+ONi_mes<-ONi_mes%>% mutate(mes = lubridate::month(fecha))
+ONi_mes<-ONi_mes%>% mutate(año = lubridate::year(fecha))#
+
+ONi_mes<-ONi_mes%>% mutate(ma = paste(ONi_mes$mes,ONi_mes$año))#
 
 
-for (i in 57:81){
-  for(j in 1:12){
-    ONI_day<-ONI_iter[i,j]
-    
-  }
-   
-  
-}
+fecha_day<- seq(from = lubridate::as_date("2000-01-01"),
+                        by = "day", length.out = 8217)
+fecha_day<-data.frame(fecha_day)
+ONI_dia<-fecha_day
+ONI_dia<-data.frame(ONI_dia)
+ONI_dia<-as.data.frame(ONI_dia)
+ONI_dia<-ONI_dia%>% mutate(mes = lubridate::month(fecha_day)) #
+ONI_dia<-ONI_dia%>% mutate(año = lubridate::year(fecha_day))
+ONI_dia<-ONI_dia%>% mutate(ma = paste(ONI_dia$mes, ONI_dia$año))#
 
+ONI_final<-left_join(ONI_dia, ONi_mes, by="ma" )
+ONI_final<-ONI_final%>% mutate(mes.x= NULL)
+ONI_final<-ONI_final%>% mutate(año.x= NULL)
+ONI_final<-ONI_final%>% mutate(ma= NULL)
+ONI_final<-ONI_final%>% mutate(fecha= NULL)
+ONI_final<-ONI_final%>% mutate(mes.y= NULL)
+ONI_final<-ONI_final%>% mutate(año.y= NULL)
+
+
+saveRDS(ONI_final, "../Datos/ONI.rds" )
 
 
 
