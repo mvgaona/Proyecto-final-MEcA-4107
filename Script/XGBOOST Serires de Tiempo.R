@@ -141,9 +141,98 @@ lista_agentes <- read.csv("../Datos/Listado_agentes.csv", header=TRUE, stringsAs
 ONI <- read_html("https://origin.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php")%>%
   html_table()
 
-ONI_nuevo<-ONI[[9]]
+#Tratamiento de datos para el ONI
+ONI_nuevo<-ONI[[9]] #Se extrae la lista donde se encuentra la información
 
-ONI_day<-
+ONI_iter<-ONI_nuevo #Variable auxiliar
+
+ONI_iter<-ONI_iter%>% mutate(X1 = NULL) #Eliminación de primera columna
+
+ONI0<-ONI_iter[55, 1:12] #Extracción primera fila
+ONI0_t<-data.frame(t(ONI0)) #Transpuesta para que quede en columna
+colnames(ONI0_t)<-c('ONI')
+ONI1<-ONI_iter[57, 1:12]
+ONI1_t<-data.frame(t(ONI1))
+colnames(ONI1_t)<-c('ONI')
+ONI2<-ONI_iter[58, 1:12]
+ONI2_t<-data.frame(t(ONI2))
+colnames(ONI2_t)<-c('ONI')
+ONI3<-ONI_iter[59, 1:12]
+ONI3_t<-data.frame(t(ONI3))
+colnames(ONI3_t)<-c('ONI')
+ONI4<-ONI_iter[60, 1:12]
+ONI4_t<-data.frame(t(ONI4))
+colnames(ONI4_t)<-c('ONI')
+ONI5<-ONI_iter[61, 1:12]
+ONI5_t<-data.frame(t(ONI5))
+colnames(ONI5_t)<-c('ONI')
+ONI6<-ONI_iter[62, 1:12]
+ONI6_t<-data.frame(t(ONI6))
+colnames(ONI6_t)<-c('ONI')
+ONI7<-ONI_iter[63, 1:12]
+ONI7_t<-data.frame(t(ONI7))
+colnames(ONI7_t)<-c('ONI')
+ONI8<-ONI_iter[64, 1:12]
+ONI8_t<-data.frame(t(ONI8))
+colnames(ONI8_t)<-c('ONI')
+ONI9<-ONI_iter[65, 1:12]
+ONI9_t<-data.frame(t(ONI9))
+colnames(ONI9_t)<-c('ONI')
+ONI10<-ONI_iter[66, 1:12]
+ONI10_t<-data.frame(t(ONI10))
+colnames(ONI10_t)<-c('ONI')
+ONI12<-ONI_iter[68, 1:12]
+ONI12_t<-data.frame(t(ONI12))
+colnames(ONI12_t)<-c('ONI')
+ONI13<-ONI_iter[69, 1:12]
+ONI13_t<-data.frame(t(ONI13))
+colnames(ONI13_t)<-c('ONI')
+ONI14<-ONI_iter[70, 1:12]
+ONI14_t<-data.frame(t(ONI14))
+colnames(ONI14_t)<-c('ONI')
+ONI15<-ONI_iter[71, 1:12]
+ONI15_t<-data.frame(t(ONI15))
+colnames(ONI15_t)<-c('ONI')
+ONI16<-ONI_iter[72, 1:12]
+ONI16_t<-data.frame(t(ONI16))
+colnames(ONI16_t)<-c('ONI')
+ONI17<-ONI_iter[73, 1:12]
+ONI17_t<-data.frame(t(ONI17))
+colnames(ONI17_t)<-c('ONI')
+ONI18<-ONI_iter[74, 1:12]
+ONI18_t<-data.frame(t(ONI18))
+colnames(ONI18_t)<-c('ONI')
+ONI19<-ONI_iter[75, 1:12]
+ONI19_t<-data.frame(t(ONI19))
+colnames(ONI19_t)<-c('ONI')
+ONI20<-ONI_iter[76, 1:12]
+ONI20_t<-data.frame(t(ONI20))
+colnames(ONI20_t)<-c('ONI')
+ONI21<-ONI_iter[77, 1:12]
+ONI21_t<-data.frame(t(ONI21))
+colnames(ONI21_t)<-c('ONI')
+ONI22<-ONI_iter[79, 1:12]
+ONI22_t<-data.frame(t(ONI22))
+colnames(ONI22_t)<-c('ONI')
+ONI23<-ONI_iter[80, 1:12]
+ONI23_t<-data.frame(t(ONI23))
+colnames(ONI23_t)<-c('ONI')
+ONI24<-ONI_iter[81, 1:12]
+ONI24_t<-data.frame(t(ONI24))
+colnames(ONI24_t)<-c('ONI')
+
+ONI_month<-rbind(ONI0_t, ONI1_t, ONI2_t, ONI3_t, ONI4_t, ONI5_t, ONI6_t, ONI7_t, ONI8_t, ONI9_t, ONI10_t, ONI12_t, ONI13_t, ONI14_t, ONI15_t, ONI16_t, ONI17_t, ONI18_t, ONI19_t, ONI20_t, ONI21_t, ONI22_t, ONI23_t, ONI24_t)
+
+
+for (i in 57:81){
+  for(j in 1:12){
+    ONI_day<-ONI_iter[i,j]
+    
+  }
+   
+  
+}
+
 
 
 
