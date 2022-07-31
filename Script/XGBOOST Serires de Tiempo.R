@@ -281,15 +281,18 @@ saveRDS(Aporte_dia_30_06_2022, "../Datos/Bases oficiales/Aportes_energia_dia_30_
 #####################################################################################################
 #### Tipo de generación
 
-Generacion_2001 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2001.xlsx")
-View(Generacion_2001)
+
+Generacion <- data.frame(readRDS("../Datos/Bases oficiales/Generacion.rds")) 
 
 Generacion_2001<- Generacion_2001[c(-1,-2),]
 
 colnames(lista_agentes) <- c('Id','Values_Code', '...2', 'Values_Type', 'Values_Disp', 'Values_Rectype', 'Values_Companycode', 'Values_enersource', 'Values_Operacionstartdate', 'Values_state', 'Data')
 lista_agentes<- subset(lista_agentes, select = c("Id", "...2", "Values_Type", "Values_Rectype", "Values_enersource"))
 
-Generacion_tipo<-left_join(Generacion_2001,lista_agentes, by="...2")
+Generacion_tipo_1<-left_join(Generacion,lista_agentes, by="...2")
 
-filtro<-is.na(Generacion_tipo$Values_Type)
-table(is.na(Generacion_tipo$Values_Type))
+filtro<-is.na(Generacion_tipo_1$Values_Type)
+table(is.na(Generacion_tipo_1$Values_Type))
+Generacion_NA<- Generacion_tipo_1[is.na(Generacion_tipo_1$Values_Type),]
+summary(Generacion_NA)
+write.csv (Generacion_NA, "../Datos/Generacion_NA.csv") #Submission file
