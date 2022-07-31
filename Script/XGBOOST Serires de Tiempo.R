@@ -291,17 +291,83 @@ lista_agentes<- subset(lista_agentes, select = c("Id", "...2", "Values_Type", "V
 
 Generacion_tipo_1<-left_join(Generacion,lista_agentes, by="...2")
 
+
 filtro<-is.na(Generacion_tipo_1$Values_Type)
 table(is.na(Generacion_tipo_1$Values_Type))
-Generacion_NA<- Generacion_tipo_1[is.na(Generacion_tipo_1$Values_Type),]
+
+Generacion_tipo_1<-left_join(Generacion_tipo_1, Generacion_final,  by = c("...2") )
+
+left_join(Generacion_tipo_1, Generacion_final, by = c("...2")) %>% 
+  mutate(Values_Type = ifelse(is.na(Values_Type.x), Values_Type.y, Values_Type.x)) 
+
+
+Generacion_tipo_1[filtro]<-Generacion_final$Values_Type
+
+
+Generacion_tipo_1<-left_join(Generacion_tipo_1,Generacion_final, by="...2")
+
+Generacion_NA<- Generacion_tipo_1[is.na(Generacion_tipo_1$...4),]
 summary(Generacion_NA)
 
 Generadores<-data.frame(Generacion_NA$...2)
-colnames(Generadores) <- c('Nombre')
+colnames(Generadores) <- c('...2')
 #<- Generadores[c(-1),]
 Generadores<-Generadores %>% 
-  group_by(Nombre) %>% 
+  group_by(...2) %>% 
   summarize(Count = n())
 
-
 write.csv (Generacion_NA, "../Datos/Generacion_NA.csv") #Submission file
+
+Capacidad_neta_1<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2005.xlsx")
+colnames(Capacidad_neta_1)[1] <- "Capacidad"
+Capacidad_neta_2<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2000.xlsx")
+colnames(Capacidad_neta_2)[1] <- "Capacidad"
+Capacidad_neta_3<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2013.xlsx")
+colnames(Capacidad_neta_3)[1] <- "Capacidad"
+Capacidad_neta_4<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2020.xlsx")
+colnames(Capacidad_neta_4)[1] <- "Capacidad"
+Capacidad_neta_4<-Capacidad_neta_4%>% mutate(...8 = NULL)
+Capacidad_neta_4<-Capacidad_neta_4%>% mutate(...9 = NULL)
+Capacidad_neta_4<-Capacidad_neta_4%>% mutate(...10 = NULL)
+
+Capacidad_neta1<-rbind(Capacidad_neta_1, Capacidad_neta_2, Capacidad_neta_3, Capacidad_neta_4)
+Capacidad_neta1<-Capacidad_neta1%>% mutate(Capacidad= NULL)
+Capacidad_neta1<-Capacidad_neta1%>% mutate(...3= NULL)
+Capacidad_neta1<-Capacidad_neta1%>% mutate(...6= NULL)
+Capacidad_neta1<-Capacidad_neta1%>% mutate(...7= NULL)
+
+rm()
+
+Capacidad_neta_aux<-Capacidad_neta1 %>% 
+  group_by(...2) %>% 
+  summarize(Count = n())
+
+Capacidad_nta_para_imp<-left_join(Capacidad_neta_aux,Capacidad_neta1, by="...2")
+
+#Se ponen en minúscula los caracteres de description y title en la base test
+Capacidad_neta$...2<-str_to_lower(string=Capacidad_neta$...2)
+Generadores$...2<-str_to_lower(string=Generadores$...2)
+
+# Se eliminan las tildes
+Capacidad_neta$...2 <- iconv(Capacidad_neta$...2, from = "UTF-8", to = "ASCII//TRANSLIT")
+Generadores$...2 <- iconv(Generadores$...2, from = "UTF-8", to = "ASCII//TRANSLIT")
+
+# Se eliminan caracteres especiales
+Capacidad_neta$...2 <- str_replace_all(Capacidad_neta$...2, "[^[:alnum:]]", " ")
+Generadores$...2<- str_replace_all(Generadores$...2, "[^[:alnum:]]", " ")
+
+# Se eliminan espacios extras
+Capacidad_neta$...2<- gsub("\\s+", " ", str_trim(Capacidad_neta$...2))
+Generadores$...2 <- gsub("\\s+", " ", str_trim(Generadores$...2))
+
+View(Capacidad_neta)
+Capacidad_neta<- Capacidad_neta[c(-1),]
+
+Generacion_final<- Capacidad_neta1%>% group_by(...2) %>% filter (! duplicated(...2))
+colnames(Generacion_final)[2] <- "Values_Type"
+colnames(Generacion_final)[3] <- "Values_enersource"
+
+Generacion_final<-left_join(Capacidad_neta, by="...2")
+
+rm(Capacidad_neta, Generacion,Generacion_tipo_1 )
+
