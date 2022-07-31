@@ -269,3 +269,115 @@ TRM <- read_excel("../Datos/TRM.xlsx")
 View(TRM)
 TRM<- TRM[c(-8248),]
 saveRDS(TRM, "../Datos/Bases oficiales/TRM.rds" )
+###Generación
+Generacion_2000 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2000.xlsx")
+View(Generacion_2000)
+Generacion_2000<-Generacion_2000%>% mutate(...28 = NULL) #Eliminación de primera columna
+colnames(Generacion_2000) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2000)
+
+Generacion_2001 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2001.xlsx")
+View(Generacion_2001)
+Generacion_2001<- Generacion_2001[c(-1,-2),]
+View(Generacion_2001)
+colnames(Generacion_2001) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2001)
+
+Generacion_2002 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2002.xlsx")
+View(Generacion_2002)
+Generacion_2002<-Generacion_2002%>% mutate(...28 = NULL) #Eliminación de primera columna
+View(Generacion_2002)
+colnames(Generacion_2002) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2002)
+Generacion_2002<- Generacion_2002[c(-1),]
+View(Generacion_2002)
+
+Generacion_2003 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2003.xlsx")
+View(Generacion_2003)
+colnames(Generacion_2003) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2003)
+Generacion_2003<- Generacion_2003[c(-1,-2),]
+View(Generacion_2003)
+
+Generacion_2004 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2004.xlsx")
+View(Generacion_2004)
+colnames(Generacion_2004) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2004)
+Generacion_2004<- Generacion_2004[c(-1,-2),]
+View(Generacion_2004)
+
+Generacion_2005 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2005.xlsx")
+View(Generacion_2005)
+colnames(Generacion_2005) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2005)
+Generacion_2005<- Generacion_2005[c(-1,-2),]
+View(Generacion_2005)
+
+Generacion_2006 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2006.xlsx")
+View(Generacion_2006)
+colnames(Generacion_2006) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2006)
+Generacion_2006<- Generacion_2006[c(-1,-2),]
+View(Generacion_2006)
+
+Generacion_2007 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2007.xlsx")
+View(Generacion_2007)
+colnames(Generacion_2007) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2007)
+Generacion_2007<- Generacion_2007[c(-1,-2),]
+View(Generacion_2007)
+
+Generacion_2008 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2008.xlsx")
+View(Generacion_2008)
+colnames(Generacion_2008) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2008)
+Generacion_2008<- Generacion_2008[c(-1,-2),]
+View(Generacion_2008)
+
+Generacion_2009 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2009.xlsx")
+View(Generacion_2009)
+colnames(Generacion_2009) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2009)
+Generacion_2009<- Generacion_2009[c(-1,-2),]
+View(Generacion_2009)
+
+Generacion_2010 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2010.xlsx")
+View(Generacion_2010)
+colnames(Generacion_2010) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2010)
+Generacion_2010<- Generacion_2010[c(-1,-2),]
+View(Generacion_2010)
+
+Generacion_2011 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2011.xlsx")
+View(Generacion_2011)
+colnames(Generacion_2011) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2011)
+Generacion_2011<- Generacion_2011[c(-1,-2),]
+View(Generacion_2011)
+
+Generacion_2012 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2012.xlsx")
+View(Generacion_2012)
+Generacion_2012<-Generacion_2012%>% mutate(...28 = NULL) #Eliminación de primera columna
+View(Generacion_2012)
+colnames(Generacion_2012) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2012)
+Generacion_2012<- Generacion_2012[c(-1),]
+View(Generacion_2012)
+
+Generacion_2013 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2013.xlsx")
+View(Generacion_2013)
+Generacion_2013<-Generacion_2013%>% mutate(...28 = NULL) #Eliminación de primera columna
+View(Generacion_2013)
+colnames(Generacion_2013) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2013)
+Generacion_2013<- Generacion_2013[c(-1),]
+View(Generacion_2013)
+
+Generacion_2014 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2013.xlsx")
+View(Generacion_2014)
+Generacion_2014<-Generacion_2013%>% mutate(...28 = NULL) #Eliminación de primera columna
+View(Generacion_2014)
+colnames(Generacion_2014) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+View(Generacion_2013)
+Generacion_2013<- Generacion_2013[c(-1),]
+View(Generacion_2013)
