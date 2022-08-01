@@ -36,9 +36,14 @@ p_load(Matrix,
        data.table,
        ranger, SuperLearner,
        prophet)
-df <- read.csv('https://raw.githubusercontent.com/facebook/prophet/main/examples/example_wp_log_peyton_manning.csv')
-m <- prophet(df)
-class(m)
+BASEOF<- readRDS("../Datos/Bases oficiales/Base_de_datos_oficial.rds")
+fecha_day<- seq(from = lubridate::as_date("2000-01-01"),
+                 by = "day", length.out = 8217)
+fecha_day <- data.frame(fecha_day)
+BOF <- cbind(fecha_day, BASEOF)
+BOF <- prophet(df = BOF,
+               growth = "linear") 
+class(BOF)
 #Las predicciones se realizan en un marco de datos con una columna ds que contiene las fechas para las que se realizarán las predicciones. La función make_future_dataframe toma el objeto modelo y una serie de períodos para pronosticar y produce un marco de datos adecuado. De forma predeterminada, también incluirá las fechas históricas para que podamos evaluar el ajuste dentro de la muestra.
 #La función make_future_dataframe toma el modelo de objeto y una serie de períodos para pronosticar y producir un marco de datos adecuado
 future <- make_future_dataframe(m, periods = 365)

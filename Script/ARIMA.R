@@ -1,24 +1,18 @@
 p_load(forecast)
-rain <- c(987,1025,978,774,1563,569,1456,789,1479,566,1563,1698)
 # Convert it to a time series object.
 
-rain_ts <- ts(rain,start = c(2020,1),frequency = 12)
 
-
+BASEOF<- readRDS("../Datos/Bases oficiales/Base_de_datos_oficial.rds")
 # Print the timeseries data.
-
-print(rain_ts)
-
-
-summary(rain_ts)
-plot(rain_ts,main = "Before prediction")
-model <- auto.arima(rain_ts) 
+####----0 hs----#
+BASEOF0 <-as.numeric(BASEOF$PBN0)
+BASEOF <- ts(BASEOF0)
+print(BASEOF0)
+summary(BASEOF0)
+plot(BASEOF0 , main = "Before prediction")
+model <- auto.arima(BASEOF0) 
 model
 #Predictions
-forecast_data <- forecast(model, 10) 
-
-
+forecast_data <- forecast(model, 20) 
 print(forecast_data)
-
-
-plot(forecast_data, main = "forecasting_data for rain_ts") 
+plot(forecast_data, main = "forecasting_data for PBN") 
