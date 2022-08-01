@@ -36,6 +36,7 @@ p_load(Matrix,
        zoo,
        BiocManager,
        readxl,
+       reshape2,
        data.table,
        ranger, SuperLearner)
 
@@ -257,6 +258,7 @@ ONI_final<-ONI_final%>% mutate(año.y= NULL)
 
 colnames(ONI_final) <- c('Fecha','ONI')
 saveRDS(ONI_final, "../Datos/Bases oficiales/ONI.rds" )
+ONI<-data.frame(readRDS("../Datos/Bases oficiales/ONI.rds")) 
 
 ############################################################################################
 ### Aporte Diario_dia
@@ -293,76 +295,79 @@ Generacion["...2"][Generacion["...2"] == "SOGAMOSO_P"] <- "SOGAMOSO"
 Generacion["...2"][Generacion["...2"] == "COGENERADOR PROENCA 1"] <- "COGENERADOR PROENCA"
 
 
-
-
-
-#Generacion_tipo_1<-left_join(Generacion_tipo_1,Generacion_final, by="...2")
-
-
-
-
-
-filtro<-is.na(Generacion_tipo_1$...4)
-table(is.na(Generacion_tipo_1$...4))
-
-Generacion_tipo_1<-left_join(Generacion_tipo_1, Generacion_final,  by = c("...2") )
-
-Generacion_tipo_1<-left_join(Generacion,Capacidad_final, by="...2")
-Generacion_tipo_1<-left_join(Generacion_tipo_1, lista_agentes, by = c("...2")) %>% 
-  mutate(Values_Type_f = ifelse(is.na(...4), Values_Type, ...4)) 
-
-filtro<-is.na(Generacion_tipo_1$Values_Type_f)
-table(is.na(Generacion_tipo_1$Values_Type_f))
-
 #Se importan los datos de los generadores año a año
 Capacidad_neta_1<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2005.xlsx")
 colnames(Capacidad_neta_1)[1] <- "Capacidad"
+Capacidad_neta_1<- Capacidad_neta_1[c(-1,-2),]
 Capacidad_neta_2<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2000.xlsx")
 colnames(Capacidad_neta_2)[1] <- "Capacidad"
+Capacidad_neta_2<- Capacidad_neta_2[c(-1),]
 Capacidad_neta_3<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2013.xlsx")
 colnames(Capacidad_neta_3)[1] <- "Capacidad"
+Capacidad_neta_3<- Capacidad_neta_3[c(-1,-2),]
 Capacidad_neta_6<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2001.xlsx")
 colnames(Capacidad_neta_6)[1] <- "Capacidad"
+Capacidad_neta_6<- Capacidad_neta_6[c(-1,-2),]
 Capacidad_neta_7<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2002.xlsx")
 colnames(Capacidad_neta_7)[1] <- "Capacidad"
+Capacidad_neta_7<- Capacidad_neta_7[c(-1,-2),]
 Capacidad_neta_8<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2003.xlsx")
 colnames(Capacidad_neta_8)[1] <- "Capacidad"
+Capacidad_neta_8<- Capacidad_neta_8[c(-1,-2),]
 Capacidad_neta_9<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2004.xlsx")
 colnames(Capacidad_neta_9)[1] <- "Capacidad"
+Capacidad_neta_9<- Capacidad_neta_9[c(-1,-2),]
 Capacidad_neta_10<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2006.xlsx")
 colnames(Capacidad_neta_10)[1] <- "Capacidad"
+Capacidad_neta_10<- Capacidad_neta_10[c(-1,-2),]
 Capacidad_neta_11<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2007.xlsx")
 colnames(Capacidad_neta_11)[1] <- "Capacidad"
+Capacidad_neta_11<- Capacidad_neta_11[c(-1,-2),]
 Capacidad_neta_12<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2008.xlsx")
 colnames(Capacidad_neta_12)[1] <- "Capacidad"
+Capacidad_neta_12<- Capacidad_neta_12[c(-1,-2),]
 Capacidad_neta_13<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2009.xlsx")
 colnames(Capacidad_neta_13)[1] <- "Capacidad"
+Capacidad_neta_13<- Capacidad_neta_13[c(-1,-2),]
 Capacidad_neta_14<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2010.xlsx")
 colnames(Capacidad_neta_14)[1] <- "Capacidad"
+Capacidad_neta_14<- Capacidad_neta_14[c(-1,-2),]
 Capacidad_neta_15<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2011.xlsx")
 colnames(Capacidad_neta_15)[1] <- "Capacidad"
+Capacidad_neta_15<- Capacidad_neta_15[c(-1,-2),]
 Capacidad_neta_16<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2012.xlsx")
 colnames(Capacidad_neta_16)[1] <- "Capacidad"
+Capacidad_neta_16<- Capacidad_neta_16[c(-1,-2),]
 Capacidad_neta_17<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2014.xlsx")
 colnames(Capacidad_neta_17)[1] <- "Capacidad"
+Capacidad_neta_17<- Capacidad_neta_17[c(-1,-2),]
 Capacidad_neta_18<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2015.xlsx")
 colnames(Capacidad_neta_18)[1] <- "Capacidad"
+Capacidad_neta_18<- Capacidad_neta_18[c(-1,-2),]
 Capacidad_neta_19<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2016SEM1.xlsx")
 colnames(Capacidad_neta_19)[1] <- "Capacidad"
+Capacidad_neta_19<- Capacidad_neta_19[c(-1,-2),]
 Capacidad_neta_20<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2016SEM2.xlsx")
 colnames(Capacidad_neta_20)[1] <- "Capacidad"
+Capacidad_neta_20<- Capacidad_neta_20[c(-1,-2),]
 Capacidad_neta_21<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2017SEM1.xlsx")
 colnames(Capacidad_neta_21)[1] <- "Capacidad"
+Capacidad_neta_21<- Capacidad_neta_21[c(-1,-2),]
 Capacidad_neta_22<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2017SEM2.xlsx")
 colnames(Capacidad_neta_22)[1] <- "Capacidad"
+Capacidad_neta_22<- Capacidad_neta_22[c(-1,-2),]
 Capacidad_neta_23<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2018.xlsx")
 colnames(Capacidad_neta_23)[1] <- "Capacidad"
+Capacidad_neta_23<- Capacidad_neta_23[c(-1,-2),]
 Capacidad_neta_24<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2019.xlsx")
 colnames(Capacidad_neta_24)[1] <- "Capacidad"
+Capacidad_neta_24<- Capacidad_neta_24[c(-1,-2),]
 Capacidad_neta_25<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2021.xlsx")
 colnames(Capacidad_neta_25)[1] <- "Capacidad"
+Capacidad_neta_25<- Capacidad_neta_25[c(-1,-2),]
 Capacidad_neta_26<- read_excel("../Datos/Capacidad_Efectiva_Neta_(kW)_2022.xlsx")
 colnames(Capacidad_neta_26)[1] <- "Capacidad"
+Capacidad_neta_26<- Capacidad_neta_26[c(-1,-2),]
 
 #Se eliminan columnas que no son útiles para la base
 Capacidad_neta_13<-Capacidad_neta_13%>% mutate(...8 = NULL)
@@ -414,12 +419,259 @@ Capacidad_neta_26<-Capacidad_neta_26%>% mutate(...10 = NULL)
 Capacidad_neta_t<-rbind(Capacidad_neta_2, Capacidad_neta_6, Capacidad_neta_7, Capacidad_neta_8, Capacidad_neta_9,Capacidad_neta_1,Capacidad_neta_10,Capacidad_neta_11,Capacidad_neta_12,Capacidad_neta_13,Capacidad_neta_14,Capacidad_neta_15,Capacidad_neta_16,Capacidad_neta_3,Capacidad_neta_17,Capacidad_neta_18,Capacidad_neta_19,Capacidad_neta_20,Capacidad_neta_21,Capacidad_neta_22,Capacidad_neta_23,Capacidad_neta_24,Capacidad_neta_25,Capacidad_neta_26)
 Capacidad_final<- Capacidad_neta_t%>% group_by(...2) %>% filter (! duplicated(...2))
 
-Capacidad_neta_t<-Capacidad_neta_t%>% mutate(Capacidad= NULL)
-Capacidad_neta_t<-Capacidad_neta_t%>% mutate(...3= NULL)
-Capacidad_neta_t<-Capacidad_neta_t%>% mutate(...6= NULL)
-Capacidad_neta_t<-Capacidad_neta_t%>% mutate(...7= NULL)
+#Se eliminan columnas que no sirven
+Capacidad_final<-Capacidad_final%>% mutate(Capacidad= NULL)
+Capacidad_final<-Capacidad_final%>% mutate(...3= NULL)
+Capacidad_final<-Capacidad_final%>% mutate(...6= NULL)
+Capacidad_final<-Capacidad_final%>% mutate(...7= NULL)
 
-rm()
+Generacion_tipo_1<-left_join(Generacion,Capacidad_final, by="...2")
+Generacion_tipo_1<-left_join(Generacion_tipo_1, lista_agentes, by = c("...2")) %>% 
+  mutate(Values_Type_f = ifelse(is.na(...4), Values_Type, ...4)) 
+
+filtro<-is.na(Generacion_tipo_1$Values_Type_f)
+table(is.na(Generacion_tipo_1$Values_Type_f))
+
+Generacion_tipo_1<-Generacion_tipo_1%>% mutate(...3= NULL)
+Generacion_tipo_1<-Generacion_tipo_1%>% mutate(...4= NULL)
+Generacion_tipo_1<-Generacion_tipo_1%>% mutate(...5.y= NULL)
+Generacion_tipo_1<-Generacion_tipo_1%>% mutate(Id= NULL)
+Generacion_tipo_1<-Generacion_tipo_1%>% mutate(Values_Type= NULL)
+Generacion_tipo_1<-Generacion_tipo_1%>% mutate(Values_Rectype= NULL)
+Generacion_tipo_1<-Generacion_tipo_1%>% mutate(Values_enersource= NULL)
+
+#Para los casos NA para la generación horaria, se imputará un valor de cero, debido a que dichos generadores
+#no generaron energía durante esas horas
+
+Generacion_tipo_1[is.na(Generacion_tipo_1)] = 0
+
+cantidad_na <- sapply(Generacion_tipo_1, function(x) sum(is.na(x)))
+cantidad_na <- data.frame(cantidad_na)
+porcentaje_na <- cantidad_na/nrow(Generacion_tipo_1)
+porcentaje_na <-porcentaje_na*100
+porcentaje_na #Visualizo el porcentaje de los datos que tienen NA
+#Se valida que no existen NA's en la base
+
+colnames(Generacion_tipo_1)<-c('Fecha', 'Recurso', '...0', '...1', '...2', '...3', '...4', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19', '...20', '...21', '...22', '...23', 'Tipo_Generacion')
+Generacion_tipo_1<- Generacion_tipo_1[c(-1),]
+saveRDS(Generacion_tipo_1, "../Datos/Bases oficiales/Generacion_tipo_Gen.rds")
+
+Generacion_tipo_1<-data.frame(readRDS("../Datos/Bases oficiales/Generacion_tipo_Gen.rds"))
+
+Tipo_num<-case_when(Generacion_tipo_1$Tipo_Generacion=="COGENERADOR"~1,
+                    Generacion_tipo_1$Tipo_Generacion=="HIDRAULICA"~2,
+                    Generacion_tipo_1$Tipo_Generacion=="TERMICA"~3,
+                    Generacion_tipo_1$Tipo_Generacion=="SOLAR"~4,
+                    Generacion_tipo_1$Tipo_Generacion=="EOLICA"~5)
+Generacion_tipo_1<-cbind(Generacion_tipo_1,Tipo_num)
+
+#Para hora 0
+Gen<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_0 = sum(...0))
+
+#Para pasar las columnas de las horas en valores numéricos
+cols.num<-c('...0', '...1', '...2', '...3', '...4', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19', '...20', '...21', '...22', '...23')
+Generacion_tipo_1[cols.num] <- sapply(Generacion_tipo_1[cols.num],as.numeric)
+sapply(Generacion_tipo_1, class)
+Generacion_0<-Gen%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_0)
+
+#Para hora 1
+Gen1<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_1 = sum(...1))
+Generacion_1<-Gen1%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_1)
+
+#Para hora 2
+Gen2<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_2 = sum(...2))
+Generacion_2<-Gen2%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_2)
+
+#Para hora 3
+Gen3<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_3 = sum(...3))
+Generacion_3<-Gen3%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_3)
+
+#Para hora 4
+Gen4<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_4 = sum(...4))
+Generacion_4<-Gen4%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_4)
+
+#Para hora 5
+Gen5<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_5 = sum(...5))
+Generacion_5<-Gen5%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_5)
+
+#Para hora 6
+Gen6<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_6 = sum(...6))
+Generacion_6<-Gen6%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_6)
+
+#Para hora 7
+Gen7<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_7 = sum(...7))
+Generacion_7<-Gen7%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_7)
+
+#Para hora 8
+Gen8<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_8 = sum(...8))
+Generacion_8<-Gen8%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_8)
+
+#Para hora 9
+Gen9<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_9 = sum(...9))
+Generacion_9<-Gen9%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_9)
+
+#Para hora 10
+Gen10<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_10 = sum(...10))
+Generacion_10<-Gen10%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_10)
+
+#Para hora 11
+Gen11<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_11 = sum(...11))
+Generacion_11<-Gen11%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_11)
+
+#Para hora 12
+Gen12<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_12 = sum(...12))
+Generacion_12<-Gen12%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_12)
+
+#Para hora 13
+Gen13<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_13 = sum(...13))
+Generacion_13<-Gen13%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_13)
+
+#Para hora 14
+Gen14<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_14 = sum(...14))
+Generacion_14<-Gen14%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_14)
+
+#Para hora 15
+Gen15<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_15 = sum(...15))
+Generacion_15<-Gen15%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_15)
+
+#Para hora 16
+Gen16<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_16 = sum(...16))
+Generacion_16<-Gen16%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_16)
+
+#Para hora 17
+Gen17<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_17 = sum(...17))
+Generacion_17<-Gen17%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_17)
+
+#Para hora 18
+Gen18<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_18 = sum(...18))
+Generacion_18<-Gen18%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_18)
+
+#Para hora 19
+Gen19<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_19 = sum(...19))
+Generacion_19<-Gen19%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_19)
+
+#Para hora 20
+Gen20<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_20 = sum(...20))
+Generacion_20<-Gen20%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_20)
+
+#Para hora 21
+Gen21<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_21 = sum(...21))
+Generacion_21<-Gen21%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_21)
+
+#Para hora 22
+Gen22<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_22 = sum(...22))
+Generacion_22<-Gen22%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_22)
+
+#Para hora 23
+Gen23<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_23 = sum(...23))
+Generacion_23<-Gen23%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_23)
+
+#Se imputará con 0 los valores obtenidos porque pueda que para el despacho no se haya contemplado un determinado tipo de generacion
+
+Generacion_0[is.na(Generacion_0)] = 0
+Generacion_1[is.na(Generacion_1)] = 0
+Generacion_2[is.na(Generacion_2)] = 0
+Generacion_3[is.na(Generacion_3)] = 0
+Generacion_4[is.na(Generacion_4)] = 0
+Generacion_5[is.na(Generacion_5)] = 0
+Generacion_6[is.na(Generacion_6)] = 0
+Generacion_7[is.na(Generacion_7)] = 0
+Generacion_8[is.na(Generacion_8)] = 0
+Generacion_9[is.na(Generacion_9)] = 0
+Generacion_10[is.na(Generacion_10)] = 0
+Generacion_11[is.na(Generacion_11)] = 0
+Generacion_12[is.na(Generacion_12)] = 0
+Generacion_13[is.na(Generacion_13)] = 0
+Generacion_14[is.na(Generacion_14)] = 0
+Generacion_15[is.na(Generacion_15)] = 0
+Generacion_16[is.na(Generacion_16)] = 0
+Generacion_17[is.na(Generacion_17)] = 0
+Generacion_18[is.na(Generacion_18)] = 0
+Generacion_19[is.na(Generacion_19)] = 0
+Generacion_20[is.na(Generacion_20)] = 0
+Generacion_21[is.na(Generacion_21)] = 0
+Generacion_22[is.na(Generacion_22)] = 0
+Generacion_23[is.na(Generacion_23)] = 0
+
+
+saveRDS(Generacion_0, "../Datos/Bases oficiales/Generacion_0.rds")
+saveRDS(Generacion_1, "../Datos/Bases oficiales/Generacion_1.rds")
+saveRDS(Generacion_2, "../Datos/Bases oficiales/Generacion_2.rds")
+saveRDS(Generacion_3, "../Datos/Bases oficiales/Generacion_3.rds")
+saveRDS(Generacion_4, "../Datos/Bases oficiales/Generacion_4.rds")
+saveRDS(Generacion_5, "../Datos/Bases oficiales/Generacion_5.rds")
+saveRDS(Generacion_6, "../Datos/Bases oficiales/Generacion_6.rds")
+saveRDS(Generacion_7, "../Datos/Bases oficiales/Generacion_7.rds")
+saveRDS(Generacion_8, "../Datos/Bases oficiales/Generacion_8.rds")
+saveRDS(Generacion_9, "../Datos/Bases oficiales/Generacion_9.rds")
+saveRDS(Generacion_10, "../Datos/Bases oficiales/Generacion_10.rds")
+saveRDS(Generacion_11, "../Datos/Bases oficiales/Generacion_11.rds")
+saveRDS(Generacion_12, "../Datos/Bases oficiales/Generacion_12.rds")
+saveRDS(Generacion_13, "../Datos/Bases oficiales/Generacion_13.rds")
+saveRDS(Generacion_14, "../Datos/Bases oficiales/Generacion_14.rds")
+saveRDS(Generacion_15, "../Datos/Bases oficiales/Generacion_15.rds")
+saveRDS(Generacion_16, "../Datos/Bases oficiales/Generacion_16.rds")
+saveRDS(Generacion_17, "../Datos/Bases oficiales/Generacion_17.rds")
+saveRDS(Generacion_18, "../Datos/Bases oficiales/Generacion_18.rds")
+saveRDS(Generacion_19, "../Datos/Bases oficiales/Generacion_19.rds")
+saveRDS(Generacion_20, "../Datos/Bases oficiales/Generacion_20.rds")
+saveRDS(Generacion_21, "../Datos/Bases oficiales/Generacion_21.rds")
+saveRDS(Generacion_22, "../Datos/Bases oficiales/Generacion_22.rds")
+saveRDS(Generacion_23, "../Datos/Bases oficiales/Generacion_23.rds")
+
+
+
+
+rm(Generacion_0)
+
 
 Capacidad_neta_aux<-Capacidad_neta1 %>% 
   group_by(...2) %>% 
