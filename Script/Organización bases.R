@@ -263,6 +263,7 @@ Precio_Bolsa_2022<- Precio_Bolsa_2022[c(-1),]
 View(Precio_Bolsa_2022)
 #rm(Precios_Bolsa)
 Precios_Bolsa<- rbind(Precio_Bolsa_2000, Precio_Bolsa_2001, Precio_Bolsa_2002, Precio_Bolsa_2003,Precio_Bolsa_2004, Precio_Bolsa_2005, Precio_Bolsa_2006, Precio_Bolsa_2007, Precio_Bolsa_2008, Precio_Bolsa_2009, Precio_Bolsa_2010, Precio_Bolsa_2011, Precio_Bolsa_2012, Precio_Bolsa_2013, Precio_Bolsa_2014, Precio_Bolsa_2015, Precio_Bolsa_2016, Precio_Bolsa_2017, Precio_Bolsa_2018, Precio_Bolsa_2019, Precio_Bolsa_2020, Precio_Bolsa_2021, Precio_Bolsa_2022)
+rownames(Precios_Bolsa)=NULL #Para renumerar la base
 saveRDS(Precios_Bolsa, "../Datos/Bases oficiales/Precios_Bolsa_2.rds" )
 library(readxl)
 #### TRM
@@ -419,14 +420,14 @@ View(Generacion_2018)
 Generacion_2018<- Generacion_2018[c(-1),]
 View(Generacion_2018)
 
-Generacion_2018 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2018.xlsx")
-View(Generacion_2018)
-Generacion_2018<-Generacion_2018%>% mutate(...28 = NULL) #Eliminación de primera columna
-View(Generacion_2018)
-colnames(Generacion_2018) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
-View(Generacion_2018)
-Generacion_2018<- Generacion_2018[c(-1),]
-View(Generacion_2018)
+# Generacion_2018 <- read_excel("../Datos/Generacion_Ideal_(kWh)_2018.xlsx")
+# View(Generacion_2018)
+# Generacion_2018<-Generacion_2018%>% mutate(...28 = NULL) #Eliminación de primera columna
+# View(Generacion_2018)
+# colnames(Generacion_2018) <- c('...1', '...2', '...3','Generacion Ideal', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26','...27', '...26', '...27')
+# View(Generacion_2018)
+# Generacion_2018<- Generacion_2018[c(-1),]
+# View(Generacion_2018)
 
 Generacion_2019 <- read_excel("../Datos/Generacion_2019.xlsx")
 View(Generacion_2019)
@@ -463,5 +464,6 @@ View(Generacion_2022)
 
 Generacion <- rbind(Generacion_2000, Generacion_2001, Generacion_2002, Generacion_2003, Generacion_2004, Generacion_2005, Generacion_2006, Generacion_2007, Generacion_2008, Generacion_2009, Generacion_2010,Generacion_2011, Generacion_2012, Generacion_2013, Generacion_2014, Generacion_2015, Generacion_2016, Generacion_2017, Generacion_2018, Generacion_2019, Generacion_2020, Generacion_2021, Generacion_2022)
 View(Generacion)
-saveRDS(Generacion, "../Datos/Bases oficiales/Generacion.rds" )
+rownames(Generacion)=NULL #Para renumerar la base
+saveRDS(Generacion, "../Datos/Bases oficiales/Generacion_2.rds" )
 

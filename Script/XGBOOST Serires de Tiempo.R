@@ -284,7 +284,7 @@ saveRDS(Aporte_dia_30_06_2022, "../Datos/Bases oficiales/Aportes_energia_dia_30_
 #### Tipo de generación
 
 
-Generacion <- data.frame(readRDS("../Datos/Bases oficiales/Generacion.rds")) 
+Generacion <- data.frame(readRDS("../Datos/Bases oficiales/Generacion_2.rds")) 
 lista_agentes <- read.csv("../Datos/Listado_agentes.csv", header=TRUE, stringsAsFactors=FALSE)
 colnames(lista_agentes) <- c('Id','Values_Code', '...2', 'Values_Type', 'Values_Disp', 'Values_Rectype', 'Values_Companycode', 'Values_enersource', 'Values_Operacionstartdate', 'Values_state', 'Data')
 lista_agentes<- subset(lista_agentes, select = c("Id", "...2", "Values_Type", "Values_Rectype", "Values_enersource"))
@@ -465,15 +465,16 @@ Tipo_num<-case_when(Generacion_tipo_1$Tipo_Generacion=="COGENERADOR"~1,
                     Generacion_tipo_1$Tipo_Generacion=="EOLICA"~5)
 Generacion_tipo_1<-cbind(Generacion_tipo_1,Tipo_num)
 
-#Para hora 0
-Gen<- Generacion_tipo_1 %>%
-  group_by(Fecha, Tipo_Generacion) %>%
-  summarise(Tipo_recurso_0 = sum(...0))
 
 #Para pasar las columnas de las horas en valores numéricos
 cols.num<-c('...0', '...1', '...2', '...3', '...4', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19', '...20', '...21', '...22', '...23')
 Generacion_tipo_1[cols.num] <- sapply(Generacion_tipo_1[cols.num],as.numeric)
 sapply(Generacion_tipo_1, class)
+
+#Para hora 0
+Gen<- Generacion_tipo_1 %>%
+  group_by(Fecha, Tipo_Generacion) %>%
+  summarise(Tipo_recurso_0 = sum(...0))
 Generacion_0<-Gen%>% pivot_wider(names_from=Tipo_Generacion, values_from = Tipo_recurso_0)
 
 #Para hora 1
@@ -642,52 +643,55 @@ Generacion_22[is.na(Generacion_22)] = 0
 Generacion_23[is.na(Generacion_23)] = 0
 
 
-saveRDS(Generacion_0, "../Datos/Bases oficiales/Generacion_0.rds")
-saveRDS(Generacion_1, "../Datos/Bases oficiales/Generacion_1.rds")
-saveRDS(Generacion_2, "../Datos/Bases oficiales/Generacion_2.rds")
-saveRDS(Generacion_3, "../Datos/Bases oficiales/Generacion_3.rds")
-saveRDS(Generacion_4, "../Datos/Bases oficiales/Generacion_4.rds")
-saveRDS(Generacion_5, "../Datos/Bases oficiales/Generacion_5.rds")
-saveRDS(Generacion_6, "../Datos/Bases oficiales/Generacion_6.rds")
-saveRDS(Generacion_7, "../Datos/Bases oficiales/Generacion_7.rds")
-saveRDS(Generacion_8, "../Datos/Bases oficiales/Generacion_8.rds")
-saveRDS(Generacion_9, "../Datos/Bases oficiales/Generacion_9.rds")
-saveRDS(Generacion_10, "../Datos/Bases oficiales/Generacion_10.rds")
-saveRDS(Generacion_11, "../Datos/Bases oficiales/Generacion_11.rds")
-saveRDS(Generacion_12, "../Datos/Bases oficiales/Generacion_12.rds")
-saveRDS(Generacion_13, "../Datos/Bases oficiales/Generacion_13.rds")
-saveRDS(Generacion_14, "../Datos/Bases oficiales/Generacion_14.rds")
-saveRDS(Generacion_15, "../Datos/Bases oficiales/Generacion_15.rds")
-saveRDS(Generacion_16, "../Datos/Bases oficiales/Generacion_16.rds")
-saveRDS(Generacion_17, "../Datos/Bases oficiales/Generacion_17.rds")
-saveRDS(Generacion_18, "../Datos/Bases oficiales/Generacion_18.rds")
-saveRDS(Generacion_19, "../Datos/Bases oficiales/Generacion_19.rds")
-saveRDS(Generacion_20, "../Datos/Bases oficiales/Generacion_20.rds")
-saveRDS(Generacion_21, "../Datos/Bases oficiales/Generacion_21.rds")
-saveRDS(Generacion_22, "../Datos/Bases oficiales/Generacion_22.rds")
-saveRDS(Generacion_23, "../Datos/Bases oficiales/Generacion_23.rds")
+#Hasta el 30 de junio 2022
+saveRDS(Generacion_0[1:8217,], "../Datos/Bases oficiales/Generacion_0_30062022.rds")
+saveRDS(Generacion_1[1:8217,], "../Datos/Bases oficiales/Generacion_1_30062022.rds")
+saveRDS(Generacion_2[1:8217,], "../Datos/Bases oficiales/Generacion_2_30062022.rds")
+saveRDS(Generacion_3[1:8217,], "../Datos/Bases oficiales/Generacion_3_30062022.rds")
+saveRDS(Generacion_4[1:8217,], "../Datos/Bases oficiales/Generacion_4_30062022.rds")
+saveRDS(Generacion_5[1:8217,], "../Datos/Bases oficiales/Generacion_5_30062022.rds")
+saveRDS(Generacion_6[1:8217,], "../Datos/Bases oficiales/Generacion_6_30062022.rds")
+saveRDS(Generacion_7[1:8217,], "../Datos/Bases oficiales/Generacion_7_30062022.rds")
+saveRDS(Generacion_8[1:8217,], "../Datos/Bases oficiales/Generacion_8_30062022.rds")
+saveRDS(Generacion_9[1:8217,], "../Datos/Bases oficiales/Generacion_9_30062022.rds")
+saveRDS(Generacion_10[1:8217,], "../Datos/Bases oficiales/Generacion_10_30062022.rds")
+saveRDS(Generacion_11[1:8217,], "../Datos/Bases oficiales/Generacion_11_30062022.rds")
+saveRDS(Generacion_12[1:8217,], "../Datos/Bases oficiales/Generacion_12_30062022.rds")
+saveRDS(Generacion_13[1:8217,], "../Datos/Bases oficiales/Generacion_13_30062022.rds")
+saveRDS(Generacion_14[1:8217,], "../Datos/Bases oficiales/Generacion_14_30062022.rds")
+saveRDS(Generacion_15[1:8217,], "../Datos/Bases oficiales/Generacion_15_30062022.rds")
+saveRDS(Generacion_16[1:8217,], "../Datos/Bases oficiales/Generacion_16_30062022.rds")
+saveRDS(Generacion_17[1:8217,], "../Datos/Bases oficiales/Generacion_17_30062022.rds")
+saveRDS(Generacion_18[1:8217,], "../Datos/Bases oficiales/Generacion_18_30062022.rds")
+saveRDS(Generacion_19[1:8217,], "../Datos/Bases oficiales/Generacion_19_30062022.rds")
+saveRDS(Generacion_20[1:8217,], "../Datos/Bases oficiales/Generacion_20_30062022.rds")
+saveRDS(Generacion_21[1:8217,], "../Datos/Bases oficiales/Generacion_21_30062022.rds")
+saveRDS(Generacion_22[1:8217,], "../Datos/Bases oficiales/Generacion_22_30062022.rds")
+saveRDS(Generacion_23[1:8217,], "../Datos/Bases oficiales/Generacion_23_30062022.rds")
 
 
-Precio_bolsa <- data.frame(readRDS("../Datos/Bases oficiales/Precios_Bolsa_2.rds")) 
 
-Aportes<- data.frame(readRDS("../Datos/Bases oficiales/Aportes_energia_dia_30_06_2022.rds")) 
-
-
-Aux_precio_bolsa<-Precio_bolsa
-colnames(Aux_precio_bolsa)[1] <- "Fecha"
-Aux_precio_bolsa<- Aux_precio_bolsa[c(-1),]
-rownames(Aux_precio_bolsa)=NULL
-fecha_day<- seq(from = lubridate::as_date("2000-01-01"),
-                by = "day", length.out = 8244)
-Aux_precio_bolsa$Fecha<-fecha_day
-fecha_day<-data.frame(fecha_day)
-
-Aux_ONI<-ONI
-colnames(Aux_ONI)[1] <- "Fecha"
-Nuevo_frame<-left_join(Aux_ONI,Aux_precio_bolsa, by="Fecha")
-
-filtro<-is.na(Precio_bolsa)
-table(filtro)
+# 
+# Generacion_xxx <- data.frame(readRDS("../Datos/Bases oficiales/Generacion_23_30062022.rds")) 
+# 
+# Aportes<- data.frame(readRDS("../Datos/Bases oficiales/Aportes_energia_dia_30_06_2022.rds")) 
+# 
+# 
+# Aux_precio_bolsa<-Precios_Bolsa
+# colnames(Aux_precio_bolsa)[1] <- "Fecha"
+# Aux_precio_bolsa<- Aux_precio_bolsa[c(-1),]
+# rownames(Aux_precio_bolsa)=NULL
+# fecha_day<- seq(from = lubridate::as_date("2000-01-01"),
+#                 by = "day", length.out = 8243)
+# Aux_precio_bolsa$Fecha<-fecha_day
+# fecha_day<-data.frame(fecha_day)
+# 
+# Aux_ONI<-ONI
+# colnames(Aux_ONI)[1] <- "Fecha"
+# Nuevo_frame<-left_join(Aux_ONI,Aux_precio_bolsa, by="Fecha")
+# 
+# filtro<-is.na(Precio_bolsa)
+# table(filtro)
 
 
 # rm(Generacion_0)
