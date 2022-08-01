@@ -137,7 +137,7 @@ Aportes_Diarios<- rbind(Aportes_Diario_2000, Aportes_Diario_2001, Aportes_Diario
 saveRDS(Aportes_Diarios, "C:/Users/valer/Desktop/Andes/Intersemestral/Big Data/Proyecto final/Proyecto-final-MEcA-4107/Datos/Bases oficiales/Aportes_Diarios.rds" )
 ###Precio de bolsa
 
-Precio_Bolsa_2000 <- read_excel("C:/Users/valer/Desktop/Andes/Intersemestral/Big Data/Proyecto final/Proyecto-final-MEcA-4107/Datos/Precio_Bolsa_Nacional_($kwh)_2000.xlsx")
+Precio_Bolsa_2000 <- read_excel("../Datos/Precio_Bolsa_Nacional_($kwh)_2000.xlsx")
 colnames(Precio_Bolsa_2000) <- c('...1', 'Precio Bolsa Nacional', '...3', '...4', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26')
 View(Precio_Bolsa_2000)
 Precio_Bolsa_2000<-Precio_Bolsa_2000%>% mutate(...26 = NULL) #Eliminación de primera columna
@@ -263,7 +263,7 @@ Precio_Bolsa_2022<- Precio_Bolsa_2022[c(-1),]
 View(Precio_Bolsa_2022)
 rm(Precios_Bolsa)
 Precios_Bolsa<- rbind(Precio_Bolsa_2000, Precio_Bolsa_2001, Precio_Bolsa_2002, Precio_Bolsa_2003,Precio_Bolsa_2004, Precio_Bolsa_2005, Precio_Bolsa_2006, Precio_Bolsa_2007, Precio_Bolsa_2008, Precio_Bolsa_2009, Precio_Bolsa_2010, Precio_Bolsa_2011, Precio_Bolsa_2012, Precio_Bolsa_2013, Precio_Bolsa_2014, Precio_Bolsa_2015, Precio_Bolsa_2016, Precio_Bolsa_2017, Precio_Bolsa_2018, Precio_Bolsa_2019, Precio_Bolsa_2020, Precio_Bolsa_2021, Precio_Bolsa_2022)
-saveRDS(Precios_Bolsa, "../Datos/Bases oficiales/Precios_Bolsa.rds" )
+saveRDS(Precios_Bolsa, "../Datos/Bases oficiales/Precios_Bolsa_2.rds" )
 library(readxl)
 #### TRM
 TRM <- read_excel("../Datos/TRM.xlsx")
