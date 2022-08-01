@@ -136,7 +136,14 @@ watchlist <-list(train=xgb_train, test=xgb_test)
 model4<- xgb.train(data = xgb_train, max.depth = 100, watchlist=watchlist, nrounds = 1000)
 
 predicciones_mod4 <-predict(model4, xgb_test)
+### Base oficial
+BASEOF<- readRDS("C:/Users/valer/Desktop/Andes/Intersemestral/Big Data/Proyecto final/Proyecto-final-MEcA-4107/Datos/Bases oficiales/BASEOF.rds")
+train <- BASEOF[1:5751, ] # initial data
+pred <- BASEOF[(5751:8217), ] # extended time index
 
+x_train <- model.matrix(Precio_Bolsa_Nacional ~Gen_CoGenerador+ Gen_Hidraulica + Gen_Termica + Gen_Eolica + Gen_Solar +Aportes_Diarios + ONI +TRM, data =train)[, -1]
+x_train<- data.frame(x_train)
+y_train <- train$unemploy
 
 
 
