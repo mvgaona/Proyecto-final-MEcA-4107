@@ -160,7 +160,7 @@ Precio_Bolsa_2004<- Precio_Bolsa_2004[c(-1,-2),]
 View(Precio_Bolsa_2004)
 Precio_Bolsa_2005 <- read_excel("../Datos/Precio_Bolsa_2005_.xlsx")
 colnames(Precio_Bolsa_2005) <- c('...1', 'Precio Bolsa Nacional', '...3', '...4', '...5', '...6', '...7', '...8', '...9', '...10', '...11', '...12', '...13', '...14', '...15', '...16', '...17', '...18', '...19','...20', '...21', '...22','...23', '...24', '...25', '...26')
-Precio_Bolsa_2005<- Precio_Bolsa_2005[c(-1,-2),]
+#Precio_Bolsa_2005<- Precio_Bolsa_2005[c(-1,-2),]
 Precio_Bolsa_2005<-Precio_Bolsa_2005%>% mutate(...26 = NULL) #Eliminación de primera columna
 View(Precio_Bolsa_2005)
 Precio_Bolsa_2006 <- read_excel("../Datos/Precio_Bolsa_Nacional_($kwh)_2006.xlsx")
