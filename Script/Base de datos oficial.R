@@ -134,10 +134,21 @@ PB <- PB[c(-8218),]
 saveRDS(PB, "../Datos/Bases oficiales/PBof.rds" )
  PB$Fecha <- NULL
 ONI<- readRDS("C:/Users/valer/Desktop/Andes/Intersemestral/Big Data/Proyecto final/Proyecto-final-MEcA-4107/Datos/Bases oficiales/ONI.rds")
+colnames(ONI)<- c('Fecha', 'ONI')
+ONI$Fecha <- NULL
+colnames(ONI)<- c('ONI')
+
 TRM <- readRDS(("C:/Users/valer/Desktop/Andes/Intersemestral/Big Data/Proyecto final/Proyecto-final-MEcA-4107/Datos/Bases oficiales/TRM.rds"))
 TRM <- TRM[c(-8218:-8247),]
-AD <- readRDS("C:/Users/valer/Desktop/Andes/Intersemestral/Big Data/Proyecto final/Proyecto-final-MEcA-4107/Datos/Bases oficiales/Aportes_energia_dia_30_06_2022.rds")
-B_Of<- cbind(GEN, PB, ONI$ONI, TRM$TRM , AD$Aportes_total)
+colnames(TRM)<- c('Fecha', 'TRM')
+TRM$Fecha <- NULL
+
+AD <-readRDS("C:/Users/valer/Desktop/Andes/Intersemestral/Big Data/Proyecto final/Proyecto-final-MEcA-4107/Datos/Bases oficiales/Aportes_energia_dia_30_06_2022.rds")
+colnames(AD) <- colnames(ONI)<- c('Fecha', 'Aportes_Total')
+AD$Fecha <- NULL
+
+B_Of<- cbind(GEN, PB, ONI, TRM, AD)
+View(ONI)
 saveRDS(B_Of, "../Datos/Bases oficiales/Base_de_datos_oficial.rds" )
 
 #####
