@@ -668,10 +668,27 @@ saveRDS(Generacion_22, "../Datos/Bases oficiales/Generacion_22.rds")
 saveRDS(Generacion_23, "../Datos/Bases oficiales/Generacion_23.rds")
 
 
-Precio_bolsa <- data.frame(readRDS("../Datos/Bases oficiales/Precios_Bolsa.rds")) 
-Precio_bolsa_final<- Precio_bolsa %>% group_by(...1) %>% filter (! duplicated(...1))
+Precio_bolsa <- data.frame(readRDS("../Datos/Bases oficiales/Precios_Bolsa_2.rds")) 
 
 Aportes<- data.frame(readRDS("../Datos/Bases oficiales/Aportes_energia_dia_30_06_2022.rds")) 
+
+
+Aux_precio_bolsa<-Precio_bolsa
+colnames(Aux_precio_bolsa)[1] <- "Fecha"
+Aux_precio_bolsa<- Aux_precio_bolsa[c(-1),]
+rownames(Aux_precio_bolsa)=NULL
+fecha_day<- seq(from = lubridate::as_date("2000-01-01"),
+                by = "day", length.out = 8244)
+Aux_precio_bolsa$Fecha<-fecha_day
+fecha_day<-data.frame(fecha_day)
+
+Aux_ONI<-ONI
+colnames(Aux_ONI)[1] <- "Fecha"
+Nuevo_frame<-left_join(Aux_ONI,Aux_precio_bolsa, by="Fecha")
+
+filtro<-is.na(Precio_bolsa)
+table(filtro)
+
 
 # rm(Generacion_0)
 # 
