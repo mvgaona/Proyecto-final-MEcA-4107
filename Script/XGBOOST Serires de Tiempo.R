@@ -668,41 +668,44 @@ saveRDS(Generacion_22, "../Datos/Bases oficiales/Generacion_22.rds")
 saveRDS(Generacion_23, "../Datos/Bases oficiales/Generacion_23.rds")
 
 
+Precio_bolsa <- data.frame(readRDS("../Datos/Bases oficiales/Precios_Bolsa.rds")) 
+Precio_bolsa_final<- Precio_bolsa %>% group_by(...1) %>% filter (! duplicated(...1))
 
+Aportes<- data.frame(readRDS("../Datos/Bases oficiales/Aportes_energia_dia_30_06_2022.rds")) 
 
-rm(Generacion_0)
-
-
-Capacidad_neta_aux<-Capacidad_neta1 %>% 
-  group_by(...2) %>% 
-  summarize(Count = n())
-
-Capacidad_nta_para_imp<-left_join(Capacidad_neta_aux,Capacidad_neta1, by="...2")
-
-#Se ponen en minúscula los caracteres de description y title en la base test
-Capacidad_neta$...2<-str_to_lower(string=Capacidad_neta$...2)
-Generadores$...2<-str_to_lower(string=Generadores$...2)
-
-# Se eliminan las tildes
-Capacidad_neta$...2 <- iconv(Capacidad_neta$...2, from = "UTF-8", to = "ASCII//TRANSLIT")
-Generadores$...2 <- iconv(Generadores$...2, from = "UTF-8", to = "ASCII//TRANSLIT")
-
-# Se eliminan caracteres especiales
-Capacidad_neta$...2 <- str_replace_all(Capacidad_neta$...2, "[^[:alnum:]]", " ")
-Generadores$...2<- str_replace_all(Generadores$...2, "[^[:alnum:]]", " ")
-
-# Se eliminan espacios extras
-Capacidad_neta$...2<- gsub("\\s+", " ", str_trim(Capacidad_neta$...2))
-Generadores$...2 <- gsub("\\s+", " ", str_trim(Generadores$...2))
-
-View(Capacidad_neta)
-Capacidad_neta<- Capacidad_neta[c(-1),]
-
-Generacion_final<- Capacidad_neta1%>% group_by(...2) %>% filter (! duplicated(...2))
-colnames(Generacion_final)[2] <- "Values_Type"
-colnames(Generacion_final)[3] <- "Values_enersource"
-
-Generacion_final<-left_join(Capacidad_neta, by="...2")
-
-rm(Capacidad_neta, Generacion,Generacion_tipo_1 )
-
+# rm(Generacion_0)
+# 
+# 
+# Capacidad_neta_aux<-Capacidad_neta1 %>% 
+#   group_by(...2) %>% 
+#   summarize(Count = n())
+# 
+# Capacidad_nta_para_imp<-left_join(Capacidad_neta_aux,Capacidad_neta1, by="...2")
+# 
+# #Se ponen en minúscula los caracteres de description y title en la base test
+# Capacidad_neta$...2<-str_to_lower(string=Capacidad_neta$...2)
+# Generadores$...2<-str_to_lower(string=Generadores$...2)
+# 
+# # Se eliminan las tildes
+# Capacidad_neta$...2 <- iconv(Capacidad_neta$...2, from = "UTF-8", to = "ASCII//TRANSLIT")
+# Generadores$...2 <- iconv(Generadores$...2, from = "UTF-8", to = "ASCII//TRANSLIT")
+# 
+# # Se eliminan caracteres especiales
+# Capacidad_neta$...2 <- str_replace_all(Capacidad_neta$...2, "[^[:alnum:]]", " ")
+# Generadores$...2<- str_replace_all(Generadores$...2, "[^[:alnum:]]", " ")
+# 
+# # Se eliminan espacios extras
+# Capacidad_neta$...2<- gsub("\\s+", " ", str_trim(Capacidad_neta$...2))
+# Generadores$...2 <- gsub("\\s+", " ", str_trim(Generadores$...2))
+# 
+# View(Capacidad_neta)
+# Capacidad_neta<- Capacidad_neta[c(-1),]
+# 
+# Generacion_final<- Capacidad_neta1%>% group_by(...2) %>% filter (! duplicated(...2))
+# colnames(Generacion_final)[2] <- "Values_Type"
+# colnames(Generacion_final)[3] <- "Values_enersource"
+# 
+# Generacion_final<-left_join(Capacidad_neta, by="...2")
+# 
+# rm(Capacidad_neta, Generacion,Generacion_tipo_1 )
+# 
