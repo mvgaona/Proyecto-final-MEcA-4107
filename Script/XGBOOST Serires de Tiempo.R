@@ -138,21 +138,27 @@ model4<- xgb.train(data = xgb_train, max.depth = 100, watchlist=watchlist, nroun
 predicciones_mod4 <-predict(model4, xgb_test)
 ### Base oficial
 BASEOF<- readRDS("../Datos/Bases oficiales/Base_de_datos_oficial.rds")
+#Se transforman a números los siguientes 
+cols.num<-c('PBN0', 'PBN1', 'PBN2', 'PBN3', 'PBN4', 'PBN5', 'PBN6', 'PBN7', 'PBN8', 'PBN9', 'PBN10', 'PBN11', 'PBN12', 'PBN13', 'PBN14', 'PBN15', 'PBN16', 'PBN17', 'PBN18', 'PBN19', 'PBN20', 'PBN21', 'PBN22', 'PBN23', 'ONI')
+BASEOF[cols.num] <- sapply(BASEOF[cols.num],as.numeric)
+sapply(BASEOF, class)
 train <- BASEOF[1:5751, ] # initial data
 pred <- BASEOF[(5752:8217), ] # extended time index
 
+
+
 ##-----0 hs-----#
 
-x_train0 <- model.matrix(PBN0 ~Gen_CoGenerador0+ Gen_Hidraulica0 + Gen_Termica0 + Gen_Eolica0 + Gen_Solar0 + train$ONI +TRM + Aportes_total, data =train)[, -1]
+x_train0 <- model.matrix(PBN0 ~Gen_CoGenerador0+ Gen_Hidraulica0 + Gen_Termica0 + Gen_Eolica0 + Gen_Solar0 + ONI +TRM + Aportes_total, data =train)[, -1]
 y_train0 <- train$PBN0
-x_test0 <- model.matrix(PBN0~Gen_CoGenerador0+ Gen_Hidraulica0 + Gen_Termica0 + Gen_Eolica0 + Gen_Solar0 + pred$ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test0 <- model.matrix(PBN0~Gen_CoGenerador0+ Gen_Hidraulica0 + Gen_Termica0 + Gen_Eolica0 + Gen_Solar0 + ONI + TRM + Aportes_total, data =pred)[, -1]
 y_test0 <- pred$PBN0
 xgb_train0 <- xgb.DMatrix(data = x_train0, label = y_train0)
 xgb_test0 <- xgb.DMatrix(data = x_test0, label = y_test0) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
 
 watchlist0 <-list(train=xgb_train0, test=xgb_test0)
 
-model0<- xgb.train(data = xgb_train0, max.depth = 100, watchlist=watchlist0, nrounds = 1000)
+model0<- xgb.train(data = xgb_train0, max.depth = 50, watchlist=watchlist0, nrounds = 100)
 predicciones_mod0 <-predict(model0, xgb_test0)
 predicciones_mod0<- data.frame(predicciones_mod0)
 
