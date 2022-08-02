@@ -572,7 +572,7 @@ Diferencia_mod17b<-data.frame(Diferencia_mod17b)
 RMSE_mod17b<- sqrt(mean((predicciones_mod17b -pred$PBN17)^2))
 predicciones_mod17<- data.frame(predicciones_mod17)
 
-saveRDS(model17b,"../App_web/Pred_precio_bolsa_horario/data/model17.rds" ) #Se guarda modelo con menor RMSE
+saveRDS(model17b,"../Datos/Bases oficiales/model17.rds" ) #Se guarda modelo con menor RMSE
 
 ##----18 hs----##
 x_train18 <- model.matrix(PBN18~Gen_CoGenerador18+ Gen_Hidraulica18 + Gen_Termica18 + Gen_Eolica18 + Gen_Solar18+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
