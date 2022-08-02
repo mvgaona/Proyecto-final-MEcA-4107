@@ -57,8 +57,8 @@ ui <- fluidPage(
   tags$head(tags$style('h1 {color:#f0efef;}')),
   tags$head(tags$style('h2 {color:#f0efef;}')),
   tags$head(tags$style('h3 {color:#deeaee;}')),
-  tags$head(tags$style('h5 {color:#deeaee;}')),
-  #tags$head(tags$style('p {color:red;}')),
+  tags$head(tags$style('h6 {color:#deeaee;}')),
+  
   
    sidebarLayout(
     
@@ -84,7 +84,7 @@ ui <- fluidPage(
               fluidRow(column(12,align ="center",
                               div(img(src="Image_1.png", height=200, width=300))),
               ),#closefluidRow
-              h5("s.f. Fotografía. Recuperado de: https://chicanoticias.com/2022/07/13/urra-es-la-hidroelectrica-de-colombia-con-mas-carga-de-agua-en-su-embalse/ .02 de Agosto 2022"),
+              h6("s.f. Fotografía. Recuperado de: https://chicanoticias.com/2022/07/13/urra-es-la-hidroelectrica-de-colombia-con-mas-carga-de-agua-en-su-embalse/ .02 de Agosto 2022"),
               h3("Para realizar este modelo, se tuvo en cuenta el modelo XG Boost con las variables para obtener la predicción solicitada.")
               
               

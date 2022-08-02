@@ -499,7 +499,7 @@ lista_agentes <- read.csv("../Datos/Listado_agentes.csv", header=TRUE, stringsAs
 colnames(lista_agentes) <- c('Id','Values_Code', '...2', 'Values_Type', 'Values_Disp', 'Values_Rectype', 'Values_Companycode', 'Values_enersource', 'Values_Operacionstartdate', 'Values_state', 'Data')
 lista_agentes<- subset(lista_agentes, select = c("Id", "...2", "Values_Type", "Values_Rectype", "Values_enersource"))
 
-Generacion["...2"][Generacion["...2"] == "PCH DE LA LIBERTAD"] <- "PCH LA LIBERTAD" #Cambio punto a punto de datos
+Generacion["...2"][Generacion["...2"] == "PCH DE LA LIBERTAD"] <- "PCH LA LIBERTAD" #Cambio punto a punto de información para que coincidan los nombres
 Generacion["...2"][Generacion["...2"] == "PROENCA 2"] <- "PROENCA II"
 Generacion["...2"][Generacion["...2"] == "SOGAMOSO_P"] <- "SOGAMOSO"
 Generacion["...2"][Generacion["...2"] == "COGENERADOR PROENCA 1"] <- "COGENERADOR PROENCA"
@@ -623,6 +623,7 @@ Capacidad_neta_25<-Capacidad_neta_25%>% mutate(...10 = NULL)
 Capacidad_neta_26<-Capacidad_neta_26%>% mutate(...8 = NULL)
 Capacidad_neta_26<-Capacidad_neta_26%>% mutate(...9 = NULL)
 Capacidad_neta_26<-Capacidad_neta_26%>% mutate(...10 = NULL)
+
 
 
 #Se unen los datos en 1 sola base
