@@ -71,7 +71,6 @@ pred <- BASEOF[(5752:8217), ] # extended time index (30% restante)
 
 
 ##-----0 hs-----#
-
 x_train0 <- model.matrix(PBN0 ~Gen_CoGenerador0+ Gen_Hidraulica0 + Gen_Termica0 + Gen_Eolica0 + Gen_Solar0 + ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train0 <- train$PBN0
 x_test0 <- model.matrix(PBN0~Gen_CoGenerador0+ Gen_Hidraulica0 + Gen_Termica0 + Gen_Eolica0 + Gen_Solar0 + ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
@@ -746,4 +745,5 @@ RMSE_100<-data.frame(RMSE_100)
 RMSE_3<-data.frame(RMSE_3)
 caption_RMSE<-data.frame(caption_RMSE)
 RMSE_modelos<-cbind(caption_RMSE,RMSE_3,RMSE_100)
+colnames(RMSE_modelos)<-c('Modelo', 'RMSE_3', 'RMSE_100')
 stargazer(RMSE_modelos, summary=FALSE, rownames=FALSE)
