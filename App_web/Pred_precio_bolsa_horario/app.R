@@ -64,15 +64,14 @@ ui <- fluidPage(
    sidebarLayout(
     
     sidebarPanel(dateInput("var8", "Fecha para predicción"),
-                 numericInput("var0","TRM",value = 4519),
-                 numericInput("var1","Generacion Eólica en kWh",value = 10000),
-                 numericInput("var2","Generación Solar en kWh",value = 0),
-                 numericInput("var3","Generación Térmica en kWh",value = 10000000),
-                 numericInput("var4","Generación Hidráulica en kWh",value = 1000000000),
-                 numericInput("var5","Cogeneración en kWh",value = 4),
                  numericInput("var6","ONI",value = -1.5),
                  numericInput("var7","Aportes hídricos en kWh",value = 40000000),
-                 
+                 numericInput("var0","TRM en COP",value = 4519),
+                 sliderInput("var1", "Generacion Eólica en kWh",min=0, max=20000, value=0),
+                 sliderInput("var2", "Generación Solar en kWh",min=0, max=157726, value=0),
+                 sliderInput("var3", "Generación Térmica en kWh",min=0, max=8823450, value=1500000),
+                 sliderInput("var4", "Generación Hidráulica en kWh",min=0, max=11790431, value=10000000),
+                 sliderInput("var5", "Cogeneración en kWh",min=0, max=178400, value=10000),
                  sliderInput("var9", "Hora para predicción del precio de bolsa",min=0, max=23, value=0),
                  ),
    
