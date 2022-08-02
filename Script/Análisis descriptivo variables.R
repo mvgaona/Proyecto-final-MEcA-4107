@@ -57,7 +57,7 @@ modeCOGEN0 <- function(COGEN0){
   return(as.numeric(names(which.max(table(COGEN0)))))}
 modeCOGEN0(COGEN0)
 #Hora 1
-COGEN1<- GENCOMPLETO$Gen_CoGenerador1
+COGEN1<- GENCOMPLETO$Gen_CoGenerador2
 class(COGEN1)
 plot(hist(COGEN1),col = "purple", main="Histograma CoGenerador hora1 desde 01/01/2000- 30/06/2022",
      xlab="CoGenerador 1",
@@ -66,3 +66,35 @@ summary(COGEN1)
 modeCOGEN1 <- function(COGEN1){
   return(as.numeric(names(which.max(table(COGEN1)))))}
 modeCOGEN1(COGEN1)
+#Hora2
+COGEN2<- GENCOMPLETO$Gen_CoGenerador2
+class(COGEN2)
+plot(hist(COGEN2),col = "purple", main="Histograma CoGenerador hora2 desde 01/01/2000- 30/06/2022",
+     xlab="CoGenerador 2",
+     ylab="Frecuencia")
+summary(COGEN2)
+modeCOGEN2 <- function(COGEN2){
+  return(as.numeric(names(which.max(table(COGEN2)))))}
+modeCOGEN1(COGEN2)
+#Hora3
+COGEN3<- GENCOMPLETO$Gen_CoGenerador3
+class(COGEN3)
+plot(hist(COGEN3),col = "purple", main="Histograma CoGenerador hora 3 desde 01/01/2000- 30/06/2022",
+     xlab="CoGenerador 3",
+     ylab="Frecuencia")
+summary(COGEN3)
+modeCOGEN3 <- function(COGEN3){
+  return(as.numeric(names(which.max(table(COGEN3)))))}
+modeCOGEN1(COGEN3)
+#Hora4
+COGEN4<- GENCOMPLETO$Gen_CoGenerador4
+class(COGEN4)
+plot(hist(COGEN4),col = "purple", main="Histograma CoGenerador hora 4 desde 01/01/2000- 30/06/2022",
+     xlab="CoGenerador 4",
+     ylab="Frecuencia")
+summary(COGEN4)
+
+modeCOGEN3 <- function(COGEN4){
+  return(as.numeric(names(which.max(table(COGEN4)))))}
+modeCOGEN1(COGEN4)
+install.packages(stargazer )
