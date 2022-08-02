@@ -91,8 +91,18 @@ model23_<- readRDS("data/model23.rds")
 ui <- fluidPage(
   
   # Application title
-  titlePanel("Predicción del precio de bolsa del Mercado de Energía Mayorista Colombiano"),
-  sidebarLayout(
+  titlePanel(strong(h1("Predicción del precio de bolsa del Mercado de Energía Mayorista Colombiano"))),
+  
+  tags$style('.container-fluid {
+                             background-color: #034f84;
+              }'),
+  #Colores de texto
+  tags$head(tags$style('h1 {color:#f0efef;}')),
+  tags$head(tags$style('h2 {color:#f0efef;}')),
+  tags$head(tags$style('h3 {color:#deeaee;}')),
+  #tags$head(tags$style('p {color:red;}')),
+  
+   sidebarLayout(
     
     sidebarPanel(dateInput("var8", "Fecha para predicción"),
                  numericInput("var0","TRM",value = 4519),
@@ -107,10 +117,20 @@ ui <- fluidPage(
                  sliderInput("var9", "Hora para predicción del precio de bolsa",min=0, max=23, value=0),
                  ),
    
-    mainPanel(h1("Esta es la predicción del precio de bolsa a la hora seleccionada"),
-              #textOutput("selected_var")
-              verbatimTextOutput("selected_var")
-    )
+    mainPanel(h2("De acuerdo con los parámetros ingresados, el precio de bolsa del MEM para la hora:"),
+              
+              h3(textOutput("text1")),
+              h2("es la siguiente:"),
+              verbatimTextOutput("selected_var"),
+              
+              fluidRow(column(12,align ="center",
+                              div(img(src="Image_1.png", height=200, width=300))),
+              ),#closefluidRow
+              
+              h3("Para realizar este modelo, se tuvo en cuenta el modelo XG Boost para obtener la predicción solicitada.")
+              
+              
+              )
   )
   
   
@@ -119,6 +139,8 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
+  output$text1 <- renderText({input$var9 })
+
   
   output$selected_var <- renderPrint({
     
