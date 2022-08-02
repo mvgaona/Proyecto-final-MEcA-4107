@@ -7,7 +7,7 @@
 #    http://shiny.rstudio.com/
 #
 
-#install.packages("dplyr")
+
 library(dplyr)
 library(shiny)
 library(xgboost)
@@ -18,50 +18,7 @@ library(lubridate)
 
 # Define UI for application that draws a histogram
 
-# DTEST_H<-data.frame(readRDS("data/DTESTHOUSE.rds"))  #Guardar las bases de datos
-# DTRAIN_H<-data.frame(readRDS("data/DTRAINHOUSE.rds"))
-# # 
-# #Se elimina la columna de precio en la base Dtest_H
-# DTEST_H<-DTEST_H%>% mutate(price = NULL)
-# # #Se crean las variables Dummies para la ciudad (Bogotá o Medellin) y para el tipo de propiedad (Casa o Apartamento)
-# # #Para la dummy de ciudad se escogió que Medellín fuese 1, Bogotá 0 y Apartamento es 1 y Casa es igual a cero
-# # 
-# DTEST_H<-DTEST_H%>% mutate(Medellin = ifelse(l3=="Medellín", 1,0))
-# DTRAIN_H<-DTRAIN_H%>% mutate(Medellin = ifelse(l3=="Medellín", 1,0))
-# # 
-# DTEST_H<-DTEST_H%>% mutate(Apto = ifelse(property_type=="Apartamento", 1,0))
-# DTRAIN_H<-DTRAIN_H%>% mutate(Apto = ifelse(property_type=="Apartamento", 1,0))
-# 
-# DTRAIN_H<-DTRAIN_H%>% mutate(l3=NULL)
-# DTRAIN_H<-DTRAIN_H%>% mutate(property_type=NULL)
-# DTRAIN_H<-DTRAIN_H%>% mutate(MANZ_CCNCT=NULL)
-# DTRAIN_H<-DTRAIN_H%>% mutate(geometry=NULL)
-# DTRAIN_H<-DTRAIN_H%>% mutate(property_type=NULL)
-# DTRAIN_H<-DTRAIN_H%>% mutate(base=NULL)
-# 
-# 
-# DTEST_H<-DTEST_H%>% mutate(l3=NULL)
-# DTEST_H<-DTEST_H%>% mutate(property_type=NULL)
-# DTEST_H<-DTEST_H%>% mutate(MANZ_CCNCT=NULL)
-# DTEST_H<-DTEST_H%>% mutate(geometry=NULL)
-# DTEST_H<-DTEST_H%>% mutate(property_type=NULL)
-# DTEST_H<-DTEST_H%>% mutate(base=NULL)
-# 
-# #Modelo 3 - Random Forest
-# 
-# #Se entrena el modelo 3 con las 10 variables. Se realizaron varias iteraciones y se determinó que el número de árboles con el que se obtiene el menor RMSE es 1000, así como menor valor y mayor cantidad de viviendas compradas.
-# 
-# set.seed(10101)
-# modelo3_forest1000 <- ranger(
-#   price ~ Medellin + Apto + parqueaderoT + ascensorT + bathrooms+habitaciones+min_dist_bar_+min_dist_transp_+min_dist_park+surface_new_3,
-#   data = DTRAIN_H,
-#   num.trees = 1000,
-#   write.forest = TRUE
-# )
-
-#BASEOF<- readRDS("data/Base_de_datos_oficial_2.rds")
-# train <- BASEOF[1:5751, ] # initial data (70% de los datos desde el 2001)
-# pred <- BASEOF[(5752:8217), ] # extended time index (30% restante)
+#Se importan los modelos finales entrenados para realizar la predicción
 model0_<- readRDS("data/model0.rds")
 model1_<- readRDS("data/model1.rds")
 model2_<- readRDS("data/model2.rds")
@@ -100,6 +57,7 @@ ui <- fluidPage(
   tags$head(tags$style('h1 {color:#f0efef;}')),
   tags$head(tags$style('h2 {color:#f0efef;}')),
   tags$head(tags$style('h3 {color:#deeaee;}')),
+  tags$head(tags$style('h5 {color:#deeaee;}')),
   #tags$head(tags$style('p {color:red;}')),
   
    sidebarLayout(
@@ -126,8 +84,8 @@ ui <- fluidPage(
               fluidRow(column(12,align ="center",
                               div(img(src="Image_1.png", height=200, width=300))),
               ),#closefluidRow
-              
-              h3("Para realizar este modelo, se tuvo en cuenta el modelo XG Boost para obtener la predicción solicitada.")
+              h5("s.f. Fotografía. Recuperado de: https://chicanoticias.com/2022/07/13/urra-es-la-hidroelectrica-de-colombia-con-mas-carga-de-agua-en-su-embalse/ .02 de Agosto 2022"),
+              h3("Para realizar este modelo, se tuvo en cuenta el modelo XG Boost con las variables para obtener la predicción solicitada.")
               
               
               )
