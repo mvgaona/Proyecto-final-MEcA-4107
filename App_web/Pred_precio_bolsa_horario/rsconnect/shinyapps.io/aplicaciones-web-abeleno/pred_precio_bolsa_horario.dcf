@@ -1,0 +1,13 @@
+name: pred_precio_bolsa_horario
+title:
+username:
+account: aplicaciones-web-abeleno
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6725952
+bundleId: 6155646
+url: https://aplicaciones-web-abeleno.shinyapps.io/pred_precio_bolsa_horario/
+when: 1659401150.28293
+lastSyncTime: 1659401150.28294
+asMultiple: FALSE
+asStatic: FALSE
