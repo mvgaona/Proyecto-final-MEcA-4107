@@ -81,9 +81,23 @@ xgb_test0 <- xgb.DMatrix(data = x_test0, label = y_test0) #Como se está haciend
 watchlist0 <-list(train=xgb_train0, test=xgb_test0)
 
 model0<- xgb.train(data = xgb_train0, max.depth = 100, watchlist=watchlist0, nrounds = 1000)
+model0b<- xgb.train(data = xgb_train0, max.depth = 3, watchlist=watchlist0, nrounds = 100)
 saveRDS(model0,"../App_web/Pred_precio_bolsa_horario/data/model0.rds" )
+
+#RMSE para modelo lambda=100, M=1000
 predicciones_mod0 <-predict(model0, xgb_test0)
+Diferencia_mod0 <- (predicciones_mod0 - pred$PBN0)
+Diferencia_mod0<-data.frame(Diferencia_mod0)
+RMSE_mod0<- sqrt(mean((predicciones_mod0 -pred$PBN0)^2))
+
 predicciones_mod0<- data.frame(predicciones_mod0)
+
+#RMSE para modelo lambda=3, M=100
+predicciones_mod0b <-predict(model0b, xgb_test0)
+Diferencia_mod0b <- (predicciones_mod0b - pred$PBN0)
+Diferencia_mod0b<-data.frame(Diferencia_mod0b)
+RMSE_mod0b<- sqrt(mean((predicciones_mod0b -pred$PBN0)^2))
+
 
 ##-------1 hs----##
 x_train1 <- model.matrix(PBN1 ~Gen_CoGenerador1+ Gen_Hidraulica1 + Gen_Termica1 + Gen_Eolica1 + Gen_Solar1 + ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
@@ -95,11 +109,25 @@ xgb_train1 <- xgb.DMatrix(data = x_train1, label = y_train1)
 xgb_test1 <- xgb.DMatrix(data = x_test1, label = y_test1) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
 
 watchlist1 <-list(train=xgb_train1, test=xgb_test1)
-
+#Para modelo 1- mejor resultado
 model1<- xgb.train(data = xgb_train1, max.depth = 100, watchlist=watchlist1, nrounds = 1000)
 saveRDS(model1,"../App_web/Pred_precio_bolsa_horario/data/model1.rds" )
+#para modelo 1 - entrenamiento
+model1b<- xgb.train(data = xgb_train1, max.depth = 3, watchlist=watchlist1, nrounds = 100)
+#RMSE para modelo lambda=100, M=1000
 predicciones_mod1 <-predict(model1, xgb_test1)
+Diferencia_mod1 <- (predicciones_mod1 - pred$PBN1)
+Diferencia_mod1<-data.frame(Diferencia_mod1)
+RMSE_mod1<- sqrt(mean((predicciones_mod1 -pred$PBN1)^2))
+
+#RMSE para modelo lambda=3, M=100
+predicciones_mod1b <-predict(model1b, xgb_test1)
+Diferencia_mod1b <- (predicciones_mod1b - pred$PBN1)
+Diferencia_mod1b<-data.frame(Diferencia_mod1b)
+RMSE_mod1b<- sqrt(mean((predicciones_mod1b -pred$PBN1)^2))
+
 predicciones_mod1<- data.frame(predicciones_mod1)
+
 ##----2 hs----##
 x_train2 <- model.matrix(PBN2 ~Gen_CoGenerador2 + Gen_Hidraulica2 + Gen_Termica2 + Gen_Eolica2 + Gen_Solar2 + ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train2 <- train$PBN2
@@ -111,9 +139,23 @@ xgb_test2 <- xgb.DMatrix(data = x_test2, label = y_test2) #Como se está haciend
 watchlist2 <-list(train=xgb_train2, test=xgb_test2)
 
 model2<- xgb.train(data = xgb_train2, max.depth = 100, watchlist=watchlist2, nrounds = 1000)
+model2b<- xgb.train(data = xgb_train2, max.depth = 3, watchlist=watchlist2, nrounds = 100)
 saveRDS(model2,"../App_web/Pred_precio_bolsa_horario/data/model2.rds" )
 predicciones_mod2 <-predict(model2, xgb_test2)
-predicciones_mod2<- data.frame(predicciones_mod2)
+#predicciones_mod2<- data.frame(predicciones_mod2)
+
+#RMSE para modelo lambda=100, M=1000
+Diferencia_mod2 <- (predicciones_mod2 - pred$PBN2)
+Diferencia_mod2<-data.frame(Diferencia_mod2)
+RMSE_mod2<- sqrt(mean((predicciones_mod2 -pred$PBN2)^2))
+
+#RMSE para modelo lambda=3, M=100
+predicciones_mod2b <-predict(model2b, xgb_test2)
+Diferencia_mod2b <- (predicciones_mod2b - pred$PBN2)
+Diferencia_mod2b<-data.frame(Diferencia_mod2b)
+RMSE_mod2b<- sqrt(mean((predicciones_mod2b -pred$PBN2)^2))
+
+
 
 ##----3 hs----##
 x_train3 <- model.matrix(PBN3 ~Gen_CoGenerador3 + Gen_Hidraulica3 + Gen_Termica3 + Gen_Eolica3 + Gen_Solar3 + ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
@@ -126,9 +168,23 @@ xgb_test3 <- xgb.DMatrix(data = x_test3, label = y_test3) #Como se está haciend
 watchlist3 <-list(train=xgb_train3, test=xgb_test3)
 
 model3<- xgb.train(data = xgb_train3, max.depth = 100, watchlist=watchlist3, nrounds = 1000)
+model3b<- xgb.train(data = xgb_train3, max.depth = 3, watchlist=watchlist3, nrounds = 100)
 saveRDS(model3,"../App_web/Pred_precio_bolsa_horario/data/model3.rds" )
 predicciones_mod3 <-predict(model3, xgb_test3)
-predicciones_mod3<- data.frame(predicciones_mod3)
+#predicciones_mod3<- data.frame(predicciones_mod3)
+
+#RMSE para modelo lambda=100, M=1000
+Diferencia_mod3 <- (predicciones_mod3 - pred$PBN3)
+Diferencia_mod3<-data.frame(Diferencia_mod3)
+RMSE_mod3<- sqrt(mean((predicciones_mod3 -pred$PBN3)^2))
+
+#RMSE para modelo lambda=3, M=100
+predicciones_mod3b <-predict(model3b, xgb_test3)
+Diferencia_mod3b <- (predicciones_mod3b - pred$PBN3)
+Diferencia_mod3b<-data.frame(Diferencia_mod3b)
+RMSE_mod3b<- sqrt(mean((predicciones_mod3b -pred$PBN3)^2))
+
+
 
 ##----4 hs----##
 x_train4 <- model.matrix(PBN4~Gen_CoGenerador4+ Gen_Hidraulica4 + Gen_Termica4 + Gen_Eolica4 + Gen_Solar4+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
@@ -141,6 +197,7 @@ xgb_test4 <- xgb.DMatrix(data = x_test4, label = y_test4) #Como se está haciend
 watchlist4 <-list(train=xgb_train4, test=xgb_test4)
 
 model4<- xgb.train(data = xgb_train4, max.depth = 100, watchlist=watchlist4, nrounds = 1000)
+model4b<- xgb.train(data = xgb_train4, max.depth = 3, watchlist=watchlist4, nrounds = 100)
 saveRDS(model4,"../App_web/Pred_precio_bolsa_horario/data/model4.rds" )
 predicciones_mod4 <-predict(model4, xgb_test4)
 predicciones_mod4<- data.frame(predicciones_mod4)
