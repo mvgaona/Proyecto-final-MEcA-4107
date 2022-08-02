@@ -40,133 +40,52 @@ p_load(Matrix,
        data.table,
        ranger, SuperLearner)
 
-#Cargar datos
-datacomp <- economics
-data<- economics%>% dplyr::select(date, unemploy)
-#Generación de valores de índice para el pronóstico. Que sea una predicción de 12 meses.
-extended_data <- data %>% 
-  rbind(tibble::tibble(date = seq(from = lubridate::as_date("2015-05-01"),
-                                  by = "month", length.out = 12), 
-                       unemploy = rep(NA, 12)))
-
-tail(extended_data)
-#Dataframe ya tiene las fechas para el pronóstico
-#Toca ocuparse de la columna de fecha. xgboost no aborda bien las columnas de fecha, por lo que debemos dividirlo en varias columnas, describiendo la granularidad del tiempo. En este caso meses y años:
-extended_data_mod <- extended_data %>%
-  dplyr::mutate(., 
-                months = lubridate::month(date),
-                years = lubridate::year(date))
-#Se dividen los datos en conjunto de entrenamiento y conjunto de predicción:
-train <- extended_data_mod[1:nrow(data), ] # initial data
-
-pred <- extended_data_mod[(nrow(data) + 1):nrow(extended_data), ] # extended time index
-pred$unemploy[is.na(pred$unemploy)] = 0
-# Se transforman los datos en una forma matricial y se extrae la variable de destino. Además, se debe elimninar  las columnas de fechas y solo usar las recién creadas:
-
-x_train <- xgboost::xgb.DMatrix(as.matrix(train %>%
-                                            dplyr::select(months, years)))
-x_pred <- xgboost::xgb.DMatrix(as.matrix(pred %>% 
-                                           dplyr::select(months, years)))
-
-y_train <- train$unemploy
-
-#PREDICCIÓN XG BOOST 
-#Con los datos preparados como en un apartado anterior se puede realizar el modelo de la misma forma que si no tratáramos con los datos de series temporales.
-#Se necesita proporcionar el espacio de parámetros para ajustar el modelo., expecificando el método de validación cruzada con el número de pliegues y también se habilitan cálculos paralelos.
-xgb_trcontrol <- caret::trainControl(
-  method = "cv", 
-  number = 5,
-  allowParallel = TRUE, 
-  verboseIter = FALSE, 
-  returnData = FALSE
-)
-
-xgb_grid <- base::expand.grid(
-  list(
-    nrounds = c(100, 200),
-    max_depth = c(10, 15, 20), # maximum depth of a tree
-    colsample_bytree = seq(0.5), # subsample ratio of columns when construction each tree
-    eta = 0.1, # learning rate
-    gamma = 0, # minimum loss reduction
-    min_child_weight = 1,  # minimum sum of instance weight (hessian) needed ina child
-    subsample = 1 # subsample ratio of the training instances
-  ))
-
-
-
-#Ahora se puede construir el modelo, usando árboles
-xgb_model <- caret::train(
-  unemploy ~months+years,
-  data=train,
-  trControl = xgb_trcontrol,
-  tuneGrid = xgb_grid,
-  method = "xgbTree",
-  nthread = 1)
-#verbose=TRUE)
-
-
-#Se observanlos mejores valores que se eligieron como hiperparámetros:
-xgb_model$bestTune
-#Se realiza la predicción
-
-
-
-xgb_pred <- xgb_model %>% stats::predict(pred)
-xgb_pred<-data.frame(xgb_pred)
-
-Resultados<-cbind(pred$date,xgb_pred)
-
-
-##########################################################################################################################
-############################################################################################################################
-#Prueba con código realizado para el PS3
-
-x_train <- model.matrix(unemploy ~months+years, data =train)[, -1]
-y_train <- train$unemploy
-
-x_test <- model.matrix(~months+years, data =pred)[, -1]
-y_test <- pred$unemploy
-
-
-xgb_train <- xgb.DMatrix(data = x_train, label = y_train)
-xgb_test <- xgb.DMatrix(data = x_train, label = y_train) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
-
-watchlist <-list(train=xgb_train, test=xgb_test)
-
-model4<- xgb.train(data = xgb_train, max.depth = 100, watchlist=watchlist, nrounds = 1000)
-
-predicciones_mod4 <-predict(model4, xgb_test)
 ### Base oficial
+
+fecha = seq(from = lubridate::as_date("2000-01-01"),
+           by = "day", length.out = 8217) 
+
+fecha<-data.frame(fecha)
+
 BASEOF<- readRDS("../Datos/Bases oficiales/Base_de_datos_oficial.rds")
 #Se transforman a números los siguientes 
 cols.num<-c('PBN0', 'PBN1', 'PBN2', 'PBN3', 'PBN4', 'PBN5', 'PBN6', 'PBN7', 'PBN8', 'PBN9', 'PBN10', 'PBN11', 'PBN12', 'PBN13', 'PBN14', 'PBN15', 'PBN16', 'PBN17', 'PBN18', 'PBN19', 'PBN20', 'PBN21', 'PBN22', 'PBN23', 'ONI')
 BASEOF[cols.num] <- sapply(BASEOF[cols.num],as.numeric)
 sapply(BASEOF, class)
-train <- BASEOF[1:5751, ] # initial data
-pred <- BASEOF[(5752:8217), ] # extended time index
+BASEOF<-cbind(fecha,BASEOF)
+BASEOF<-BASEOF%>% mutate(Fecha = NULL) 
+
+BASEOF<- BASEOF %>%
+  dplyr::mutate(., 
+                mes = lubridate::month(fecha),
+                año = lubridate::year(fecha),
+                dia=lubridate::day(fecha) )
+
+train <- BASEOF[1:5751, ] # initial data (70% de los datos desde el 2001)
+pred <- BASEOF[(5752:8217), ] # extended time index (30% restante)
 
 
 
 ##-----0 hs-----#
 
-x_train0 <- model.matrix(PBN0 ~Gen_CoGenerador0+ Gen_Hidraulica0 + Gen_Termica0 + Gen_Eolica0 + Gen_Solar0 + ONI +TRM + Aportes_total, data =train)[, -1]
+x_train0 <- model.matrix(PBN0 ~Gen_CoGenerador0+ Gen_Hidraulica0 + Gen_Termica0 + Gen_Eolica0 + Gen_Solar0 + ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train0 <- train$PBN0
-x_test0 <- model.matrix(PBN0~Gen_CoGenerador0+ Gen_Hidraulica0 + Gen_Termica0 + Gen_Eolica0 + Gen_Solar0 + ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test0 <- model.matrix(PBN0~Gen_CoGenerador0+ Gen_Hidraulica0 + Gen_Termica0 + Gen_Eolica0 + Gen_Solar0 + ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test0 <- pred$PBN0
 xgb_train0 <- xgb.DMatrix(data = x_train0, label = y_train0)
 xgb_test0 <- xgb.DMatrix(data = x_test0, label = y_test0) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
 
 watchlist0 <-list(train=xgb_train0, test=xgb_test0)
 
-model0<- xgb.train(data = xgb_train0, max.depth = 50, watchlist=watchlist0, nrounds = 100)
+model0<- xgb.train(data = xgb_train0, max.depth = 100, watchlist=watchlist0, nrounds = 1000)
 predicciones_mod0 <-predict(model0, xgb_test0)
 predicciones_mod0<- data.frame(predicciones_mod0)
 
 ##-------1 hs----##
-x_train1 <- model.matrix(PBN1 ~Gen_CoGenerador1+ Gen_Hidraulica1 + Gen_Termica1 + Gen_Eolica1 + Gen_Solar1 + ONI +TRM + Aportes_total, data =train)[, -1]
+x_train1 <- model.matrix(PBN1 ~Gen_CoGenerador1+ Gen_Hidraulica1 + Gen_Termica1 + Gen_Eolica1 + Gen_Solar1 + ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train1 <- train$PBN1
 
-x_test1 <- model.matrix(PBN1~Gen_CoGenerador1+ Gen_Hidraulica1 + Gen_Termica1 + Gen_Eolica1 + Gen_Solar1 + ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test1 <- model.matrix(PBN1~Gen_CoGenerador1+ Gen_Hidraulica1 + Gen_Termica1 + Gen_Eolica1 + Gen_Solar1 + ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test1 <- pred$PBN1
 xgb_train1 <- xgb.DMatrix(data = x_train1, label = y_train1)
 xgb_test1 <- xgb.DMatrix(data = x_test1, label = y_test1) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -178,9 +97,9 @@ model1<- xgb.train(data = xgb_train1, max.depth = 100, watchlist=watchlist1, nro
 predicciones_mod1 <-predict(model1, xgb_test1)
 predicciones_mod1<- data.frame(predicciones_mod1)
 ##----2 hs----##
-x_train2 <- model.matrix(PBN2 ~Gen_CoGenerador2 + Gen_Hidraulica2 + Gen_Termica2 + Gen_Eolica2 + Gen_Solar2 + ONI +TRM + Aportes_total, data =train)[, -1]
+x_train2 <- model.matrix(PBN2 ~Gen_CoGenerador2 + Gen_Hidraulica2 + Gen_Termica2 + Gen_Eolica2 + Gen_Solar2 + ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train2 <- train$PBN2
-x_test2 <- model.matrix(PBN2~Gen_CoGenerador2+ Gen_Hidraulica2 + Gen_Termica2 + Gen_Eolica2 + Gen_Solar2 + ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test2 <- model.matrix(PBN2~Gen_CoGenerador2+ Gen_Hidraulica2 + Gen_Termica2 + Gen_Eolica2 + Gen_Solar2 + ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test2 <- pred$PBN2
 xgb_train2 <- xgb.DMatrix(data = x_train2, label = y_train2)
 xgb_test2 <- xgb.DMatrix(data = x_test2, label = y_test2) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -193,9 +112,9 @@ predicciones_mod2 <-predict(model2, xgb_test2)
 predicciones_mod2<- data.frame(predicciones_mod2)
 
 ##----3 hs----##
-x_train3 <- model.matrix(PBN3 ~Gen_CoGenerador3 + Gen_Hidraulica3 + Gen_Termica3 + Gen_Eolica3 + Gen_Solar3 + ONI +TRM + Aportes_total, data =train)[, -1]
+x_train3 <- model.matrix(PBN3 ~Gen_CoGenerador3 + Gen_Hidraulica3 + Gen_Termica3 + Gen_Eolica3 + Gen_Solar3 + ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train3 <- train$PBN3
-x_test3 <- model.matrix(PBN3~Gen_CoGenerador3+ Gen_Hidraulica3 + Gen_Termica3 + Gen_Eolica3 + Gen_Solar3 + ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test3 <- model.matrix(PBN3~Gen_CoGenerador3+ Gen_Hidraulica3 + Gen_Termica3 + Gen_Eolica3 + Gen_Solar3 + ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test3 <- pred$PBN3
 xgb_train3 <- xgb.DMatrix(data = x_train3, label = y_train3)
 xgb_test3 <- xgb.DMatrix(data = x_test3, label = y_test3) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -208,9 +127,9 @@ predicciones_mod3 <-predict(model3, xgb_test3)
 predicciones_mod3<- data.frame(predicciones_mod3)
 
 ##----4 hs----##
-x_train4 <- model.matrix(PBN4~Gen_CoGenerador4+ Gen_Hidraulica4 + Gen_Termica4 + Gen_Eolica4 + Gen_Solar4+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train4 <- model.matrix(PBN4~Gen_CoGenerador4+ Gen_Hidraulica4 + Gen_Termica4 + Gen_Eolica4 + Gen_Solar4+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train4 <- train$PBN4
-x_test4 <- model.matrix(PBN4~Gen_CoGenerador4+ Gen_Hidraulica4 + Gen_Termica4 + Gen_Eolica4 + Gen_Solar4 + ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test4 <- model.matrix(PBN4~Gen_CoGenerador4+ Gen_Hidraulica4 + Gen_Termica4 + Gen_Eolica4 + Gen_Solar4 + ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test4 <- pred$PBN4
 xgb_train4 <- xgb.DMatrix(data = x_train4, label = y_train4)
 xgb_test4 <- xgb.DMatrix(data = x_test4, label = y_test4) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -223,9 +142,9 @@ predicciones_mod4 <-predict(model4, xgb_test4)
 predicciones_mod4<- data.frame(predicciones_mod4)
 
 ##----5 hs----#
-x_train5 <- model.matrix(PBN5~Gen_CoGenerador5+ Gen_Hidraulica5 + Gen_Termica5 + Gen_Eolica5 + Gen_Solar5+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train5 <- model.matrix(PBN5~Gen_CoGenerador5+ Gen_Hidraulica5 + Gen_Termica5 + Gen_Eolica5 + Gen_Solar5+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train5 <- train$PBN5
-x_test5 <- model.matrix(PBN5~Gen_CoGenerador5+ Gen_Hidraulica5 + Gen_Termica5 + Gen_Eolica5 + Gen_Solar5+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test5 <- model.matrix(PBN5~Gen_CoGenerador5+ Gen_Hidraulica5 + Gen_Termica5 + Gen_Eolica5 + Gen_Solar5+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test5 <- pred$PBN5
 xgb_train5 <- xgb.DMatrix(data = x_train5, label = y_train5)
 xgb_test5 <- xgb.DMatrix(data = x_test5, label = y_test5) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -238,9 +157,9 @@ predicciones_mod5 <-predict(model5, xgb_test5)
 predicciones_mod5<- data.frame(predicciones_mod5)
 
 ##----6 hs----##
-x_train6 <- model.matrix(PBN6~Gen_CoGenerador6+ Gen_Hidraulica6 + Gen_Termica5 + Gen_Eolica6 + Gen_Solar6+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train6 <- model.matrix(PBN6~Gen_CoGenerador6+ Gen_Hidraulica6 + Gen_Termica5 + Gen_Eolica6 + Gen_Solar6+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train6 <- train$PBN6
-x_test6 <- model.matrix(PBN6~Gen_CoGenerador6+ Gen_Hidraulica6 + Gen_Termica5 + Gen_Eolica6 + Gen_Solar6+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test6 <- model.matrix(PBN6~Gen_CoGenerador6+ Gen_Hidraulica6 + Gen_Termica5 + Gen_Eolica6 + Gen_Solar6+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test6 <- pred$PBN6
 xgb_train6 <- xgb.DMatrix(data = x_train6, label = y_train6)
 xgb_test6 <- xgb.DMatrix(data = x_test6, label = y_test6) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -253,9 +172,9 @@ predicciones_mod6 <-predict(model6, xgb_test6)
 predicciones_mod6<- data.frame(predicciones_mod6)
 
 ##----7 hs----#
-x_train7 <- model.matrix(PBN7~Gen_CoGenerador7+ Gen_Hidraulica7 + Gen_Termica7 + Gen_Eolica7 + Gen_Solar7+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train7 <- model.matrix(PBN7~Gen_CoGenerador7+ Gen_Hidraulica7 + Gen_Termica7 + Gen_Eolica7 + Gen_Solar7+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train7 <- train$PBN7
-x_test7 <- model.matrix(PBN7~Gen_CoGenerador7+ Gen_Hidraulica7 + Gen_Termica7 + Gen_Eolica7 + Gen_Solar7+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test7 <- model.matrix(PBN7~Gen_CoGenerador7+ Gen_Hidraulica7 + Gen_Termica7 + Gen_Eolica7 + Gen_Solar7+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test7 <- pred$PBN7
 xgb_train7 <- xgb.DMatrix(data = x_train7, label = y_train7)
 xgb_test7 <- xgb.DMatrix(data = x_test7, label = y_test7) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -265,9 +184,9 @@ predicciones_mod7 <-predict(model7, xgb_test7)
 predicciones_mod7<- data.frame(predicciones_mod7)
 
 ##----8 hs----#
-x_train8 <- model.matrix(PBN8~Gen_CoGenerador8+ Gen_Hidraulica8 + Gen_Termica8 + Gen_Eolica8 + Gen_Solar8+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train8 <- model.matrix(PBN8~Gen_CoGenerador8+ Gen_Hidraulica8 + Gen_Termica8 + Gen_Eolica8 + Gen_Solar8+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train8 <- train$PBN8
-x_test8 <- model.matrix(PBN8~Gen_CoGenerador8+ Gen_Hidraulica8 + Gen_Termica8 + Gen_Eolica8 + Gen_Solar8+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test8 <- model.matrix(PBN8~Gen_CoGenerador8+ Gen_Hidraulica8 + Gen_Termica8 + Gen_Eolica8 + Gen_Solar8+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test8 <- pred$PBN8
 xgb_train8 <- xgb.DMatrix(data = x_train8, label = y_train8)
 xgb_test8 <- xgb.DMatrix(data = x_test8, label = y_test8) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -277,9 +196,9 @@ predicciones_mod8 <-predict(model8, xgb_test8)
 predicciones_mod8<- data.frame(predicciones_mod8)
 
 ##----9 hs----##
-x_train9 <- model.matrix(PBN9~Gen_CoGenerador9+ Gen_Hidraulica9 + Gen_Termica9 + Gen_Eolica9 + Gen_Solar9+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train9 <- model.matrix(PBN9~Gen_CoGenerador9+ Gen_Hidraulica9 + Gen_Termica9 + Gen_Eolica9 + Gen_Solar9+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train9 <- train$PBN9
-x_test9<- model.matrix(PBN9~Gen_CoGenerador9+ Gen_Hidraulica9 + Gen_Termica9 + Gen_Eolica9 + Gen_Solar9+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test9<- model.matrix(PBN9~Gen_CoGenerador9+ Gen_Hidraulica9 + Gen_Termica9 + Gen_Eolica9 + Gen_Solar9+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test9 <- pred$PBN9
 xgb_train9 <- xgb.DMatrix(data = x_train9, label = y_train9)
 xgb_test9 <- xgb.DMatrix(data = x_test9, label = y_test9) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -289,9 +208,9 @@ predicciones_mod9 <-predict(model9, xgb_test9)
 predicciones_mod9<- data.frame(predicciones_mod9)
 
 ##----10 hs----##
-x_train10 <- model.matrix(PBN10~Gen_CoGenerador10+ Gen_Hidraulica10 + Gen_Termica10 + Gen_Eolica10 + Gen_Solar10+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train10 <- model.matrix(PBN10~Gen_CoGenerador10+ Gen_Hidraulica10 + Gen_Termica10 + Gen_Eolica10 + Gen_Solar10+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train10 <- train$PBN10
-x_test10 <- model.matrix(PBN10~Gen_CoGenerador10+ Gen_Hidraulica10 + Gen_Termica10 + Gen_Eolica10 + Gen_Solar10+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test10 <- model.matrix(PBN10~Gen_CoGenerador10+ Gen_Hidraulica10 + Gen_Termica10 + Gen_Eolica10 + Gen_Solar10+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test10 <- pred$PBN10
 xgb_train10 <- xgb.DMatrix(data = x_train10, label = y_train10)
 xgb_test10<- xgb.DMatrix(data = x_test10, label = y_test10) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -301,9 +220,9 @@ predicciones_mod10 <-predict(model10, xgb_test10)
 predicciones_mod10<- data.frame(predicciones_mod10)
 
 ##----11 hs----##
-x_train11 <- model.matrix(PBN11~Gen_CoGenerador11+ Gen_Hidraulica11 + Gen_Termica11 + Gen_Eolica11 + Gen_Solar11+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train11 <- model.matrix(PBN11~Gen_CoGenerador11+ Gen_Hidraulica11 + Gen_Termica11 + Gen_Eolica11 + Gen_Solar11+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train11 <- train$PBN11
-x_test11 <- model.matrix(PBN11~Gen_CoGenerador11+ Gen_Hidraulica11 + Gen_Termica11 + Gen_Eolica11 + Gen_Solar11+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test11 <- model.matrix(PBN11~Gen_CoGenerador11+ Gen_Hidraulica11 + Gen_Termica11 + Gen_Eolica11 + Gen_Solar11+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test11 <- pred$PBN11
 xgb_train11 <- xgb.DMatrix(data = x_train11, label = y_train11)
 xgb_test11 <- xgb.DMatrix(data = x_test11, label = y_test11) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -313,9 +232,9 @@ predicciones_mod11 <-predict(model11, xgb_test11)
 predicciones_mod11<- data.frame(predicciones_mod11)
 
 ##----12 hs----##
-x_train12 <- model.matrix(PBN12~Gen_CoGenerador12+ Gen_Hidraulica12 + Gen_Termica12 + Gen_Eolica12 + Gen_Solar12+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train12 <- model.matrix(PBN12~Gen_CoGenerador12+ Gen_Hidraulica12 + Gen_Termica12 + Gen_Eolica12 + Gen_Solar12+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train12 <- train$PBN12
-x_test12 <- model.matrix(PBN12~Gen_CoGenerador12+ Gen_Hidraulica12 + Gen_Termica12 + Gen_Eolica12 + Gen_Solar12+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test12 <- model.matrix(PBN12~Gen_CoGenerador12+ Gen_Hidraulica12 + Gen_Termica12 + Gen_Eolica12 + Gen_Solar12+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test12 <- pred$PBN12
 xgb_train12 <- xgb.DMatrix(data = x_train12, label = y_train12)
 xgb_test12 <- xgb.DMatrix(data = x_test12, label = y_test12) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -325,9 +244,9 @@ predicciones_mod12 <-predict(model12, xgb_test12)
 predicciones_mod12<- data.frame(predicciones_mod12)
 
 ##----13 hs----##
-x_train13 <- model.matrix(PBN13~Gen_CoGenerador13+ Gen_Hidraulica13 + Gen_Termica13 + Gen_Eolica13 + Gen_Solar13+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train13 <- model.matrix(PBN13~Gen_CoGenerador13+ Gen_Hidraulica13 + Gen_Termica13 + Gen_Eolica13 + Gen_Solar13+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train13 <- train$PBN12
-x_test13 <- model.matrix(PBN13~Gen_CoGenerador13+ Gen_Hidraulica13 + Gen_Termica13 + Gen_Eolica13 + Gen_Solar13+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test13 <- model.matrix(PBN13~Gen_CoGenerador13+ Gen_Hidraulica13 + Gen_Termica13 + Gen_Eolica13 + Gen_Solar13+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test13 <- pred$PBN13
 xgb_train13 <- xgb.DMatrix(data = x_train13, label = y_train13)
 xgb_test13 <- xgb.DMatrix(data = x_test13, label = y_test13) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -337,9 +256,9 @@ predicciones_mod13 <-predict(model13, xgb_test13)
 predicciones_mod13<- data.frame(predicciones_mod13)
 
 ##----14 hs----##
-x_train14 <- model.matrix(PBN14~Gen_CoGenerador14+ Gen_Hidraulica14 + Gen_Termica14 + Gen_Eolica14 + Gen_Solar14+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train14 <- model.matrix(PBN14~Gen_CoGenerador14+ Gen_Hidraulica14 + Gen_Termica14 + Gen_Eolica14 + Gen_Solar14+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train14 <- train$PBN14
-x_test14 <- model.matrix(PBN14~Gen_CoGenerador14+ Gen_Hidraulica14 + Gen_Termica14 + Gen_Eolica14 + Gen_Solar14+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test14 <- model.matrix(PBN14~Gen_CoGenerador14+ Gen_Hidraulica14 + Gen_Termica14 + Gen_Eolica14 + Gen_Solar14+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test14 <- pred$PBN14
 xgb_train14 <- xgb.DMatrix(data = x_train14, label = y_train14)
 xgb_test14 <- xgb.DMatrix(data = x_test14, label = y_test14) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -349,9 +268,9 @@ predicciones_mod14 <-predict(model14, xgb_test14)
 predicciones_mod14<- data.frame(predicciones_mod14)
 
 ##----12 hs----##
-x_train15 <- model.matrix(PBN15~Gen_CoGenerador15+ Gen_Hidraulica15 + Gen_Termica15 + Gen_Eolica15 + Gen_Solar15+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train15 <- model.matrix(PBN15~Gen_CoGenerador15+ Gen_Hidraulica15 + Gen_Termica15 + Gen_Eolica15 + Gen_Solar15+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train15 <- train$PBN15
-x_test15 <- model.matrix(PBN15~Gen_CoGenerador15+ Gen_Hidraulica15 + Gen_Termica15 + Gen_Eolica15 + Gen_Solar15+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test15 <- model.matrix(PBN15~Gen_CoGenerador15+ Gen_Hidraulica15 + Gen_Termica15 + Gen_Eolica15 + Gen_Solar15+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test15 <- pred$PBN15
 xgb_train15 <- xgb.DMatrix(data = x_train15, label = y_train15)
 xgb_test15 <- xgb.DMatrix(data = x_test15, label = y_test15) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -361,22 +280,22 @@ predicciones_mod15 <-predict(model15, xgb_test15)
 predicciones_mod15<- data.frame(predicciones_mod15)
 
 ##----16 hs----##
-x_train16 <- model.matrix(PBN16~Gen_CoGenerador16+ Gen_Hidraulica16 + Gen_Termica16 + Gen_Eolica16 + Gen_Solar16+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train16 <- model.matrix(PBN16~Gen_CoGenerador16+ Gen_Hidraulica16 + Gen_Termica16 + Gen_Eolica16 + Gen_Solar16+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train16 <- train$PBN16
-x_test16 <- model.matrix(PBN16~Gen_CoGenerador16+ Gen_Hidraulica16 + Gen_Termica16+ Gen_Eolica16 + Gen_Solar16 + ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test16 <- model.matrix(PBN16~Gen_CoGenerador16+ Gen_Hidraulica16 + Gen_Termica16+ Gen_Eolica16 + Gen_Solar16 + ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test16 <- pred$PBN16
 xgb_train16 <- xgb.DMatrix(data = x_train16, label = y_train16)
 xgb_test16<- xgb.DMatrix(data = x_test16, label = y_test16) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
 watchlist16 <-list(train=xgb_train16, test=xgb_test16)
-model16<- xgb.train(data = xgb_train12, max.depth = 100, watchlist=watchlist16, nrounds = 1000)
+model16<- xgb.train(data = xgb_train16, max.depth = 10, watchlist=watchlist16, nrounds = 1000)
 predicciones_mod16 <-predict(model16, xgb_test16)
 predicciones_mod16<- data.frame(predicciones_mod16)
 
 
 ##----17 hs----##
-x_train17 <- model.matrix(PBN17~Gen_CoGenerador17+ Gen_Hidraulica17 + Gen_Termica17 + Gen_Eolica17 + Gen_Solar17+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train17 <- model.matrix(PBN17~Gen_CoGenerador17+ Gen_Hidraulica17 + Gen_Termica17 + Gen_Eolica17 + Gen_Solar17+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train17 <- train$PBN17
-x_test17<- model.matrix(PBN17~Gen_CoGenerador17+ Gen_Hidraulica17 + Gen_Termica17 + Gen_Eolica17 + Gen_Solar17+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test17<- model.matrix(PBN17~Gen_CoGenerador17+ Gen_Hidraulica17 + Gen_Termica17 + Gen_Eolica17 + Gen_Solar17+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test17<- pred$PBN17
 xgb_train17<- xgb.DMatrix(data = x_train17, label = y_train17)
 xgb_test17 <- xgb.DMatrix(data = x_test17, label = y_test17) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -387,9 +306,9 @@ predicciones_mod17<- data.frame(predicciones_mod17)
 
 
 ##----18 hs----##
-x_train18 <- model.matrix(PBN18~Gen_CoGenerador18+ Gen_Hidraulica18 + Gen_Termica18 + Gen_Eolica18 + Gen_Solar18+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train18 <- model.matrix(PBN18~Gen_CoGenerador18+ Gen_Hidraulica18 + Gen_Termica18 + Gen_Eolica18 + Gen_Solar18+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train18 <- train$PBN18
-x_test18 <- model.matrix(PBN18~Gen_CoGenerador18+ Gen_Hidraulica18 + Gen_Termica18 + Gen_Eolica18 + Gen_Solar18+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test18 <- model.matrix(PBN18~Gen_CoGenerador18+ Gen_Hidraulica18 + Gen_Termica18 + Gen_Eolica18 + Gen_Solar18+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test18 <- pred$PBN18
 xgb_train18 <- xgb.DMatrix(data = x_train18, label = y_train18)
 xgb_test18 <- xgb.DMatrix(data = x_test18, label = y_test18) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -399,9 +318,9 @@ predicciones_mod18 <-predict(model18, xgb_test18)
 predicciones_mod18<- data.frame(predicciones_mod18)
 
 ##----19 hs----##
-x_train19 <- model.matrix(PBN19~Gen_CoGenerador19+ Gen_Hidraulica19 + Gen_Termica19 + Gen_Eolica19 + Gen_Solar19+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train19 <- model.matrix(PBN19~Gen_CoGenerador19+ Gen_Hidraulica19 + Gen_Termica19 + Gen_Eolica19 + Gen_Solar19+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train19 <- train$PBN19
-x_test19 <- model.matrix(PBN19~Gen_CoGenerador19+ Gen_Hidraulica19 + Gen_Termica19 + Gen_Eolica19 + Gen_Solar19+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test19 <- model.matrix(PBN19~Gen_CoGenerador19+ Gen_Hidraulica19 + Gen_Termica19 + Gen_Eolica19 + Gen_Solar19+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test19 <- pred$PBN19
 xgb_train19 <- xgb.DMatrix(data = x_train19, label = y_train19)
 xgb_test19 <- xgb.DMatrix(data = x_test19, label = y_test19) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -411,9 +330,9 @@ predicciones_mod19 <-predict(model19, xgb_test19)
 predicciones_mod19<- data.frame(predicciones_mod19)
 
 ##----20 hs----##
-x_train20 <- model.matrix(PBN20~Gen_CoGenerador20+ Gen_Hidraulica20 + Gen_Termica20 + Gen_Eolica20 + Gen_Solar20+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train20 <- model.matrix(PBN20~Gen_CoGenerador20+ Gen_Hidraulica20 + Gen_Termica20 + Gen_Eolica20 + Gen_Solar20+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train20 <- train$PBN20
-x_test20 <- model.matrix(PBN20~Gen_CoGenerador20+ Gen_Hidraulica20 + Gen_Termica20 + Gen_Eolica20 + Gen_Solar20+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test20 <- model.matrix(PBN20~Gen_CoGenerador20+ Gen_Hidraulica20 + Gen_Termica20 + Gen_Eolica20 + Gen_Solar20+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test20 <- pred$PBN20
 xgb_train20 <- xgb.DMatrix(data = x_train20, label = y_train20)
 xgb_test20 <- xgb.DMatrix(data = x_test20, label = y_test20) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -423,9 +342,9 @@ predicciones_mod20 <-predict(model20, xgb_test20)
 predicciones_mod20<- data.frame(predicciones_mod20)
 
 ##----21 hs----##
-x_train21 <- model.matrix(PBN21~Gen_CoGenerador21+ Gen_Hidraulica21 + Gen_Termica21 + Gen_Eolica21 + Gen_Solar21+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train21 <- model.matrix(PBN21~Gen_CoGenerador21+ Gen_Hidraulica21 + Gen_Termica21 + Gen_Eolica21 + Gen_Solar21+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train21 <- train$PBN21
-x_test21 <- model.matrix(PBN21~Gen_CoGenerador21+ Gen_Hidraulica21 + Gen_Termica21 + Gen_Eolica21 + Gen_Solar21+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test21 <- model.matrix(PBN21~Gen_CoGenerador21+ Gen_Hidraulica21 + Gen_Termica21 + Gen_Eolica21 + Gen_Solar21+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test21 <- pred$PBN21
 xgb_train21 <- xgb.DMatrix(data = x_train21, label = y_train21)
 xgb_test21 <- xgb.DMatrix(data = x_test21, label = y_test21) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -435,9 +354,9 @@ predicciones_mod21 <-predict(model21, xgb_test21)
 predicciones_mod21<- data.frame(predicciones_mod21)
 
 ##----22 hs----##
-x_train22 <- model.matrix(PBN22~Gen_CoGenerador22+ Gen_Hidraulica22 + Gen_Termica22 + Gen_Eolica22 + Gen_Solar22+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train22 <- model.matrix(PBN22~Gen_CoGenerador22+ Gen_Hidraulica22 + Gen_Termica22 + Gen_Eolica22 + Gen_Solar22+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train22 <- train$PBN22
-x_test22 <- model.matrix(PBN22~Gen_CoGenerador22+ Gen_Hidraulica22 + Gen_Termica22+ Gen_Eolica22 + Gen_Solar22+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test22 <- model.matrix(PBN22~Gen_CoGenerador22+ Gen_Hidraulica22 + Gen_Termica22+ Gen_Eolica22 + Gen_Solar22+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test22 <- pred$PBN22
 xgb_train22 <- xgb.DMatrix(data = x_train22, label = y_train22)
 xgb_test22 <- xgb.DMatrix(data = x_test22, label = y_test22) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
@@ -446,17 +365,22 @@ model22<- xgb.train(data = xgb_train22, max.depth = 100, watchlist=watchlist22, 
 predicciones_mod22 <-predict(model22, xgb_test22)
 predicciones_mod22<- data.frame(predicciones_mod22)
 ##----23 hs----##
-x_train23 <- model.matrix(PBN23~Gen_CoGenerador23+ Gen_Hidraulica23 + Gen_Termica23 + Gen_Eolica23+ Gen_Solar23+ ONI +TRM + Aportes_total, data =train)[, -1]
+x_train23 <- model.matrix(~Gen_CoGenerador23+ Gen_Hidraulica23 + Gen_Termica23 + Gen_Eolica23+ Gen_Solar23+ ONI +TRM + Aportes_total+dia+mes+año, data =train)[, -1]
 y_train23 <- train$PBN23
-x_test23<- model.matrix(PBN23~Gen_CoGenerador23+ Gen_Hidraulica23 + Gen_Termica23 + Gen_Eolica23 + Gen_Solar23+ ONI + TRM + Aportes_total, data =pred)[, -1]
+x_test23<- model.matrix(~Gen_CoGenerador23+ Gen_Hidraulica23 + Gen_Termica23 + Gen_Eolica23 + Gen_Solar23+ ONI + TRM + Aportes_total+dia+mes+año, data =pred)[, -1]
 y_test23<- pred$PBN23
 xgb_train23<- xgb.DMatrix(data = x_train23, label = y_train23)
 xgb_test23 <- xgb.DMatrix(data = x_test23, label = y_test23) #Como se está haciendo sobre la misma base train, se pone el xgb_test como la misma base train
 watchlist23 <-list(train=xgb_train23, test=xgb_test23)
-model23<- xgb.train(data = xgb_train20, max.depth = 100, watchlist=watchlist23, nrounds = 1000)
+model23<- xgb.train(data = xgb_train23, max.depth = 100, watchlist=watchlist23, nrounds = 1000)
 predicciones_mod23 <-predict(model23, xgb_test23)
 predicciones_mod23<- data.frame(predicciones_mod23)
 
+saveRDS(model23, "../Datos/Bases oficiales/model23.rds" )
+
+model30<-readRDS("../Datos/Bases oficiales/model23.rds")
+predicciones_mod30 <-predict(model30, xgb_test23)
+predicciones_mod30<- data.frame(predicciones_mod23)
 # Generacion_xxx <- data.frame(readRDS("../Datos/Bases oficiales/Generacion_23_30062022.rds")) 
 # 
 # Aportes<- data.frame(readRDS("../Datos/Bases oficiales/Aportes_energia_dia_30_06_2022.rds")) 
@@ -512,6 +436,4 @@ predicciones_mod23<- data.frame(predicciones_mod23)
 # colnames(Generacion_final)[3] <- "Values_enersource"
 # 
 # Generacion_final<-left_join(Capacidad_neta, by="...2")
-# 
-# rm(Capacidad_neta, Generacion,Generacion_tipo_1 )
-# 
+
