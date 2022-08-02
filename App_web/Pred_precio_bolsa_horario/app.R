@@ -16,7 +16,8 @@ library(data.table)
 library(lubridate)
 #source("code_modelo.R")
 
-# Define UI for application that draws a histogram
+#Se debe poner como working directory donde esté el presente archivo
+
 
 #Se importan los modelos finales entrenados para realizar la predicción
 model0_<- readRDS("data/model0.rds")
