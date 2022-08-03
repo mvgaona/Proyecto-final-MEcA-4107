@@ -32,7 +32,7 @@ E-mail:mv.gaona@uniandes.edu.co}
 \maketitle
 
 \begin{abstract}
-El precio de bolsa de energía eléctrica del Mercado de Energía Mayorista (MEM) Colombiano está dado por diversos factores para generar un ambiente propicio de competencia y formación eficiente de precios, que le permitan a la demanda tener precios óptimos. Es por ello que es fundamental el análisis  de este mercado para que a medida que pase el tiempo, los agentes que participan en este mercado puedan identificar factores de riesgo más rápido y así, tomar las mejores decisiones para la economía y distribución de energía del país. Por lo tanto, de acuerdo con el análisis anterior, contar con una herramienta como una aplicación web que pueda predecir este valor genera una dinámica más eficiente para los agentes que están dentro del sector y a su vez, a ciudadanos que estén interesados en el campo energético. \
+El precio de bolsa de energía eléctrica del Mercado de Energía Mayorista (MEM) Colombiano está dado por diversos factores para generar un ambiente propicio de competencia y formación eficiente de precios, que le permitan a la demanda tener precios óptimos para el Sistema Interconectado Nacional-SIN. Es por ello que es fundamental el análisis  de este mercado para que a medida que pase el tiempo, los agentes que participan en este mercado puedan identificar factores de riesgo más rápido y así, tomar las mejores decisiones para la economía y distribución de energía del país. Por lo tanto, de acuerdo con el análisis anterior, contar con una herramienta como una aplicación web que pueda predecir este valor genera una dinámica más eficiente para los agentes que están dentro del sector y a su vez, a ciudadanos que estén interesados en el campo energético. \
 Para acceder a la aplicación web, se presenta el siguiente enlace: \url{https://aplicaciones-web-abeleno.shinyapps.io/pred_precio_bolsa_horario/} A su vez, el link al  repositorio del presente documento se encuentra en el siguiente enlace: \url{https://github.com/mvgaona/Proyecto-final-MEcA-4107}
 \end{abstract}
 
@@ -41,19 +41,19 @@ Para acceder a la aplicación web, se presenta el siguiente enlace: \url{https:/
 El mercado eléctrico colombiano es un mercado competitivo en donde participan generadores, transmisores, distribuidores, consumidores y comercializadores de energía. Este mercado se divide en dos segmentos: Corto y largo plazo, sin embargo, en el siguiente documento se presentará el análisis del mercado en corto plazo por medio de la bolsa de energía de Colombia, la cual es administrada por XM, en donde se presenta la participación de generadores y comercializadores de energía para la compra y venta a precio de bolsa de energía eléctrica, con el objetivo de suplir la demanda adecuada de energía en el país.\\
 De acuerdo con Trespalacios, Pantoja \& Fernandez (2017)\cite{b5}, el mercado spot o la bolsa de energía hace referencia al mercado en donde se obtiene la energía eléctrica de forma instantánea, con el objetivo de lograr un balance entre oferta  y demanda. A su vez, los autores afirman que dicho precio de bolsa se define mediante un conjunto de normas que buscan precisar el nivel de referencia en caso de escasez.\\
 Poveda (2012) \cite{b1} afirma que el despacho ideal es el programa de generación que está dado por el uso de los recursos más económicos hasta cubrir la demanda doméstica real, más las Transacciones Internacionales de Electricidad de Corto Plazo - TIE (Exportaciones como demanda e importaciones como generación), más las pérdidas del STN (Sistema de Transmisión Nacional). Teniendo en cuenta lo anterior, el precio de bolsa está dado por el precio de oferta obtenido por medio del despacho ideal, el cual es utilizado para valorar los intercambios en bolsa.\\
-El correcto funcionamiento del mercado eléctrico es fundamental para el análisis de la demanda energética en el país: si es necesario realizar estrategias en el manejo de los recursos naturales con los que se genera energía, si la dinámica de compra y venta de energía está siendo óptima para la economía y sociedad colombiana. Generar una proyección de estos precios permite poder hacer inferencia acerca de cómo el mercado puede estar funcionando y aunque ´ este sea un sistema fluctuante, se puede generar predicciones acerca de su comportamiento.\\
+El correcto funcionamiento del mercado eléctrico es fundamental para el análisis de la demanda energética en el país: si es necesario realizar estrategias en el manejo de los recursos naturales con los que se genera energía, si la dinámica de compra y venta de energía está siendo óptima para la economía y sociedad colombiana. Generar una proyección de estos precios permite poder hacer inferencia acerca de cómo el mercado puede estar funcionando y aunque este sea un sistema fluctuante, se puede generar predicciones acerca de su comportamiento.\\
 
 En el siguiente documento se encuentra el análisis acerca de los datos recaudados para la predicción del precio de bolsa de energía eléctrica del mercado de energía mayorista colombiano, en donde se implementará un modelo de Machine Learning automático en una aplicación web, que permitirá modelar futuros precios de bolsa y con ello, tomar decisiones comerciales basadas en los datos adquiridos
 
 
 \section{Datos} \label{AA}
 
-El precio de bolsa de energía puede estar dado por diferentes factores que representan las condiciones del mercado energético colombiano, por ejemplo. Este precio se genera cada hora y, por lo tanto, es necesario considerar 24 modelos correspondientes a cada momento del día en donde se presentan cambios en este valor. Por lo tanto, para considerar realizar un modelo de predicción es necesario contar con factores determinantes que expliquen cómo se produce este precio. Por otra parte, dentro del análisis se recopiló información desde el 01/01/2000 hasta 30/06/2022, en donde no se presenta información faltante que deba ser imputada. En total la base cuenta con 8.217 observaciones.\\ 
+El precio de bolsa nacional de energía puede estar dado por diferentes factores que representan las condiciones del mercado energético colombiano, por ejemplo. Este precio se genera cada hora y, por lo tanto, es necesario considerar 24 modelos correspondientes a cada momento del día en donde se presentan cambios en este valor. Por lo tanto, para considerar realizar un modelo de predicción es necesario contar con factores determinantes que expliquen cómo se produce este precio. Por otra parte, dentro del análisis se recopiló información desde el 01/01/2000 hasta 30/06/2022, en donde no se presenta información faltante que deba ser imputada. En total la base cuenta con 8.217 observaciones.\\ 
 Los datos a utilizar para el desarrollo de la predicción, se encuentran en la página del operador del mercado eléctrico colombiano XM. Esta empresa concentra todos los parámetros del sistema eléctrico colombiano que son importantes a la hora de realizar la predicción del precio de bolsa. Los predictores están dados por:\\
--\textit{Generación por tipo de recursos (kWh)}: Los recursos naturales permiten abastecer de energía eléctrica a las comunidades. Además, el precio de bolsa está representando por la generación de energía por medio de estos recursos, ya que esto permite que los agentes puedan continuar con su producción de energía y así, establecer dicho valor. Por lo tanto, existen 6 tipos de generadores: Eólica, solar, hidráulica, cogenerador y térmica.\\
-Esta variable numérica cuenta con siguiente análisis descriptivo  de cada uno de los tipos de generadores. Como se observa en las siguientes gráficas, este análisis realizado para cada hora del día en el marco de fechas establecidas anteriormente.
+-\textit{Generación por tipo de recursos (kWh)}: Los recursos naturales permiten abastecer de energía eléctrica a las comunidades. Además, el precio de bolsa está representando por la generación de energía por medio de estos recursos, ya que esto permite que los agentes puedan continuar con su producción de energía y así, establecer dicho valor. Por lo tanto, existen 5 tipos de generación: Eólica (generación a partir del viento), solar (generación a partir de la radiación solar), hidráulica (generación a partir del agua), cogenerador (generación de energía eléctrica a partir de procesos industriales) y térmica (a partir de combustibles fósiles).\\
+Esta variable numérica cuenta con el análisis descriptivo  de cada uno de los tipos de generadores por cada hora, que se muestran en los Cuadros ~\ref{tab_15}, ~\ref{tab_16}, ~\ref{tab_17},~\ref{tab_18} y ~\ref{tab_19}. Como se observa en los Cuadros, este análisis realizado para cada hora del día en el marco de fechas establecidas anteriormente. Se observa que el tipo de generación que abastece la demanda de energía eléctrica en el país es la generación hidráulica y en segundo lugar la generación térmica. Para la generación solar, eólica y de cogeneración, como no existen muchas plantas, estas presentan valores de generación iguales a cero; para la generación solar, se observa que para las horas de la noche, los valores son bajos a nulos.
 
--\textit{Índice Interoceánico de El Niño (ONI)}: Este indicador refleja la variación de la temperatura en el océano pacífico. Por lo tanto, al contar con un índice alto o mayor a 0.5 se presentan sequías, es decir, hay fenómeno del niño y si, por el contrario, el índice presenta valores pequeños o inferiores a -0.5 existe un fenómeno de la niña, en donde se presentan muchas lluvias. Por lo tanto, al presentarse el fenómeno del niño, los agentes generadores deben producir energía térmica, aumentando costos y llevando a que el precio de bolsa energético también aumente. Este indicador se da de manera mensual, se realizó la interpolación a datos diarios y se asume que es la misma para cada hora del día. Se obtuvo la información a través de web scrapping de la página web en \cite{b3}.\\
+-\textit{Índice Interoceánico de El Niño (ONI)}: Este indicador refleja la variación de la temperatura en el océano pacífico. Por lo tanto, al contar con un índice alto o mayor a 0.5 se presentan sequías, es decir, hay fenómeno del niño y si, por el contrario, el índice presenta valores pequeños o inferiores a -0.5 existe un fenómeno de la niña, en donde se presentan muchas lluvias. Por lo tanto, por ejemplo, al presentarse el fenómeno del niño, los niveles de los ríos bajan, se debe priorizar la generación a través de plantas térmicas, aumentando costos y llevando a que el precio de bolsa energético también aumente. Este indicador se da de manera mensual, se realizó la interpolación a datos diarios y se asume que es la misma para cada hora del día. Se obtuvo la información a través de web scrapping de la página web en \cite{b3}.\\
 
 -\textit{Aportes totales (Aportes Hídricos en kWh)}: La variable representa cuanta energía se puede obtener de los ríos en Colombia. El precio de bolsa energético está altamente representado por esta variable ya que, la fuente principal energética del país es por medio del agua, ya que la matriz energética es 69\% hidráulica cite{b2}. Por lo tanto, Colombia depende de los ríos abastecer de energía a la sociedad. Es decir, a medida que aumenta el caudal en los ríos,el precio de bolsa disminuye. Este indicador se da de manera diaria, se asume que es la misma para cada hora del día.\\
 
@@ -138,15 +138,19 @@ De acuerdo con la aplicación web descrita anteriormente, cuyo enlace se encuent
 
 
 \section{Conclusiones y recomendaciones}
+
+\begin{itemize}
+\item El precio de bolsa energético está caracterizado por los factores anteriormente descritos y analizados. Sin embargo, existen factores exógenos a los modelos, como la volatilidad que puede presentarse dentro de un mercado eléctrico y sus operaciones cada hora. Por otra parte, aunque se esté analizando en términos económicos este valor, es fundamental considerar que este precio está influenciado por el impacto ambiental y el calentamiento global, haciendo que cuando se generen sequías, este precio aumente considerablemente, ya que otro tipo de generadores son más costosos y por ende, el precio de energía también.
+\item La implementación de modelos de series de tiempo requiere mantener la secuencia de los datos, lo cual fue un reto al ejecutar ambos modelos.
+\item Realizando un análisis de las variables utilizadas, se observa que el precio está influenciado principalmente por la generación hidráulica, predictor para el cual no se tiene valor de generación 0 y que al variarse genera un cambio en la predicción.
+ 
+\end{itemize}
+
+Finalmente, mediante la predicción del precio de bolsa energética por hora, se pudo evidenciar limitaciones y recomendaciones.
+
+\subsection{Limitaciones}
 \begin{itemize}
 \item Se encontró como limitación, que debido  a que el precio de bolsa energético es muy volátil y depende las ofertas en generación que realicen los agentes, se puede presentar algunas imprecisiones en la predicción de este valor, debido a que no fue posible disminuir el RMSE. 
-Recomendaciones: Debido al hallazgo de la volatilidad de este precio, es necesario crear más estrategias que mitiguen este impacto volátil inevitable por medio de inclusión de diferentes más variables en los modelos por hora.
-
-\item Fue un bastante interesante obtener los datos geográficos para utilizarlos como predictores o para imputar datos de variables existentes, fue en la parte del PS3 que más se demoró para obtener y que representó un gran reto y esfuerzo, sin embargo, consideramos la información obtenida muy relevante y que puede servir para futuras aplicaciones.
-\item Los resultados más aceptables para el ejercicio fueron los que tuvieron en cuenta mayor cantidad de variables para obtener la predicción.
-\item Para el presente trabajo, el modelo con menor RMSE y que también presentó una menor relación precio vs vivienda, fue el escogido para realizar la predicción y fue el que se entrenó posteriormente para obtener la predicción.
-\item Como recomendación, con mayor cantidad de tiempo, se hubiese podido realizar otros modelos variando los hiperparámetros del modelo \textit{XGBoost}. 
-
 \end{itemize}
 
 \subsection{Recomendaciones}
@@ -154,6 +158,7 @@ Recomendaciones: Debido al hallazgo de la volatilidad de este precio, es necesar
 \item Debido al hallazgo de la volatilidad de este precio, es necesario crear más estrategias que mitiguen este impacto volátil inevitable por medio de inclusión de más variables en los modelos por hora, por ejemplo, los parámetros técnicos de los generadores (información no disponible de manera pública por parte de XM).
 
 \item En cuanto a la Aplicación Web, se puede extender para que el usuario de la interfaz pueda escoger con qué otros modelos realice la predicción.
+\item Se observa que al variar las fechas, los precios no se afectan significativamente, por lo cual, se debe profundizar en el la implementación de modelos de Boosting para series de tiempo.
 
 \end{itemize}
 
@@ -178,7 +183,7 @@ Se presentan los Cuadros donde se consignan las estadísticas descriptivas de la
 % Date and time: mar., ago. 02, 2022 - 3:04:06 p. m.
 \begin{table}[!htbp] \centering 
   \caption{Comparación de RMSE para modelo con bifurcación 3 y 100} 
-  \label{} 
+  
 \begin{tabular}{@{\extracolsep{5pt}} ccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
@@ -218,7 +223,7 @@ Predicción\_h23 & $120.46$ & $132.46$ \\
 % Date and time: mar., ago. 02, 2022 - 4:23:13 p. m.
 \begin{table}[!htbp] \centering 
   \caption{Cuadro descriptivo para tipo de generación mediante Cogeneración} 
-  \label{} 
+  
 \begin{tabular}{@{\extracolsep{5pt}} ccccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
@@ -258,8 +263,7 @@ h23 & 0 & 143.285,56 & 40.450,315& 0 \\
 % Date and time: mar., ago. 02, 2022 - 4:24:24 p. m.
 \begin{table}[!htbp] \centering 
   \caption{Cuadro descriptivo para tipo de generación Hidráulica} 
-  \label{} 
-\begin{tabular}{@{\extracolsep{5pt}} ccccc} 
+  \begin{tabular}{@{\extracolsep{5pt}} ccccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
 Hora & Mín. & Máx. & Media & Moda \\ 
@@ -336,8 +340,7 @@ h23 & 0 & 4.379.308,16 & 918.575,431 & 0 \\
 % Date and time: mar., ago. 02, 2022 - 4:28:02 p. m.
 \begin{table}[!htbp] \centering 
   \caption{Cuadro descriptivo para tipo de generación solar} 
-  \label{} 
-\begin{tabular}{@{\extracolsep{5pt}} ccccc} 
+  \begin{tabular}{@{\extracolsep{5pt}} ccccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
 Hora & Mín. & Máx. & Media & Moda \\ 
@@ -375,8 +378,7 @@ h23 & 0 & 469,52 & 0,160& 0 \\ \hline \\[-1.8ex]
 % Date and time: mar., ago. 02, 2022 - 4:29:02 p. m.
 \begin{table}[!htbp] \centering 
   \caption{Cuadro descriptivo para tipo de generación eólica} 
-  \label{} 
-\begin{tabular}{@{\extracolsep{5pt}} ccccc} 
+  \begin{tabular}{@{\extracolsep{5pt}} ccccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
 Hora & Mín. & Máx. & Media & Moda \\ 
