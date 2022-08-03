@@ -87,7 +87,31 @@ El parámetro de comparación entre modelos fue el RMSE. Para cada precio de bol
 Para el modelo 2, las horas predichas coinciden con las de mayor demanda en el sistema eléctrico colombiano. 
 
 \subsection{Implementación en App web}
-Ahora bien, para la implementación del modelo en la aplicación web, no fue necesario correr todo el código desarrollado en el modelo, sin embargo, para los predictores correspondientes a generación, se realizó una restricción de los datos a ingresar. Al tener los datos de las capacidades instaladas en generación del sistema (potencia), se obtuvo la suma de las capacidades de todos los generadores por tipo de generación, y así se obtuvo el rango en dichos predictores. Los resultados se muestran en el Cuadro ~\ref{tab_10}. No se puede asignar más capacidad de la que se encuentra instalada en el sistema de manera horaria.  
+Ahora bien, para la implementación del modelo en la aplicación web, no fue necesario correr todo el código desarrollado en el modelo, sin embargo, para los predictores correspondientes a generación, se realizó una restricción de los datos a ingresar. Al tener los datos de las capacidades instaladas en generación del sistema (potencia), se obtuvo la suma de las capacidades de todos los generadores por tipo de generación, y así se obtuvo el rango en dichos predictores. Los resultados se muestran en el Cuadro ~\ref{tab_10}. No se puede asignar más capacidad de la que se encuentra instalada en el sistema de manera horaria.
+
+\begin{table}[htbp]
+\caption{Capacidades máximas en el SIN Colombiano por tipo de Generación}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+ Tipo de Generación&Capacidad (kW)\\
+\hline 
+Cogenerador&178.400\\
+\hline
+Eólica&20.000\\
+\hline
+Hidráulica&11.790.431\\
+\hline
+Térmica&8.823.450\\
+\hline
+Solar&157.726\\
+  
+	\hline
+\end{tabular}
+\label{tab_10}
+\end{center}
+\end{table}
+  
 \section{Resultados}
 Para implementar el modelo en una aplicación web, utilizamos el paquete de \textit{Shiny} de R con los códigos especiales para que sean ejecutados mediante una página web. Para la implementación, se guardaron los modelos que menor RMSE tuvieron para cada modelo de precio horario y estos son los que se ejecutan en la página para la visualización e ingreso de variables por parte de un usuario. En la Figura ~\ref{fig_3} se muestra el entorno de la aplicación web de acceso público pero con limitación en el tiempo, con posibilidad de variar los campos a criterio y conocimiento del usuario, y después de unos segundos, se muestra el resultado de la aplicación. 
 
