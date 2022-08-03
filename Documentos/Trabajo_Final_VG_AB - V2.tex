@@ -33,14 +33,14 @@ E-mail:mv.gaona@uniandes.edu.co}
 
 \begin{abstract}
 El precio de bolsa de energía eléctrica del Mercado de Energía Mayorista (MEM) Colombiano está dado por diversos factores para generar un ambiente propicio de competencia y formación eficiente de precios, que le permitan a la demanda tener precios óptimos. Es por ello que es fundamental el análisis  de este mercado para que a medida que pase el tiempo, los agentes que participan en este mercado puedan identificar factores de riesgo más rápido y así, tomar las mejores decisiones para la economía y distribución de energía del país. Por lo tanto, de acuerdo con el análisis anterior, contar con una herramienta como una aplicación web que pueda predecir este valor genera una dinámica más eficiente para los agentes que están dentro del sector y a su vez, a ciudadanos que estén interesados en el campo energético. \
-Para acceder a la aplicación web, se presenta el siguiente enlace: url{https://aplicaciones-web-abeleno.shinyapps.io/pred_precio_bolsa_horario/} A su vez, el link al  repositorio del presente documento se encuentra en el siguiente enlace: \url{https://github.com/mvgaona/Proyecto-final-MEcA-4107}
+Para acceder a la aplicación web, se presenta el siguiente enlace: \url{https://aplicaciones-web-abeleno.shinyapps.io/pred_precio_bolsa_horario/} A su vez, el link al  repositorio del presente documento se encuentra en el siguiente enlace: \url{https://github.com/mvgaona/Proyecto-final-MEcA-4107}
 \end{abstract}
 
 
 \section{Introducción}
 El mercado eléctrico colombiano es un mercado competitivo en donde participan generadores, transmisores, distribuidores, consumidores y comercializadores de energía. Este mercado se divide en dos segmentos: Corto y largo plazo, sin embargo, en el siguiente documento se presentará el análisis del mercado en corto plazo por medio de la bolsa de energía de Colombia, la cual es administrada por XM, en donde se presenta la participación de generadores y comercializadores de energía para la compra y venta a precio de bolsa de energía eléctrica, con el objetivo de suplir la demanda adecuada de energía en el país.\\
-De acuerdo con Trespalacios, Pantoja & Fernandez (2017)[5], el mercado spot o la bolsa de energía hace referencia al mercado en donde se obtiene la energía eléctrica de forma instantánea, con el objetivo de lograr un balance entre oferta  y demanda. A su vez, los autores afirman que dicho precio de bolsa se define mediante un conjunto de normas que buscan precisar el nivel de referencia en caso de escasez.\\
-Poveda (2012) [1] afirma que el despacho ideal es el programa de generación que está dado por el uso de los recursos más económicos hasta cubrir la demanda doméstica real, más las Transacciones Internacionales de Electricidad de Corto Plazo - TIE (Exportaciones como demanda e importaciones como generación), más las pérdidas del STN (Sistema de Transmisión Nacional). Teniendo en cuenta lo anterior, el precio de bolsa está dado por el precio de oferta obtenido por medio del despacho ideal, el cual es utilizado para valorar los intercambios en bolsa.\\
+De acuerdo con Trespalacios, Pantoja \& Fernandez (2017)\cite{b5}, el mercado spot o la bolsa de energía hace referencia al mercado en donde se obtiene la energía eléctrica de forma instantánea, con el objetivo de lograr un balance entre oferta  y demanda. A su vez, los autores afirman que dicho precio de bolsa se define mediante un conjunto de normas que buscan precisar el nivel de referencia en caso de escasez.\\
+Poveda (2012) \cite{b1} afirma que el despacho ideal es el programa de generación que está dado por el uso de los recursos más económicos hasta cubrir la demanda doméstica real, más las Transacciones Internacionales de Electricidad de Corto Plazo - TIE (Exportaciones como demanda e importaciones como generación), más las pérdidas del STN (Sistema de Transmisión Nacional). Teniendo en cuenta lo anterior, el precio de bolsa está dado por el precio de oferta obtenido por medio del despacho ideal, el cual es utilizado para valorar los intercambios en bolsa.\\
 El correcto funcionamiento del mercado eléctrico es fundamental para el análisis de la demanda energética en el país: si es necesario realizar estrategias en el manejo de los recursos naturales con los que se genera energía, si la dinámica de compra y venta de energía está siendo óptima para la economía y sociedad colombiana. Generar una proyección de estos precios permite poder hacer inferencia acerca de cómo el mercado puede estar funcionando y aunque ´ este sea un sistema fluctuante, se puede generar predicciones acerca de su comportamiento.\\
 
 En el siguiente documento se encuentra el análisis acerca de los datos recaudados para la predicción del precio de bolsa de energía eléctrica del mercado de energía mayorista colombiano, en donde se implementará un modelo de Machine Learning automático en una aplicación web, que permitirá modelar futuros precios de bolsa y con ello, tomar decisiones comerciales basadas en los datos adquiridos
@@ -48,78 +48,76 @@ En el siguiente documento se encuentra el análisis acerca de los datos recaudad
 
 \section{Datos} \label{AA}
 
-El precio de una vivienda puede estar dado por diferentes factores, tanto económicos como sociales. En el caso Colombiano, estos precios pueden estar influenciados por elementos propios de la vivienda y a su vez, por elementos geoespaciales, como la distancia a diversos lugares públicos (Bares, transporte público, etc). Para realizar un modelo de predicción de precios de la vivienda, es necesario contar con las variables determinantes y relevantes del precio, para que este modelo sea robusto, pero no se incurran en gastos que entorpezcan esta labor. En el presente modelo de predicción se tomó en cuenta solo los datos de  las viviendas ubicadas en las localidades objetivo (Chapinero y Poblado) y el total de datos (Base de entrenamiento y base de testeo) es de 24.843 viviendas. \
-Dentro del proceso de recolección de datos puede ocurrir que no se encuentre toda la información necesaria, ya sea porque la base de datos no provee dicha información o, por el contrario, no se pudo recolectar toda la información de cada vivienda. Es por eso que es necesario realizar un proceso de limpieza y recuperación de datos. Se realizaron diversos procesos para poder contar con toda la información:\\ 
--Se cuenta con variables las cuales ya tienen la información completa, por lo tanto no es necesario realizar ningún tratamiento:
-\begin{itemize}
-\item \textit{Ubicación}: La ubicación del inmueble en el modelo será esencial para el análisis ya que se analizarán dos localidades de dos ciudades diferentes y los precios de las ciudades si bien están dados por características similares, el costo de vida por ciudad también influye en el valor de la vivienda. Esta variable es categórica, y se tiene que la mayoría de datos son de la ciudad de Bogotá (ver Cuadro ~\ref{tab_1}).
-\item \textit{Tipo de propiedad}: Si la propiedad es un apartamento o si es una casa influye sustancialmente en el precio, ya que el área de una casa suele ser más grande, cuenta con más oportunidad de reformas y espacios más amplios de esparcimiento. Esta variable categórica cuenta con una mayor proporción de apartamentos (Ver Cuadro ~\ref{tab_2}).
-\end{itemize}
--Para algunas variables existentes en la base de datos, se generó la comparación entre dicha información y los valores hallados por medio de la inspección de la descripción de cada inmueble, generando las siguientes variables sin información faltante:
-\begin{itemize}
-\item \textit{Habitaciones}: El número de habitaciones de la vivienda es determinante en el precio de la misma, ya que se puede contar con un aproximado del espacio y de cuántos individuos pueden vivir, es decir, entre más habitaciones, el precio del inmueble tiende a incrementarse. Por lo tanto, dentro del análisis descriptivo de este predictor se encuentra que es  una variable numérica, con media de 3 habitaciones (Ver Cuadro ~\ref{tab_3}).
-\item \textit{Cantidad de baños}: Este es otro factor de decisión importante en el precio del inmueble, ya que sin baños, los individuos no pueden satisfacer las necesidades básicas de aseo. Por lo tanto es necesario contar con al menos un baño y con ello, se puede identificar que a medida que aumentan la cantidad de baños, el precio de igual manera se verá afectado e incrementará. De acuerdo con lo anterior, se observa que en la variable numérica, la media fue de 3 baños (ver Cuadro ~\ref{tab_4}).
-\end{itemize}
+El precio de bolsa de energía puede estar dado por diferentes factores que representan las condiciones del mercado energético colombiano, por ejemplo. Este precio se genera cada hora y, por lo tanto, es necesario considerar 24 modelos correspondientes a cada momento del día en donde se presentan cambios en este valor. Por lo tanto, para considerar realizar un modelo de predicción es necesario contar con factores determinantes que expliquen cómo se produce este precio. Por otra parte, dentro del análisis se recopiló información desde el 01/01/2000 hasta 30/06/2022, en donde no se presenta información faltante que deba ser imputada. En total la base cuenta con 8.217 observaciones.\\ 
+Los datos a utilizar para el desarrollo de la predicción, se encuentran en la página del operador del mercado eléctrico colombiano XM. Esta empresa concentra todos los parámetros del sistema eléctrico colombiano que son importantes a la hora de realizar la predicción del precio de bolsa. Los predictores están dados por:\\
+-\textit{Generación por tipo de recursos (kWh)}: Los recursos naturales permiten abastecer de energía eléctrica a las comunidades. Además, el precio de bolsa está representando por la generación de energía por medio de estos recursos, ya que esto permite que los agentes puedan continuar con su producción de energía y así, establecer dicho valor. Por lo tanto, existen 6 tipos de generadores: Eólica, solar, hidráulica, cogenerador y térmica.\\
+Esta variable numérica cuenta con siguiente análisis descriptivo  de cada uno de los tipos de generadores. Como se observa en las siguientes gráficas, este análisis realizado para cada hora del día en el marco de fechas establecidas anteriormente.
 
--De acuerdo con la información proporcionada por la descripción de cada inmueble, se generaron las siguientes variables:
+-\textit{Índice Interoceánico de El Niño (ONI)}: Este indicador refleja la variación de la temperatura en el océano pacífico. Por lo tanto, al contar con un índice alto o mayor a 0.5 se presentan sequías, es decir, hay fenómeno del niño y si, por el contrario, el índice presenta valores pequeños o inferiores a -0.5 existe un fenómeno de la niña, en donde se presentan muchas lluvias. Por lo tanto, al presentarse el fenómeno del niño, los agentes generadores deben producir energía térmica, aumentando costos y llevando a que el precio de bolsa energético también aumente. Este indicador se da de manera mensual, se realizó la interpolación a datos diarios y se asume que es la misma para cada hora del día. Se obtuvo la información a través de web scrapping de la página web en \cite{b3}.\\
 
-\begin{itemize}
-\item \textit{Ascensor}: Si el inmueble cuenta con ascensor o no es determinante en el caso de los apartamentos de pisos altos, es por eso que se considera un predictor importante del modelo, ya que quienes viven en pisos más altos, buscan apartamentos donde tenga ascensor y a su vez, el precio aumenta si el inmueble cuenta con este. Dentro del análisis descriptivo de la variable, es posible identificar que es una variable dicótoma, donde 1 corresponde a si el inmueble cuenta con ascensor y 0 si no (Ver Cuadro ~\ref{tab_5}).Los inmuebles que no cuentan con ascensor también pueden ser apartamentos que no cuentan con uno y casas que no lo necesitan.
-\item \textit{Parqueadero}: En la actualidad, gran parte de los individuos cuentan con uno o más carros, por lo tanto, es necesario que el inmueble cuente con al menos un parqueadero, por lo tanto, si el inmueble incluye al menos un garaje, el precio de la vivienda tenderá a aumentar su valor. Por otra parte, de acuerdo con el análisis descriptivo, se identifica que esta es una variable dicótoma, en donde 1 hace referencia a que la casa o el apartamento cuenta con al menos un parqueadero y 0 que no lo hace. La proporción de inmuebles que cuentan con al menos un parqueadero es que la mayoría de inmuebles de la base no cuenta con parqueaderos (ver cuadro ~\ref{tab_6}). La proporción puede estar dada debido a que algunos vendedores no ofrecieron dicha información, por ejemplo.
-\end{itemize}
- 
--De acuerdo con la ubicación geoespacial, se pueden recuperar datos por medio de la búsqueda de características similares de otras viviendas y dicho promedio, adjuntarlo al inmueble que no cuenta con información, ya que al estar en un perímetro cercano, los inmuebles suelen presentar características similares.
-\begin{itemize}
-\item \textit{Área}: El área de un inmueble es fundamental para conocer el precio del mismo, ya que a medida que el área aumente, también el precio. Esto se da debido a que un espacio amplio permite contar con un mayor número de habitaciones, baños, una cocina más amplia y demás espacios de esparcimiento. Además, permite más posibilidades de remodelación y de inversión. Por lo tanto, ante la variable numérica presentada, se encuentran que se tiene una media de 286 m2. Para más información (ver Cuadro ~\ref{tab_7})
+-\textit{Aportes totales (Aportes Hídricos en kWh)}: La variable representa cuanta energía se puede obtener de los ríos en Colombia. El precio de bolsa energético está altamente representado por esta variable ya que, la fuente principal energética del país es por medio del agua, ya que la matriz energética es 69\% hidráulica cite{b2}. Por lo tanto, Colombia depende de los ríos abastecer de energía a la sociedad. Es decir, a medida que aumenta el caudal en los ríos,el precio de bolsa disminuye. Este indicador se da de manera diaria, se asume que es la misma para cada hora del día.\\
 
-\end{itemize}
+-\textit{Tasa Representativa del mercado-TRM:} Este indicador hace referencia a la cantidad de pesos colombianos por un dólar estadounidense. Esta variable es relevante dentro de los modelos, debido a que el combustible térmico es pagado con la moneda dólar y por lo tanto, la variación de este valor genera un impacto, ya que estos recursos son distribuidos por medio de una moneda internacional, es decir, al contar con la moneda local devaluada, el precio de estos insumos aumenta. Este indicador se da de manera diaria, se asume que es la misma para cada hora del día.\\
 
--Por medio de la ubicación geoespacial, las variables adicionales que se encontraron y que consideramos relevantes para la predicción, fueron las siguientes: 
-\begin{itemize}
-\item \textit{Distancia a Transporte público}: Contar con al menos un transporte público cerca de la vivienda es fundamental para poder desplazarse con facilidad. Por lo tanto, esta variable presenta la distancia mínima que tiene el inmueble con al menos un medio de transporte público, ya que a medida que esta distancia sea más corta, el precio puede incrementarse. Para esta variable se cuenta con una media de 1,5km (Ver Cuadro ~\ref{tab_8})
-\item \textit{Distancia a Bares}: La distancia mínima a bares es otro factor a tener en cuenta, ya que, en general, este tipo de establecimiento hace que pueda generar incomodidad a los habitantes en las horas de la noche. Por lo tanto, al estar cada vez más alejados de un bar, el comprador puede estar más interesado en el inmueble. De acuerdo con la variable numérica, se presenta que la media de distancia se encuentra en 694m (Ver Cuadro ~\ref{tab_9}).
-\item \textit{Distancia a Parques}:La distancia mínima a por lo menos un parque es otro predictor relevante dentro del modelo, ya que, en general, los individuos buscan tener un espacio verde y de recreación cerca, por tema de hijos o mascotas, o porque los compradores también desean un espacio al aire libre para su propio entrenamiento. Por lo tanto, a medida que esta distancia va disminuyendo, el precio del inmueble tiende a incrementar. Esta variable numérica tiene una media de 230m (Ver Cuadro ~\ref{tab_10}). 
-\end{itemize}
-
-
-
-
-\section{Modelo}
-Con base en las variables presentadas en la sección \ref{AA}, se procedió a realizar varios modelos para determinar cuál era el más apropiado para realizar la predicción de precio de viviendas. Se analizó la posibilidad de partir la base \textit{train} (con 13.693 datos)en un \textit{subtrain} y \textit{subtest}, sin embargo, teniendo en cuenta que la base de \textit{test} original cuenta con 11.150 observaciones, realizar la subdivisión de \textit{train} en un menor número de muestras, podría ir en perjuicio de la predicción por contar con un menor número de datos para entrenar, por lo cual, se decidió implementar los modelos sobre la base \textit{train}. En primera instancia, se realizó una prueba utilizando las 10 variables mencionadas en la sección \ref{AA} y se realizó un modelo de regresión con \textit{OLS} (modelo 1), luego, se realizó la regularización de Lasso para la regresión OLS (modelo 2). Adicionalmente, se realizaron los modelos \textit{Random Forest} (modelo 3) y \textit{XGBoost} (modelo 4), teniendo en cuenta las variables mencionadas anteriormente, para explorar si estas alternativas para datos no lineales podían dar un mejor resultado. Las 10 variables utilizadas para realizar los modelos mencionados anteriormente son las siguientes: 
-\begin{itemize}
-\item \textit{Ubicación}, \textit{Tipo de vivienda}, \textit{Habitaciones}, \textit{Baños}, \textit{Área}, \textit{Distancia a bares}, \textit{Distancia a transporte público}, \textit{Ascensor}, \textit{Parqueaderos}, \textit{Distancia a parques}.  
-\end{itemize}
-
-Luego de correr los modelos, se decidió disminuir el número de variables para realizar las regresiones para los 4 modelos mencionados anteriormente, utilizando 5 variables que se mencionan a continuación: 
-\begin{itemize}
-\item \textit{Habitaciones}, \textit{Baños}, \textit{Área}, \textit{Distancia a bares}, \textit{Distancia a transporte público} 
-\end{itemize}
-Se obtuvieron las variables relevantes en el modelo \textit{Random Forest}, que son las 6 que se presentan a continuación :
-\begin{itemize}
-\item \textit{Habitaciones}, \textit{Baños},\textit{Área}, \textit{Distancia a bares}, \textit{Distancia a transporte público},  \textit{Distancia a parques}
-\end{itemize}
-Utilizando las variables presentadas anteriormente, se corrieron los modelos mencionados incialmente (\textit{OLS}, \textit{Lasso}, \textit{Random Forest}, \textit{XGBoost}, para un total de 12 modelos. El parámetro de comparación entre modelos fue el RMSE. Se observó que al disminuir la cantidad de variables, el RMSE aumentó, por lo cual, se decidió realizar la comparación con los 4 modelos descritos anteriormente en términos de RMSE. Al hacer la comparación, se obtuvo que el modelo de \textit{Random Forest} con un número de árboles igual a 5, fue el de menor RMSE (este resultado se presenta en la Figura ~\ref{fig_3}). \\
-Ahora bien, existen un tema relevante a tener en cuenta para decidir cuál modelo se debe escoger para realizar la predicción, como lo es la relación de dinero para compra (\$) vs. la cantidad de viviendas compradas ($Viv$) (no solo en términos de RMSE), en donde se escoge el modelo con el que se obtenga la menor relación, teniendo en cuenta que entre más casas compradas y menor valor gastado, la relación $ \$/Viv$ será menor. Se realizó la comparación de cada set de modelos, con las 10, 5 y 6 variables, de lo cual se obtuvo la información presentada en los Cuadros ~\ref{tab_11}, ~\ref{tab_12} y ~\ref{tab_13}. Lo anterior, para concluir que el mejor modelo para realizar la predicción fue el de \textit{Random Forest} con 10 variables. Cabe anotar que la cantidad de árboles contemplada para el modelo fue de 5, por lo cual, se decidió entrenar el modelo variando el número de árboles, aumentándolo para disminuir el RMSE; después de intentar varios valores, se decidió fijar el número de árboles en 1.000 (el número de predictores por default fue el $\sqrt{p}$); para este caso, se obtuvo un menor RMSE, y al realizar el cálculo de relación dinero gastado vs viviendas compradas, también fue el más eficiente. Finalmente, la predicción obtenida se guardó en el archivo .csv solicitado.
+Para las variables numéricas mencionadas anteriormente, se presenta la Figura ~\ref{fig_6} donde se encuentra el análisis descriptivo. 
 
 \begin{figure}[htbp]
-\centerline{\includegraphics[width=0.2\textwidth]{../Vistas/Comp_MSE_modelos_var_10.png}}
-\caption{Comparación RMSE modelos para obtener \textit{price}}
-\label{fig_3}
+\centerline{\includegraphics[width=0.5\textwidth]{../Images/Cuadro_descriptivo_varias_var.png}}
+\caption{Cuadro descriptivo para TRM, ONI y Aportes totales}
+\label{fig_6}
 \end{figure}
 
 
+\section{Modelo} \label{BB}
+
+Con base en las variables presentadas en la sección \ref{AA}, se procedió a realizar, considerando series de tiempo, los modelos con diferentes hiperparámetros teniendo como base el \textit{XGBoost}. Se debe tener en cuenta, que el precio de bolsa del despacho ideal se da de manera horaria, por lo cual, se realizaron las predicciones para cada hora del día, considerando los predictores:\textit{TRM}, \textit{Aportes hídricos}, \textit{ONI}, la fecha (se dividió en \textit{año}, \textit{mes} y \textit{día} y el tipo de Generación (5 tipos de generación por 24 horas del día), dependiendo del recurso. Al ser series de tiempo los datos utilizados para desarrollar el presente trabajo, se dividió la base de datos en \textit{train} con el 70\% de los datos desde el 2000-01-01 y el restante 30\% fueron las fechas subsiguientes. Cabe anotar que para series de tiempo, las muestras de las bases a analizar deben ser secuenciales, por lo cual, dichas bases no se obtuvieron de manera aleatoria.\\
+Ahora bien, se consideró que el modelo \textit{XGBoost} era el más apto para realizar la predicción del precio bolsa, teniendo en cuenta que este modelo se considera el mejor para aplicarlo a casos donde la no linealidad y la volatilidad son importantes. Se entrenaron varios modelos, de los cuales se presentan resultados de 2, en donde los hiperparámetros variaron para estos modelos para cada predicción del precio de bolsa para cada hora del día. Se explicará en breve los aspectos relevantes de cada modelo. Se debe tener en cuenta que para todos los modelos se utilizaron todas las variables contempladas en la sección \ref{AA}, es decir, 151 variables en total.
+
+\begin{itemize}
+\item \textit{\textbf{Modelo 1}}: Hiperparámetros importantes: $\lambda=0.3$ (tasa de aprendizaje), $d=3$ (número de bifurcaciones), $n=100$ (número de iteraciones). Esto se aplicó para la predicción del precio de bolsa horario para las 24 horas.
+\item \item \textit{\textbf{Modelo 2}}: Hiperparámetros importantes: $\lambda=0.3$ (tasa de aprendizaje), $d=100$ (número de bifurcaciones), $n=1000$ (número de iteraciones). Esto se aplicó para la predicción del precio de bolsa horario para las 24 horas.
+\end{itemize}
+
+El parámetro de comparación entre modelos fue el RMSE. Para cada precio de bolsa horario se observó que los modelos presentados anteriormente, tenían diferente RMSE, tomándose el más bajo para realizar la predicción en la aplicación web. En el Cuadro ~\ref{tab_14} se presentan los resultados del RMSE para cada predicción de bolsa. En resumen, los precios de bolsa horarios a los cuales se les aplicó el modelo 1 o 2, se presentan a continuación: 
+
+\begin{itemize}
+\item \textit{\textbf{Modelo 1}}: Predicción del precio de bolsa para las horas: 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 17, 18, 22 y 23\item\textit{\textbf{Modelo 2}}: Predicción del precio de bolsa para las horas: 1, 11, 13, 14, 16, 19, 20 y 21.
+\end{itemize}
+
+Para el modelo 2, las horas predichas coinciden con las de mayor demanda en el sistema eléctrico colombiano. 
+
+\subsection{Implementación en App web}
+Ahora bien, para la implementación del modelo en la aplicación web, no fue necesario correr todo el código desarrollado en el modelo, sin embargo, para los predictores correspondientes a generación, se realizó una restricción de los datos a ingresar. Al tener los datos de las capacidades instaladas en generación del sistema (potencia), se obtuvo la suma de las capacidades de todos los generadores por tipo de generación, y así se obtuvo el rango en dichos predictores. Los resultados se muestran en el Cuadro ~\ref{tab_10}. No se puede asignar más capacidad de la que se encuentra instalada en el sistema de manera horaria.  
 \section{Resultados}
-Para implementar el modelo en una aplicación web, utilizamos el paquete de \textit{Shiny} de R con los códigos especiales para que sean ejecutados mediante una página web. Para la implementación, se guardaron los modelos que menor RMSE tuvieron para cada modelo de precio horario y estos son los que se ejecutan en la página para la visualización e ingreso de variables por parte de un usuario. En la Figura ~\ref{fig_3} se muestra el entorno de la aplicación web de acceso público pero con limitación en el tiempo, con posibilidad de variar los campos a criterio y conocimiento del usuario. 
+Para implementar el modelo en una aplicación web, utilizamos el paquete de \textit{Shiny} de R con los códigos especiales para que sean ejecutados mediante una página web. Para la implementación, se guardaron los modelos que menor RMSE tuvieron para cada modelo de precio horario y estos son los que se ejecutan en la página para la visualización e ingreso de variables por parte de un usuario. En la Figura ~\ref{fig_3} se muestra el entorno de la aplicación web de acceso público pero con limitación en el tiempo, con posibilidad de variar los campos a criterio y conocimiento del usuario, y después de unos segundos, se muestra el resultado de la aplicación. 
 
 \begin{figure}[htbp]
-\centerline{\includegraphics[width=0.2\textwidth]{../Images/Resultado_Trabajo_final.png}}
+\centerline{\includegraphics[width=0.5\textwidth]{../Images/Resultado_Trabajo_final.png}}
 \caption{Resultado de la aplicación web}
 \label{fig_3}
 \end{figure}
+De acuerdo con la aplicación web descrita anteriormente, cuyo enlace se encuentra en el abstract del presente documento, se presentan dos ejemplos de predicciones con diferentes valores reportados en las variables para Agosto 20\/2022 y Septiembre 10\/2022 en las Figuras ~\ref{fig_4}  y ~\ref{fig_5}, respectivamente.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=0.5\textwidth]{../Images/AppWeb1.png}}
+\caption{Ejemplo para Agosto 20/2022}
+\label{fig_4}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=0.5\textwidth]{../Images/AppWeb2.png}}
+\caption{Ejemplo para Septiembre 10\/2022}
+\label{fig_5}
+\end{figure}
+
+
 
 \section{Conclusiones y recomendaciones}
 \begin{itemize}
-\item La adquisición de información del texto de descripción es muy dependiente de patrones fijos que permitan extraer los datos de interés fácilmente, por ello, es posible que haya faltado información para tener la información completa de los datos.
+\item Se encontró como limitación, que debido  a que el precio de bolsa energético es muy volátil y depende las ofertas en generación que realicen los agentes, se puede presentar algunas imprecisiones en la predicción de este valor, debido a que no fue posible disminuir el RMSE. 
+Recomendaciones: Debido al hallazgo de la volatilidad de este precio, es necesario crear más estrategias que mitiguen este impacto volátil inevitable por medio de inclusión de diferentes más variables en los modelos por hora.
+
 \item Fue un bastante interesante obtener los datos geográficos para utilizarlos como predictores o para imputar datos de variables existentes, fue en la parte del PS3 que más se demoró para obtener y que representó un gran reto y esfuerzo, sin embargo, consideramos la información obtenida muy relevante y que puede servir para futuras aplicaciones.
 \item Los resultados más aceptables para el ejercicio fueron los que tuvieron en cuenta mayor cantidad de variables para obtener la predicción.
 \item Para el presente trabajo, el modelo con menor RMSE y que también presentó una menor relación precio vs vivienda, fue el escogido para realizar la predicción y fue el que se entrenó posteriormente para obtener la predicción.
@@ -127,281 +125,68 @@ Para implementar el modelo en una aplicación web, utilizamos el paquete de \tex
 
 \end{itemize}
 
-\appendix[Cuadros de Variables descriptivas]
-Se presentan los Cuadros donde se consignan las estadísticas descriptivas de las variables explicadas en la sección \ref{AA}.\\ 
-\begin{table}[htbp]
-\caption{Cuadro descriptivo \textit{Ubicación}}
-\begin{center}
-\begin{tabular}{|c|c|}
-\hline
-\multicolumn{2}{|c|}{\textbf{Ubicación}} \\
-\cline{1-2} 
-\hline
- Bogotá D.C.&Medellín\\
- 14.244&10.599\\
- (57,34\%)&(42,7\%)\\
- 
-	\hline
-\end{tabular}
-\label{tab_1}
-\end{center}
-\end{table}
+\subsection{Recomendaciones}
+\begin{itemize}
+\item Debido al hallazgo de la volatilidad de este precio, es necesario crear más estrategias que mitiguen este impacto volátil inevitable por medio de inclusión de más variables en los modelos por hora, por ejemplo, los parámetros técnicos de los generadores (información no disponible de manera pública por parte de XM).
 
-\begin{table}[htbp]
-\caption{Cuadro descriptivo \textit{Tipo de vivienda}}
-\begin{center}
-\begin{tabular}{|c|c|}
-\hline
-\multicolumn{2}{|c|}{\textbf{Tipo de Vivienda}} \\
-\cline{1-2} 
-\hline
- Casa&Apartamento\\
- 2.038&22.805\\
- (8,2\%)&(91,8\%)\\
- 
-	\hline
-\end{tabular}
-\label{tab_2}
-\end{center}
-\end{table}
+\item En cuanto a la Aplicación Web, se puede extender para que el usuario de la interfaz pueda escoger con qué otros modelos realice la predicción.
 
-\begin{table}[htbp]
-\caption{Cuadro descriptivo \textit{Habitaciones}}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\multicolumn{4}{|c|}{\textbf{Habitaciones}} \\
-\cline{1-4} 
-\hline
- Mín&Media&Máx.&Moda\\
-\hline
- 1&3&11&3\\
- 	\hline
-\end{tabular}
-\label{tab_3}
-\end{center}
-\end{table}
+\end{itemize}
 
-\begin{table}[htbp]
-\caption{Cuadro descriptivo \textit{Número de baños}}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\multicolumn{4}{|c|}{\textbf{Número de baños}} \\
-\cline{1-4} 
-\hline
- Mín&Media&Máx.&Moda\\
-\hline
- 1&3&13&2\\
- 	\hline
-\end{tabular}
-\label{tab_4}
-\end{center}
-\end{table}
+\begin{thebibliography}{00}
+\bibitem{b1} Poveda Núñez, M. A. (2012) “Modelamiento del precio de bolsa. Universidad Nacional de Colombia.” Bogotá D.C, Recuperado de: \url{https://repositorio.unal.edu.co/bitstream/handle/unal/21159/300038.2012.pdf?sequence=1&isAllowed=y}
+\bibitem{b2} XM (2022). Sinergox de XM. Recuperado de: \url{ https://sinergox.xm.com.co/trpr/Paginas/Historicos/Historicos.aspx.} 
 
-\begin{table}[htbp]
-\caption{Cuadro descriptivo \textit{Ascensor}}
-\begin{center}
-\begin{tabular}{|c|c|}
-\hline
-\multicolumn{2}{|c|}{\textbf{Ascensor}} \\
-\cline{1-2} 
-\hline
- Tiene ascensor&No tiene ascensor\\
- 19.388 (78,04\%)&5.455(21,96\%)\\
-  
-	\hline
-\end{tabular}
-\label{tab_5}
-\end{center}
-\end{table}
+\bibitem{b3}Climate Prediction Center.“Cold \& Warm episodes by season” Recuperado de: \url{https://origin.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php}
 
-\begin{table}[htbp]
-\caption{Cuadro descriptivo \textit{Parqueadero}}
-\begin{center}
-\begin{tabular}{|c|c|}
-\hline
-\multicolumn{2}{|c|}{\textbf{Parqueadero}} \\
-\cline{1-2} 
-\hline
- Tiene parqueadero&No tiene parqueadero\\
- 7.885(31,74\%)&16.958(68,26\%)\\
-  
-	\hline
-\end{tabular}
-\label{tab_6}
-\end{center}
-\end{table}
+\bibitem{b4}XGBoost time series forecast in R.“xgboost time series forecast in R” Recuperado de: \url{http://datasideoflife.com/?p=1009#:~:text=xgboost\%2C\%20or\%20Extreme\%20Gradient\%20Boosting,while\%20doing\%20time\%20series\%20predictions.}
 
-\begin{table}[htbp]
-\caption{Cuadro descriptivo \textit{Área}}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\multicolumn{4}{|c|}{\textbf{Área (m\^{2})}} \\
-\cline{1-4} 
-\hline
- Mín&Media&Máx.&Moda\\
-\hline
- 74,06&286,75&3.940,14&193,7414\\
- 	\hline
-\end{tabular}
-\label{tab_7}
-\end{center}
-\end{table}
+\bibitem{b5}Trespalacios Carrasquilla, A., Pantoja Robayo, J. O., \& Fernández Taborda, Ó. A. (2017). Análisis de mercados de electricidad. EAFIT.
+
+\end{thebibliography}
 
 
-\begin{table}[htbp]
-\caption{Cuadro descriptivo \textit{Transporte Público-TP}}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\multicolumn{4}{|c|}{\textbf{Distancia TP (m)}} \\
-\cline{1-4} 
-\hline
- Mín&Media&Máx.&Moda\\
-\hline
- 4,397&1.519,834&4.472,144&2.168,091\\
- 	\hline
-\end{tabular}
-\label{tab_8}
-\end{center}
-\end{table}
+\appendix[Cuadros de Variables descriptivas y RMSE]
+Se presentan los Cuadros donde se consignan las estadísticas descriptivas de las variables explicadas en la sección \ref{AA} y \ref{BB} .\\ 
 
-\begin{table}[htbp]
-\caption{Cuadro descriptivo \textit{Distancia bares}}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\multicolumn{4}{|c|}{\textbf{Distancia bares (m)}} \\
-\cline{1-4} 
-\hline
- Mín&Media&Máx.&Moda\\
-\hline
- 2,101&1.694,033&3.062,209&487,8808\\
- 	\hline
-\end{tabular}
-\label{tab_9}
-\end{center}
-\end{table}
-
-\begin{table}[htbp]
-\caption{Cuadro descriptivo \textit{Distancia parques}}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\multicolumn{4}{|c|}{\textbf{Distancia parques (m)}} \\
-\cline{1-4} 
-\hline
- Mín&Media&Máx.&Moda\\
-\hline
- 0,4975&230,5497&1.567,7500&478,1448\\
- 	\hline
-\end{tabular}
-\label{tab_10}
-\end{center}
-\end{table}
-
-
-\begin{table}[htbp]
-\caption{Evaluación Modelos con 10 Variables}
-\begin{center}
-\begin{tabular}{|c|c|c|c|c|c|}
-\hline
-&\multicolumn{5}{|c|}{\textbf{Evaluación Modelos Variables 10}} \\
-\cline{2-6} 
-& \textbf{\textit{OLS}}& \textbf{\textit{Lasso}}& \textbf{\textit{RF5}}& \textbf{\textit{RF1000}}& \textbf{\textit{XGBoost}} \\
-\hline
-Tot.\$ gastado& 1,14e+13& 1,14+13& 1,11e+13& 1,08e+13& 1,09e+13 \\
-\hline
-Cant.Viv.Compradas& 8.657& 8.994& 9.396& 9.605& 8.517 \\
-\hline
-Rel.\$/Viv.compradas& 1,315e+9& 1,267e+9& 1,182e+9& 1,128e+9& 1,279e+9 \\
-
-\hline
-\end{tabular}
-\label{tab_11}
-\end{center}
-\end{table}
-
-\begin{table}[htbp]
-\caption{Evaluación Modelos con 6 Variables}
-\begin{center}
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-&\multicolumn{4}{|c|}{\textbf{Evaluación Modelos Variables 6}} \\
-\cline{2-5} 
-& \textbf{\textit{OLS}}& \textbf{\textit{Lasso}}& \textbf{\textit{RF5}}& \textbf{\textit{XGBoost}} \\
-\hline
-Tot.\$ gastado& 1,14e+13& 1,14+13& 1,08e+13& 1,09e+13 \\
-\hline
-Cant.Viv.Compradas& 8.737& 9.045& 9.204& 8.614 \\
-\hline
-Rel.\$/Viv.compradas& 1,31e+9& 1,26e+9& 1,181e+9& 1,272e+9 \\
-
-\hline
-\end{tabular}
-\label{tab_12}
-\end{center}
-\end{table}
-
-\begin{table}[htbp]
-\caption{Evaluación Modelos con 5 Variables}
-\begin{center}
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-&\multicolumn{4}{|c|}{\textbf{Evaluación Modelos Variables 5}} \\
-\cline{2-5} 
-& \textbf{\textit{OLS}}& \textbf{\textit{Lasso}}& \textbf{\textit{RF5}}& \textbf{\textit{XGBoost}} \\
-\hline
-Tot.\$ gastado& 1,15e+13& 1,13+13& 1,10e+13& 1,10e+13 \\
-\hline
-Cant.Viv.Compradas& 8.816& 9.062& 9.213& 8.697 \\
-\hline
-Rel.\$/Viv.compradas& 1,31e+9& 1,26e+9& 1,197e+9& 1,269e+9 \\
-
-\hline
-\end{tabular}
-\label{tab_13}
-\end{center}
-\end{table}
 
 % Table created by stargazer v.5.2.3 by Marek Hlavac, Social Policy Institute. E-mail: marek.hlavac at gmail.com
 % Date and time: mar., ago. 02, 2022 - 3:04:06 p. m.
 \begin{table}[!htbp] \centering 
-  \caption{} 
+  \caption{Comparación de RMSE para modelo con bifurcación 3 y 100} 
   \label{} 
 \begin{tabular}{@{\extracolsep{5pt}} ccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
 Modelo & RMSE\_3 & RMSE\_100 \\ 
 \hline \\[-1.8ex] 
-Modelo\_h0 & $112.292$ & $141.761$ \\ 
-Modelo\_h1 & $120.892$ & $119.108$ \\ 
-Modelo\_h2 & $109.634$ & $112.361$ \\ 
-Modelo\_h3 & $112.783$ & $115.206$ \\ 
-Modelo\_h4 & $109.589$ & $115.152$ \\ 
-Modelo\_h5 & $114.351$ & $127.952$ \\ 
-Modelo\_h6 & $139.171$ & $146.152$ \\ 
-Modelo\_h7 & $126.321$ & $133.022$ \\ 
-Modelo\_h8 & $131.534$ & $138.119$ \\ 
-Modelo\_h9 & $131.625$ & $136.648$ \\ 
-Modelo\_h10 & $172.779$ & $217.500$ \\ 
-Modelo\_h11 & $213.590$ & $201.640$ \\ 
-Modelo\_h12 & $126.655$ & $137.008$ \\ 
-Modelo\_h13 & $126.912$ & $124.819$ \\ 
-Modelo\_h14 & $134.253$ & $129.875$ \\ 
-Modelo\_h15 & $129.496$ & $135.119$ \\ 
-Modelo\_h16 & $133.624$ & $130.764$ \\ 
-Modelo\_h17 & $111.177$ & $125.891$ \\ 
-Modelo\_h18 & $121.821$ & $141.824$ \\ 
-Modelo\_h19 & $158.052$ & $136.936$ \\ 
-Modelo\_h20 & $150.231$ & $136.186$ \\ 
-Modelo\_h21 & $125.024$ & $120.779$ \\ 
-Modelo\_h22 & $126.081$ & $151.350$ \\ 
-Modelo\_h23 & $120.461$ & $132.459$ \\ 
+Predicción\_h0 & $112.29$ & $141.76$ \\ 
+Predicción\_h1 & $120.89$ & $119.11$ \\ 
+Predicción\_h2 & $109.63$ & $112.36$ \\ 
+Predicción\_h3 & $112.78$ & $115.21$ \\ 
+Predicción\_h4 & $109.59$ & $115.15$ \\ 
+Predicción\_h5 & $114.35$ & $127.95$ \\ 
+Predicción\_h6 & $139.17$ & $146.15$ \\ 
+Predicción\_h7 & $126.32$ & $133.02$ \\ 
+Predicción\_h8 & $131.53$ & $138.11$ \\ 
+Predicción\_h9 & $131.62$ & $136.65$ \\ 
+Predicción\_h10 & $172.78$ & $217.50$ \\ 
+Predicción\_h11 & $213.59$ & $201.64$ \\ 
+Predicción\_h12 & $126.65$ & $137.01$ \\ 
+Predicción\_h13 & $126.91$ & $124.82$ \\ 
+Predicción\_h14 & $134.25$ & $129.88$ \\ 
+Predicción\_h15 & $129.50$ & $135.12$ \\ 
+Predicción\_h16 & $133.62$ & $130.76$ \\ 
+Predicción\_h17 & $111.18$ & $125.89$ \\ 
+Predicción\_h18 & $121.82$ & $141.82$ \\ 
+Predicción\_h19 & $158.05$ & $136.94$ \\ 
+Predicción\_h20 & $150.23$ & $136.19$ \\ 
+Predicción\_h21 & $125.02$ & $120.78$ \\ 
+Predicción\_h22 & $126.08$ & $151.35$ \\ 
+Predicción\_h23 & $120.46$ & $132.46$ \\ 
 \hline \\[-1.8ex] 
-\end{tabular} 
+\end{tabular}
+\label{tab_14} 
 \end{table}
 
 
