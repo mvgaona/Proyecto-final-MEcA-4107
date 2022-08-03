@@ -2,11 +2,10 @@
 # Andrea Beleño - 200620739
 
 #### TRABAJO FINAL #####
-
+#En el siguiente código se realizará la predicción de los 24 modelos correspondientes para el precio de bolsa de energía. 
 install.packages("pacman") #Instalar librería si no cuenta con esta 
-library(pacman) #Llamar librería#Se cargan las librerías a usar en el presente Problem Set
- 
-p_load(Matrix,
+library(pacman)
+ p_load(Matrix,
        recipes,
        rio, 
        tidyverse,

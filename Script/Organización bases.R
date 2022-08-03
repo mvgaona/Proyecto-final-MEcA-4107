@@ -2,9 +2,9 @@
 # Andrea Beleño - 200620739
 
 #### TRABAJO FINAL #####
-
+#En el presente código se realizará la organización de las bases de datos para poder conformar la base oficial, la cual será implementada para el análisis.
 install.packages("pacman") #Instalar librería si no cuenta con esta 
-library(pacman) #Llamar librería#Se cargan las librerías a usar en el presente Problem Set
+library(pacman) 
 
 p_load(Matrix,
        recipes,

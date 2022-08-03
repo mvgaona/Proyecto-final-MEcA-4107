@@ -1,3 +1,8 @@
+# Valeria Gaona - 202214418
+# Andrea Beleño - 200620739
+
+####==TRABAJO FINAL==#####
+#En el siguiente código se realizará la conformación de la base de datos oficial, la cuál será utilizada para el análisis de los 24 modelos establecidos.
 require(pacman)
 p_load(Matrix,
        recipes,
@@ -29,7 +34,8 @@ p_load(Matrix,
        zoo,
        BiocManager,
        data.table,
-       ranger, SuperLearner)
+       ranger)
+####======================####
 Gen0<- readRDS("C:/Users/valer/Desktop/Andes/Intersemestral/Big Data/Proyecto final/Proyecto-final-MEcA-4107/Datos/Bases oficiales/Generacion_0_30062022.rds")
 colnames(Gen0) <- c('Fecha', 'Gen_CoGenerador0','Gen_Hidraulica0', 'Gen_Termica0', 'Gen_Eolica0', 'Gen_Solar0')
 Gen1<- readRDS("C:/Users/valer/Desktop/Andes/Intersemestral/Big Data/Proyecto final/Proyecto-final-MEcA-4107/Datos/Bases oficiales/Generacion_1_30062022.rds")
