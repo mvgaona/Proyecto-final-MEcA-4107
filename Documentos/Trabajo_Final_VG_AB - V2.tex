@@ -70,18 +70,19 @@ Para las variables numéricas mencionadas anteriormente, se presenta la Figura ~
 
 \section{Modelo} \label{BB}
 
-Con base en las variables presentadas en la sección \ref{AA}, se procedió a realizar, considerando series de tiempo, los modelos con diferentes hiperparámetros teniendo como base el \textit{XGBoost}. Se debe tener en cuenta, que el precio de bolsa del despacho ideal se da de manera horaria, por lo cual, se realizaron las predicciones para cada hora del día, considerando los predictores:\textit{TRM}, \textit{Aportes hídricos}, \textit{ONI}, la fecha (se dividió en \textit{año}, \textit{mes} y \textit{día} y el tipo de Generación (5 tipos de generación por 24 horas del día), dependiendo del recurso. Al ser series de tiempo los datos utilizados para desarrollar el presente trabajo, se dividió la base de datos en \textit{train} con el 70\% de los datos desde el 2000-01-01 y el restante 30\% fueron las fechas subsiguientes. Cabe anotar que para series de tiempo, las muestras de las bases a analizar deben ser secuenciales, por lo cual, dichas bases no se obtuvieron de manera aleatoria.\\
+Con base en las variables presentadas en la sección \ref{AA}, se procedió a realizar, considerando series de tiempo, los modelos con diferentes hiperparámetros teniendo como base el \textit{XGBoost}. Se debe tener en cuenta, que el precio de bolsa del despacho ideal se da de manera horaria, por lo cual, se realizaron las predicciones para cada hora del día, considerando los predictores:\textit{TRM}, \textit{Aportes hídricos}, \textit{ONI}, la fecha (se dividió en \textit{año}, \textit{mes} y \textit{día} y el tipo de Generación, 5 tipos de generación por 24 horas del día), dependiendo del recurso. Al ser series de tiempo los datos utilizados para desarrollar el presente trabajo, se dividió la base de datos en \textit{train} con el 70\% de los datos desde el 2000-01-01 y el restante 30\% fueron las fechas subsiguientes. Cabe anotar que para series de tiempo, las muestras de las bases a analizar deben ser secuenciales, por lo cual, dichas bases no se obtuvieron de manera aleatoria.\\
 Ahora bien, se consideró que el modelo \textit{XGBoost} era el más apto para realizar la predicción del precio bolsa, teniendo en cuenta que este modelo se considera el mejor para aplicarlo a casos donde la no linealidad y la volatilidad son importantes. Se entrenaron varios modelos, de los cuales se presentan resultados de 2, en donde los hiperparámetros variaron para estos modelos para cada predicción del precio de bolsa para cada hora del día. Se explicará en breve los aspectos relevantes de cada modelo. Se debe tener en cuenta que para todos los modelos se utilizaron todas las variables contempladas en la sección \ref{AA}, es decir, 151 variables en total.
 
 \begin{itemize}
 \item \textit{\textbf{Modelo 1}}: Hiperparámetros importantes: $\lambda=0.3$ (tasa de aprendizaje), $d=3$ (número de bifurcaciones), $n=100$ (número de iteraciones). Esto se aplicó para la predicción del precio de bolsa horario para las 24 horas.
-\item \item \textit{\textbf{Modelo 2}}: Hiperparámetros importantes: $\lambda=0.3$ (tasa de aprendizaje), $d=100$ (número de bifurcaciones), $n=1000$ (número de iteraciones). Esto se aplicó para la predicción del precio de bolsa horario para las 24 horas.
+\item \textit{\textbf{Modelo 2}}: Hiperparámetros importantes: $\lambda=0.3$ (tasa de aprendizaje), $d=100$ (número de bifurcaciones), $n=1000$ (número de iteraciones). Esto se aplicó para la predicción del precio de bolsa horario para las 24 horas.
 \end{itemize}
 
 El parámetro de comparación entre modelos fue el RMSE. Para cada precio de bolsa horario se observó que los modelos presentados anteriormente, tenían diferente RMSE, tomándose el más bajo para realizar la predicción en la aplicación web. En el Cuadro ~\ref{tab_14} se presentan los resultados del RMSE para cada predicción de bolsa. En resumen, los precios de bolsa horarios a los cuales se les aplicó el modelo 1 o 2, se presentan a continuación: 
 
 \begin{itemize}
-\item \textit{\textbf{Modelo 1}}: Predicción del precio de bolsa para las horas: 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 17, 18, 22 y 23\item\textit{\textbf{Modelo 2}}: Predicción del precio de bolsa para las horas: 1, 11, 13, 14, 16, 19, 20 y 21.
+\item \textit{\textbf{Modelo 1}}: Predicción del precio de bolsa para las horas: 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 17, 18, 22 y 23
+\item\textit{\textbf{Modelo 2}}: Predicción del precio de bolsa para las horas: 1, 11, 13, 14, 16, 19, 20 y 21.
 \end{itemize}
 
 Para el modelo 2, las horas predichas coinciden con las de mayor demanda en el sistema eléctrico colombiano. 
@@ -120,7 +121,6 @@ Para implementar el modelo en una aplicación web, utilizamos el paquete de \tex
 \caption{Resultado de la aplicación web}
 \label{fig_3}
 \end{figure}
-De acuerdo con la aplicación web descrita anteriormente, cuyo enlace se encuentra en el abstract del presente documento, se presentan dos ejemplos de predicciones con diferentes valores reportados en las variables para Agosto 20\/2022 y Septiembre 10\/2022 en las Figuras ~\ref{fig_4}  y ~\ref{fig_5}, respectivamente.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=0.5\textwidth]{../Images/AppWeb1.png}}
@@ -135,6 +135,9 @@ De acuerdo con la aplicación web descrita anteriormente, cuyo enlace se encuent
 \label{fig_5}
 \end{figure}
 
+De acuerdo con la aplicación web descrita anteriormente, cuyo enlace se encuentra en el abstract del presente documento, se presentan dos ejemplos de predicciones con diferentes valores reportados en las variables para Agosto 20/2022 y Septiembre 10/2022 en las Figuras ~\ref{fig_4}  y ~\ref{fig_5}, respectivamente.
+
+
 
 
 \section{Conclusiones y recomendaciones}
@@ -143,6 +146,7 @@ De acuerdo con la aplicación web descrita anteriormente, cuyo enlace se encuent
 \item El precio de bolsa energético está caracterizado por los factores anteriormente descritos y analizados. Sin embargo, existen factores exógenos a los modelos, como la volatilidad que puede presentarse dentro de un mercado eléctrico y sus operaciones cada hora. Por otra parte, aunque se esté analizando en términos económicos este valor, es fundamental considerar que este precio está influenciado por el impacto ambiental y el calentamiento global, haciendo que cuando se generen sequías, este precio aumente considerablemente, ya que otro tipo de generadores son más costosos y por ende, el precio de energía también.
 \item La implementación de modelos de series de tiempo requiere mantener la secuencia de los datos, lo cual fue un reto al ejecutar ambos modelos.
 \item Realizando un análisis de las variables utilizadas, se observa que el precio está influenciado principalmente por la generación hidráulica, predictor para el cual no se tiene valor de generación 0 y que al variarse genera un cambio en la predicción.
+\item Por otra parte, la predicción de series de tiempo por medio de XGBoost aporta sustancialmente al proceso académico, ya que hace que se afronten restos en su análisis e interpretación de resultados. A su vez, el proceso de creación de aplicación wep generó un desafío adicional dentro del análisis, además, permite contar con herramientas futuras para diferentes proyectos en los que una aplicación web aporte un valor agregado y sea útil.
  
 \end{itemize}
 
